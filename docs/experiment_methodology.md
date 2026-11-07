@@ -41,13 +41,20 @@ Only the prompting technique varies:
 
 ## Metrics
 
+**Macro averaging rule (all tasks):** macro scores average over the labels that occur in the gold labels
+**or** the predictions. This matches scikit-learn's default when no label list is given. A label absent from
+both has undefined precision and recall; scoring it as F1 = 0 would lower macro-F1 for reasons unrelated to
+the strategy. A label that is only *predicted* is still included, so false positives are penalised.
+The labels used are stored as `macro_labels` in `metrics.json`.
+
 ### Overall sentiment (4 classes: positive, negative, neutral, mixed)
 Accuracy, macro precision/recall/F1 (**primary**), weighted F1, per-class report, confusion matrix.
+The confusion matrix covers the four valid classes. Predictions that failed validation are counted separately
+as `invalid_predictions`, so a row can sum to less than its support.
 
 ### Complaint categories (multi-label, 14 labels)
-Micro P/R/F1, macro-F1 over labels present in the gold set, weighted and sample-averaged F1, Hamming loss
-and subset accuracy. Labels absent from the gold set are excluded from the reported macro average,
-because including them would add zeros that say nothing about the strategy. The plain macro value is also stored.
+Micro P/R/F1, macro-F1 (rule above, reported as `complaint_macro_f1`), weighted and sample-averaged F1,
+Hamming loss and subset accuracy. A plain macro over all 14 labels is also stored (`macro_f1`).
 
 ### Aspects — category-level matching
 Free-text aspect names ("ice maker" vs "icemaker") are hard to match reliably, so matching happens at the

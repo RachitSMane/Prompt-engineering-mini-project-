@@ -23,7 +23,7 @@ def get_llm_client(settings: Settings, *, use_mock: bool | None = None, role: st
     provider = settings.effective_judge_provider if role == "judge" else settings.llm_provider
     model = settings.effective_judge_model if role == "judge" else settings.llm_model
     if not settings.live_llm_available(provider):
-        raise LLMUnavailableError(settings.live_unavailable_reason())
+        raise LLMUnavailableError(settings.live_unavailable_reason(provider))
 
     from llm.langchain_client import LangChainLLMClient
 

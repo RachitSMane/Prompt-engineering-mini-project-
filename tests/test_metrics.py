@@ -20,9 +20,10 @@ def test_single_label_hand_computed():
     y_pred = ["positive", "negative", "negative", "neutral"]
     m = single_label_metrics(y_true, y_pred, ["positive", "negative", "neutral", "mixed"])
     assert m["accuracy"] == 0.75
-    # positive: P=1, R=.5, F1=.6667 ; negative: P=.5, R=1, F1=.6667 ; neutral: 1,1,1 ; mixed: 0 (absent)
+    # positive: P=1, R=.5, F1=.6667 ; negative: P=.5, R=1, F1=.6667 ; neutral: 1,1,1 ;
+    # mixed occurs in neither gold nor predictions -> excluded from the macro average
     assert m["per_class"]["positive"]["f1-score"] == pytest.approx(0.6667, abs=1e-4)
-    assert m["macro_f1"] == pytest.approx((0.6667 + 0.6667 + 1 + 0) / 4, abs=1e-3)
+    assert m["macro_f1"] == pytest.approx((0.6667 + 0.6667 + 1) / 3, abs=1e-3)
     assert m["weighted_f1"] == pytest.approx((2 * 0.6667 + 0.6667 + 1) / 4, abs=1e-3)
     assert m["confusion_matrix"][0] == [1, 1, 0, 0]
 
@@ -42,9 +43,25 @@ def test_multilabel_hand_computed():
     assert m["subset_accuracy"] == pytest.approx(1 / 3, abs=1e-4)
     assert m["hamming_loss"] == pytest.approx(2 / 9, abs=1e-4)
     assert m["per_label"]["b"]["recall"] == 0.0
-    # label a: TP=2 -> F1=1 ; label b: FN=1 -> F1=0 ; label c never in gold -> excluded
+    # label a: TP=2 -> F1=1 ; label b: FN=1 -> F1=0 ; label c: predicted only (FP) -> F1=0, still counted
     assert m["per_label"]["a"]["f1"] == 1.0
-    assert m["macro_f1_present_labels"] == pytest.approx(0.5, abs=1e-4)
+    assert m["macro_f1_present_labels"] == pytest.approx(1 / 3, abs=1e-4)
+    assert m["macro_labels"] == ["a", "b", "c"]
+
+
+def test_multilabel_macro_excludes_labels_absent_everywhere():
+    m = multilabel_metrics([{"a"}, {"b"}], [{"a"}, {"b"}], ["a", "b", "c", "d"])
+    assert m["macro_f1_present_labels"] == 1.0 and m["macro_labels"] == ["a", "b"]
+
+
+def test_macro_f1_ignores_classes_absent_from_gold_and_predictions():
+    """Regression: perfect predictions without any 'neutral' used to give macro-F1 0.667."""
+    m = single_label_metrics(["positive", "negative", "positive"], ["positive", "negative", "positive"], ["positive", "negative", "neutral"])
+    assert m["macro_f1"] == 1.0 and m["macro_labels"] == ["positive", "negative"]
+    # a class that is only predicted (false positive) is still penalised
+    m = single_label_metrics(["positive", "positive"], ["positive", "neutral"], ["positive", "negative", "neutral"])
+    assert m["macro_labels"] == ["positive", "neutral"]
+    assert m["macro_f1"] == pytest.approx((2 / 3 + 0) / 2, abs=1e-4)
 
 
 def _meta(**kw):
@@ -114,3 +131,14 @@ def test_run_experiment_end_to_end_mock(settings):
     # resuming adds a strategy without recomputing existing ones
     run_experiment(settings, MockLLMClient(malformed_rate=0), ["few_shot"], reviews, gold, run_id=run_dir.name)
     assert set(evaluate_run(run_dir, gold, 300)["strategies"]) == {"zero_shot", "cot", "few_shot"}
+
+
+def test_resumed_run_evaluates_added_reviews(settings):
+    """Regression: reviews added on resume were predicted but silently left out of evaluation."""
+    r = [ReviewInput(review_id=f"A{i}", product_id="P", review_text="Works great and very quiet.") for i in range(3)]
+    g = [Annotation(review_id=f"A{i}", product_id="P", overall_sentiment="positive", annotator="h") for i in range(3)]
+    run_dir = run_experiment(settings, MockLLMClient(malformed_rate=0), ["zero_shot"], r[:1], g[:1])
+    run_experiment(settings, MockLLMClient(malformed_rate=0), ["zero_shot"], r, g, run_id=run_dir.name)
+    m = evaluate_run(run_dir, g, 300)
+    assert m["n_gold_available"] == 3
+    assert m["strategies"]["zero_shot"]["classification"]["n_evaluated"] == 3

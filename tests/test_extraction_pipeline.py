@@ -66,6 +66,29 @@ def test_factory_refuses_live_without_key(settings, monkeypatch):
     assert get_llm_client(settings, use_mock=True).is_mock
 
 
+def test_judge_unavailable_message_names_judge_provider(settings, monkeypatch):
+    """Regression: the error used to name the extraction provider instead of the judge's."""
+    from dataclasses import replace
+
+    monkeypatch.setenv("GOOGLE_API_KEY", "x")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    s = replace(settings, llm_provider="gemini", judge_provider="openai")
+    with pytest.raises(LLMUnavailableError, match="OPENAI_API_KEY"):
+        get_llm_client(s, use_mock=False, role="judge")
+
+
+def test_uploaded_csv_with_bad_values_does_not_crash():
+    """Regression: a non-numeric rating column crashed the upload path."""
+    from utils.data_loader import dataframe_to_inputs, normalize_uploaded_reviews
+
+    raw = pd.DataFrame({"text": ["Great fit", "Too loud", "Great fit", ""], "pid": ["A", "A", "A", "B"], "rating": ["five", "", "5", "1"]})
+    df = normalize_uploaded_reviews(raw, "text", "pid")
+    assert len(df) == 2 and df.attrs["dropped"] == 2  # duplicate text and empty text removed
+    items = dataframe_to_inputs(df)
+    assert [i.rating for i in items] == [None, None]
+    assert all(i.review_id.startswith("U") for i in items)
+
+
 def test_mock_mode_flag_from_env(monkeypatch):
     monkeypatch.setenv("LLM_PROVIDER", "mock")
     s = load_settings()

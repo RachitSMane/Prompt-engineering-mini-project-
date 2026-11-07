@@ -85,3 +85,85 @@ def test_live_mode_without_key_shows_message(isolated, monkeypatch):
     assert not at.exception
     assert any("API key" in i.value for i in at.info)
     assert next(b for b in at.button if "Run extraction" in b.label).disabled
+
+
+def _click(at: AppTest, text: str) -> AppTest:
+    next(b for b in at.button if text in b.label).click()
+    return at.run()
+
+
+def test_full_offline_ui_workflow(isolated):
+    """Product Insights extract -> summary -> Summary Evaluation judge -> Prompt Comparison run (all mock)."""
+    at = _page("product_insights").run()
+    at.number_input[0].set_value(3)
+    at = _click(at, "Run extraction")
+    assert not at.exception, [e.value for e in at.exception]
+    assert any("valid records" in s.value for s in at.success)
+
+    at = _page("product_insights").run()  # new session sees the stored extraction
+    assert any("Product" == s.label for s in at.selectbox)
+    at = _click(at, "Generate summary for this product")
+    assert not at.exception, [e.value for e in at.exception]
+    assert any("Overall customer opinion" in m.value for m in at.markdown)
+    assert any("MOCK template summary" in w.value for w in at.warning)
+
+    at = _page("summary_evaluation").run()
+    at = _click(at, "Judge all unjudged summaries")
+    assert not at.exception, [e.value for e in at.exception]
+    at = _page("summary_evaluation").run()
+    assert any(m.label == "Faithfulness" for m in at.metric)
+    assert any("MOCK judge verdict" in w.value for w in at.warning)
+
+    at = _page("prompt_comparison").run()
+    at.radio[0].set_value("First N reviews of the annotation sample")
+    at.run()
+    at.number_input[0].set_value(4)
+    at = _click(at, "Run experiment")
+    assert not at.exception, [e.value for e in at.exception]
+    assert any("Run saved" in s.value for s in at.success)
+    assert any("NOT AN EXPERIMENTAL RESULT" in e.value for e in at.error)
+    assert any("Mock demo" in w.value for w in at.warning)
+
+
+def test_annotation_progress_survives_restart(isolated):
+    at = _page("annotation_page").run()
+    at.text_input(key="annotator").set_value("tester")
+    at.radio[0].set_value("mixed")
+    at = _click(at, "Save")
+    assert any("Review 2 / 300" in m.value for m in at.markdown)  # "Save & next" advanced
+    at = _page("annotation_page").run()  # brand-new session = app restart
+    assert not at.exception
+    assert any("1 complete" in (p.proto.text or "") for p in at.get("progress"))
+    assert any("Review 2 / 300" in m.value for m in at.markdown)  # resumes at the first unlabelled review
+
+
+def test_navigation_between_pages(isolated):
+    at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
+    at.session_state["use_mock"] = True
+    at.run()
+    for page in PAGES[1:]:
+        at.switch_page(f"ui/{page}.py").run()
+        assert not at.exception, (page, [e.value for e in at.exception])
+        assert at.title
+
+
+def test_csv_upload_and_extraction(isolated):
+    """Upload a CSV with non-standard column names, map columns, run mock extraction."""
+    csv = (
+        "asin,content,stars\n"
+        "B1,The motor is very loud and it broke after a week.,1\n"
+        "B1,Fits perfectly and the price was great.,5\n"
+        "B2,Installation was easy; works fine.,five\n"
+        "B2,,3\n"
+    ).encode()
+    at = _page("review_analysis").run()
+    at.radio[0].set_value("Upload CSV").run()
+    at.file_uploader[0].set_value(("reviews.csv", csv, "text/csv")).run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert [s.value for s in at.selectbox[:2]] == ["content", "asin"]  # columns guessed
+    assert any("3 valid reviews" in c.value for c in at.caption)  # empty row removed
+    at.number_input[0].set_value(3)
+    at = _click(at, "Run extraction")
+    assert not at.exception, [e.value for e in at.exception]
+    assert any(m.label == "Valid records" and m.value == "3" for m in at.metric)
+    assert list((isolated.paths.outputs / "mock" / "extractions").glob("upload-reviews__*.jsonl"))

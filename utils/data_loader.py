@@ -203,8 +203,8 @@ def normalize_uploaded_reviews(df: pd.DataFrame, text_col: str, product_col: str
             "U" + hashlib.sha1(f"{p}|{t}".encode()).hexdigest()[:12] for p, t in zip(out["product_id"], out["review_text"])
         ]
     out["product_title"] = df[title_col].astype(str) if title_col and title_col in df.columns else ""
-    for opt in ("rating", "timestamp"):
-        out[opt] = df[opt] if opt in df.columns else None
+    out["rating"] = pd.to_numeric(df["rating"], errors="coerce") if "rating" in df.columns else None  # non-numeric -> NaN
+    out["timestamp"] = df["timestamp"].astype(str) if "timestamp" in df.columns else None
     before = len(out)
     out = out[(out["review_text"].str.len() > 0) & (out["product_id"].str.len() > 0)]
     out = out.drop_duplicates(subset=["product_id", "review_text"]).drop_duplicates(subset=["review_id"])
@@ -215,14 +215,14 @@ def normalize_uploaded_reviews(df: pd.DataFrame, text_col: str, product_col: str
 def dataframe_to_inputs(df: pd.DataFrame) -> list[ReviewInput]:
     items: list[ReviewInput] = []
     for row in df.to_dict(orient="records"):
-        rating = row.get("rating")
+        rating = pd.to_numeric(row.get("rating"), errors="coerce")
         items.append(
             ReviewInput(
                 review_id=str(row["review_id"]),
                 product_id=str(row["product_id"]),
                 review_text=str(row["review_text"]),
                 product_title=(str(row.get("product_title")) or None) if row.get("product_title") else None,
-                rating=float(rating) if rating not in (None, "") and pd.notna(rating) else None,
+                rating=float(rating) if pd.notna(rating) else None,
                 timestamp=row.get("timestamp") or None,
             )
         )

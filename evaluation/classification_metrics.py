@@ -46,10 +46,24 @@ def _r(x: float) -> float:
     return round(float(x), 4)
 
 
+def present_labels(labels: list[str], *label_collections) -> list[str]:
+    """Taxonomy labels that occur in gold or predictions (sklearn's default label set).
+
+    Macro averages use only these: a class absent from BOTH gold and predictions has
+    undefined precision/recall, and counting it as F1 = 0 would wrongly lower macro-F1.
+    """
+    seen: set[str] = set()
+    for coll in label_collections:
+        for item in coll:
+            seen.update(item if isinstance(item, (set, frozenset, list, tuple)) else [item])
+    return [lab for lab in labels if lab in seen]
+
+
 def single_label_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> dict:
     if not y_true:
         return {"n": 0}
-    p_mac, r_mac, f_mac, _ = precision_recall_fscore_support(y_true, y_pred, labels=labels, average="macro", zero_division=0)
+    macro_labels = present_labels(labels, y_true, y_pred)
+    p_mac, r_mac, f_mac, _ = precision_recall_fscore_support(y_true, y_pred, labels=macro_labels, average="macro", zero_division=0)
     p_w, r_w, f_w, _ = precision_recall_fscore_support(y_true, y_pred, labels=labels, average="weighted", zero_division=0)
     report = classification_report(y_true, y_pred, labels=labels, output_dict=True, zero_division=0)
     return {
@@ -63,6 +77,7 @@ def single_label_metrics(y_true: list[str], y_pred: list[str], labels: list[str]
         "weighted_f1": _r(f_w),
         "per_class": {lab: {k: _r(v) if k != "support" else int(v) for k, v in report[lab].items()} for lab in labels},
         "labels": labels,
+        "macro_labels": macro_labels,
         "confusion_matrix": confusion_matrix(y_true, y_pred, labels=labels).tolist(),
         "invalid_predictions": int(sum(p == INVALID for p in y_pred)),
     }
@@ -82,9 +97,12 @@ def multilabel_metrics(true_sets: list[set[str]], pred_sets: list[set[str]], lab
     out["subset_accuracy"] = _r(accuracy_score(yt, yp))
     p, r, f, s = precision_recall_fscore_support(yt, yp, average=None, zero_division=0)
     out["per_label"] = {lab: {"precision": _r(p[i]), "recall": _r(r[i]), "f1": _r(f[i]), "support": int(s[i])} for i, lab in enumerate(labels)}
-    # macro over labels that actually occur in gold (macro_f1 above counts absent labels as 0)
-    present = [i for i, lab in enumerate(labels) if s[i] > 0]
+    # macro over labels occurring in gold OR predictions (macro_f1 above averages all taxonomy labels,
+    # scoring labels absent from both as 0). Predicted-only labels are kept, so false positives still count.
+    occurring = set(present_labels(labels, true_sets, pred_sets))
+    present = [i for i, lab in enumerate(labels) if lab in occurring]
     out["macro_f1_present_labels"] = _r(np.mean([f[i] for i in present])) if present else 0.0
+    out["macro_labels"] = [labels[i] for i in present]
     return out
 
 

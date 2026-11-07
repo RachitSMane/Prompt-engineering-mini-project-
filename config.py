@@ -95,7 +95,7 @@ class Settings:
     llm_provider: str = "gemini"
     llm_model: str = DEFAULT_MODELS["gemini"]
     llm_temperature: float = 0.0
-    llm_max_output_tokens: int = 2048
+    llm_max_output_tokens: int = 8192
     llm_timeout_seconds: int = 60
     llm_max_retries: int = 3
     llm_requests_per_minute: int = 10
@@ -128,14 +128,15 @@ class Settings:
         provider = provider or self.llm_provider
         return provider != "mock" and provider in PROVIDER_KEY_ENV and self.has_api_key(provider)
 
-    def live_unavailable_reason(self) -> str:
-        if self.llm_provider == "mock":
+    def live_unavailable_reason(self, provider: str | None = None) -> str:
+        provider = provider or self.llm_provider
+        if provider == "mock":
             return "LLM_PROVIDER is set to 'mock' (offline development mode)."
-        if self.llm_provider not in PROVIDER_KEY_ENV:
-            return f"Unknown LLM_PROVIDER '{self.llm_provider}'. Use one of {sorted(PROVIDER_KEY_ENV)}."
-        env_name = self.api_key_env()
+        if provider not in PROVIDER_KEY_ENV:
+            return f"Unknown provider '{provider}'. Use one of {sorted(PROVIDER_KEY_ENV)}."
+        env_name = self.api_key_env(provider)
         return (
-            f"No API key found for provider '{self.llm_provider}'. "
+            f"No API key found for provider '{provider}'. "
             f"Add {env_name}=... to your .env file (see .env.example) to enable live LLM features."
         )
 
@@ -164,7 +165,7 @@ def load_settings(**overrides) -> Settings:
         llm_provider=provider,
         llm_model=_env_str("LLM_MODEL", DEFAULT_MODELS.get(provider, "")),
         llm_temperature=_env_float("LLM_TEMPERATURE", 0.0),
-        llm_max_output_tokens=_env_int("LLM_MAX_OUTPUT_TOKENS", 2048),
+        llm_max_output_tokens=_env_int("LLM_MAX_OUTPUT_TOKENS", 8192),
         llm_timeout_seconds=_env_int("LLM_TIMEOUT_SECONDS", 60),
         llm_max_retries=_env_int("LLM_MAX_RETRIES", 3),
         llm_requests_per_minute=_env_int("LLM_REQUESTS_PER_MINUTE", 10),

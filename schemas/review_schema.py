@@ -41,11 +41,16 @@ def evidence_is_grounded(evidence: str, review_text: str, threshold: float = 0.8
     ev, src = normalize_for_match(evidence), normalize_for_match(review_text)
     if not ev:
         return False
-    if ev in src:
+
+    def contains_words(fragment: str) -> bool:
+        # pad with spaces so matches respect word boundaries ("fit" must not match "benefit")
+        return f" {fragment} " in f" {src} "
+
+    if contains_words(ev):
         return True
     # LLMs often join two fragments with "..." — accept if every fragment is grounded
-    fragments = [f for f in re.split(r"\.\.\.|…", evidence) if normalize_for_match(f)]
-    if len(fragments) > 1 and all(normalize_for_match(f) in src for f in fragments):
+    fragments = [normalize_for_match(f) for f in re.split(r"\.\.\.|…", evidence) if normalize_for_match(f)]
+    if len(fragments) > 1 and all(contains_words(f) for f in fragments):
         return True
     ev_words, src_words = ev.split(), src.split()
     n = len(ev_words)

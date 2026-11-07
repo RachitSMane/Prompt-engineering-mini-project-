@@ -118,7 +118,7 @@ Details: [`docs/architecture.md`](docs/architecture.md).
 ├── ui/                         the six dashboard pages + shared helpers
 ├── scripts/                    prepare_dataset · build_annotation_sample · run_experiment · run_chain
 ├── utils/                      data_loader · export · storage · logging_config
-├── tests/                      87 tests (no network)
+├── tests/                      97 tests (no network)
 ├── data/                       raw/ · processed/ · annotations/  (see data/README.md)
 ├── outputs/                    generated artefacts (git-ignored; live/ and mock/)
 ├── reports/                    curated final results (pending)
@@ -317,13 +317,13 @@ python scripts/run_chain.py --per-product 30 --judge # extract → aggregate →
 ```bash
 python -m pytest -q
 ```
-87 tests run offline (scripted fake LLM + mock client; no API calls). They cover:
+97 tests run offline (scripted fake LLM + mock client; no API calls). They cover:
 * schema validation, enums, missing and extra fields, multiple aspects, mixed sentiment, no-aspect reviews and evidence grounding;
 * JSON parsing and every malformed-output type, the repair loop, controlled failures and provider errors;
 * caching and resume, CSV/JSON export columns;
 * aggregation numbers and metric calculations checked against hand-computed values;
 * summary citation validation, the judge, and annotation persistence, import and export;
-* headless rendering and interaction tests for all six Streamlit pages.
+* headless tests of all six Streamlit pages: rendering, navigation, CSV upload, extraction, annotation save + restart, summary generation, judging and experiment runs (mock mode).
 
 ## 19. Sample outputs
 > The examples below were produced in **MOCK mode** to show the *format* and the *repair mechanism*.

@@ -54,7 +54,7 @@ class AspectStat(BaseModel):
     positive: int
     negative: int
     neutral: int
-    net_sentiment: float = Field(..., description="(positive - negative) / mentions, in [-1, 1]")
+    net_sentiment: float = Field(..., description="(positive - negative) / (positive + negative + neutral), in [-1, 1]")
     top_aspect_names: list[str] = Field(default_factory=list)
 
 

@@ -79,6 +79,13 @@ def test_grounding_tolerates_case_and_punctuation():
     assert not evidence_is_grounded("terrible customer service", REVIEW_TEXT)
 
 
+def test_grounding_respects_word_boundaries():
+    """Regression: 'fit' used to count as quoted from 'benefit'."""
+    assert not evidence_is_grounded("fit", "A great benefit for the price")
+    assert not evidence_is_grounded("ice ... loud", "price is nice and the cloud")
+    assert evidence_is_grounded("fit", "Did not fit my dryer")
+
+
 def test_grounding_skipped_without_context():
     data = valid_extraction()
     data["aspects"][0]["evidence"] = "not in any text"

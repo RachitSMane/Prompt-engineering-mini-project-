@@ -133,6 +133,8 @@ def run_experiment(
     if config["model_name"] != client.model_name or config["is_mock"] != client.is_mock:
         raise ValueError(f"Run {run_id} was created with {config['model_name']}; refusing to mix models in one run.")
     config["strategies"] = list(dict.fromkeys(config["strategies"] + strategies))
+    # A resumed run may add reviews (e.g. newly annotated ones); they must be evaluated too.
+    config["review_ids"] = list(dict.fromkeys(config["review_ids"] + [r.review_id for r in reviews]))
     write_json_atomic(config_path, config)
 
     for name in strategies:
@@ -273,7 +275,7 @@ def render_report(config: dict, metrics: dict) -> str:
         "- Ground truth = human annotations from the project's annotation workflow (never model output).",
         "- Failed extractions are kept: wrong sentiment, empty aspect/complaint sets.",
         "- Aspects are matched by aspect category; aspect sentiment is scored on categories found in both gold and prediction.",
-        "- Complaint macro-F1 is averaged over labels present in the gold set.",
+        "- Macro averages use the labels that occur in the human labels or the predictions (labels absent from both are excluded).",
         "",
     ]
     return "\n".join(lines)
