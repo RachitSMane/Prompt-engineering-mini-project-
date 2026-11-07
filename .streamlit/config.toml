@@ -1,0 +1,51 @@
+# ReviewIQ dark theme. The hex values mirror ui/theme.py (the design-token source of truth).
+# Native widgets (inputs, tables, tabs, uploaders, progress bars) take their colours from here,
+# so very little CSS is needed.
+
+[client]
+toolbarMode = "minimal"          # hides Deploy / developer menu items
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "dark"
+primaryColor = "#818CF8"
+backgroundColor = "#0B0F19"
+secondaryBackgroundColor = "#151E2E"
+textColor = "#F1F5F9"
+linkColor = "#A5B4FC"
+linkUnderline = false
+borderColor = "#263244"
+showWidgetBorder = true
+dataframeBorderColor = "#263244"
+dataframeHeaderBackgroundColor = "#111827"
+dataframeHeaderTextColor = "#94A3B8"
+codeBackgroundColor = "#111827"
+codeTextColor = "#C7D2FE"
+baseRadius = "6px"
+buttonRadius = "6px"
+baseFontSize = 14
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+codeFont = "JetBrains Mono:https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+codeFontSize = "0.8rem"
+headingFontSizes = ["1.5rem", "1.125rem", "1rem", "0.9375rem", "0.875rem", "0.8125rem"]
+headingFontWeights = [600, 600, 600, 600, 600, 600]
+greenColor = "#34D399"
+redColor = "#F87171"
+yellowColor = "#FBBF24"
+orangeColor = "#FBBF24"
+blueColor = "#818CF8"
+violetColor = "#A78BFA"
+grayColor = "#94A3B8"
+greenTextColor = "#6EE7B7"
+redTextColor = "#FCA5A5"
+yellowTextColor = "#FCD34D"
+blueTextColor = "#C7D2FE"
+grayTextColor = "#94A3B8"
+chartCategoricalColors = ["#818CF8", "#38BDF8", "#E879F9", "#34D399", "#FBBF24", "#F87171", "#94A3B8"]
+
+[theme.sidebar]
+backgroundColor = "#080C14"
+secondaryBackgroundColor = "#111827"
+borderColor = "#1A2333"

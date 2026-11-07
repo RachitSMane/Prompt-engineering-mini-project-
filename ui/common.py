@@ -11,12 +11,13 @@ from config import Settings, load_settings
 from llm.base import LLMClient, LLMUnavailableError
 from llm.factory import get_llm_client
 from pipeline.extraction import ExtractionStore
+from ui.components import callout, esc, kv_html, md
 from utils.data_loader import load_reviews
 from utils.storage import read_json, read_jsonl
 
 MOCK_BANNER = (
-    "🧪 **MOCK / OFFLINE MODE** — outputs below come from a deterministic keyword fixture, **not a language model**. "
-    "They exist only to develop and demonstrate the pipeline and must never be reported as experimental results."
+    "<b>Offline mock mode.</b> Outputs come from a deterministic keyword fixture, not a language model. "
+    "They exist to develop and demonstrate the pipeline and must never be reported as experimental results."
 )
 
 
@@ -34,30 +35,45 @@ def mode_dir() -> Path:
 
 
 def render_sidebar() -> None:
+    """Compact connection + mode block shown under the navigation."""
     s = get_settings()
     live = s.live_llm_available()
     if "use_mock" not in st.session_state:
         st.session_state["use_mock"] = s.is_mock or not live
     with st.sidebar:
-        st.markdown("### LLM status")
-        if live:
-            st.success(f"Live LLM ready: **{s.llm_provider} / {s.llm_model}**")
-        else:
-            st.error("Live LLM unavailable")
-            st.caption(s.live_unavailable_reason())
+        llm_row = (
+            f'<div class="riq-side-row"><span class="riq-dot on"></span>LLM connected<span class="riq-side-sub">{esc(s.llm_provider)} · {esc(s.llm_model)}</span></div>'
+            if live
+            else f'<div class="riq-side-row"><span class="riq-dot off"></span>No LLM key<span class="riq-side-sub">{esc(s.llm_provider)}</span></div>'
+        )
+        md(f'<div class="riq-side-status"><div class="riq-side-label">Workspace</div>{llm_row}</div>')
         st.toggle(
-            "Offline MOCK mode (development only)",
+            "Offline mock mode",
             key="use_mock",
             help="Uses deterministic fixtures instead of an LLM. Mock outputs are stored separately in outputs/mock/ and are never experimental results.",
         )
-        if use_mock():
-            st.warning("Mock mode ON — results are fixtures, not LLM outputs.")
-        st.caption(f"Viewing **{'mock' if use_mock() else 'live'}** artefacts · judge: {s.effective_judge_provider}/{s.effective_judge_model}")
+        with st.expander("About", icon=":material/info:"):
+            md(
+                '<div class="riq-side-note">Aspect-based review analytics with validated structured outputs.</div>'
+                + kv_html([
+                    ("Extraction", f"{s.llm_provider} / {s.llm_model}"),
+                    ("Judge", f"{s.effective_judge_provider} / {s.effective_judge_model}"),
+                    ("Artefacts", f"outputs/{'mock' if use_mock() else 'live'}/"),
+                ])
+            )
+            if not live:
+                st.caption(s.live_unavailable_reason())
 
 
 def mock_banner() -> None:
     if use_mock():
-        st.warning(MOCK_BANNER)
+        callout(MOCK_BANNER, "warning", tag="Mock")
+
+
+KEY_MESSAGE = (
+    "Copy <code>.env.example</code> to <code>.env</code>, set <code>GOOGLE_API_KEY</code> (free key from Google AI Studio) and restart the app, "
+    "or switch on <b>Offline mock mode</b> in the sidebar to try the pipeline with fixtures (not real results)."
+)
 
 
 def get_client(role: str = "extraction") -> LLMClient | None:
@@ -66,11 +82,7 @@ def get_client(role: str = "extraction") -> LLMClient | None:
     try:
         return get_llm_client(s, use_mock=use_mock(), role=role)
     except LLMUnavailableError as exc:
-        st.info(
-            f"🔑 **This action needs a live LLM.** {exc}\n\n"
-            "Copy `.env.example` to `.env`, set `GOOGLE_API_KEY` (free key from Google AI Studio), and restart the app. "
-            "Alternatively, switch on *Offline MOCK mode* in the sidebar to try the pipeline with fixtures (not real results)."
-        )
+        callout(f"<b>This action needs a live LLM.</b> {esc(exc)} {KEY_MESSAGE}", "accent", tag="API key")
         return None
 
 
@@ -81,7 +93,7 @@ def llm_ready() -> bool:
 
 def require_llm_note() -> None:
     if not llm_ready():
-        st.info("🔑 Live LLM features are disabled: no API key configured. See the sidebar, or enable Offline MOCK mode for a fixture-based demo.")
+        callout(f"<b>Live LLM features are disabled: no API key configured.</b> {KEY_MESSAGE}", "accent", tag="API key")
 
 
 @st.cache_data(show_spinner=False)

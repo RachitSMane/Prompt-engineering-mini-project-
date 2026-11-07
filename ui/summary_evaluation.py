@@ -8,34 +8,47 @@ import pandas as pd
 import streamlit as st
 
 from evaluation.summary_evaluation import JudgementStore, export_inspection_sample, judge_summary, judgements_table
-from evaluation.visualizations import judge_scores_bar
+from evaluation.visualizations import judge_scores_bar, judge_scores_per_summary
 from pipeline.extraction import ExtractionStore
 from pipeline.summarization import SummaryStore
 from prompts.judge import RUBRIC
 from schemas.evaluation_schema import ProductSummary
-from ui.common import get_client, get_settings, llm_ready, mock_banner, mode_dir, require_llm_note, use_mock
+from ui.common import get_client, get_settings, llm_ready, mock_banner, mode_dir, pretty, require_llm_note, use_mock
+from ui.components import badge, callout, chart, empty_state, esc, kv_html, md, page_header, panel, score_html, section
 from utils.export import dataframe_to_csv_bytes
 
+DIMENSIONS = [
+    ("faithfulness", "Faithfulness", "claims supported by the source"),
+    ("coverage", "Coverage", "main themes represented"),
+    ("consistency", "Consistency", "agrees with the statistics"),
+    ("hallucination", "Hallucination assessment", "5 = no unsupported claims"),
+]
+
 s = get_settings()
-st.title("🧑‍⚖️ Summary Evaluation")
-st.caption("LLM-as-a-Judge scoring of product summaries: faithfulness, coverage, consistency, hallucination (1–5).")
+page_header("Summary Evaluation", "Measure the reliability and faithfulness of AI-generated product summaries.", is_mock=use_mock())
 mock_banner()
-st.info(
-    "**Important:** judge scores are an automated assessment by a language model. They are **not** objective human "
-    "evaluation, and the judge can be wrong or biased (e.g. towards fluent text, or towards its own model family). "
-    "Use the inspection view below to audit them manually."
+callout(
+    "<b>LLM-as-a-Judge is an automated assessment, not objective human evaluation.</b> The judge can be wrong or biased "
+    "(for example towards fluent text, or towards its own model family). Use the detailed view and the manual inspection sample to audit it.",
+    "accent",
+    tag="Automated",
 )
-with st.expander("Judge rubric"):
-    st.code(RUBRIC, language="text")
 
 sstore = SummaryStore.for_mode(s, use_mock())
 jstore = JudgementStore.for_mode(s, use_mock())
 latest = sstore.latest()
 summaries: dict[str, ProductSummary] = {x.summary_id: x for x in latest.values()}
 if not summaries:
-    st.info("No summaries in this mode yet. Generate them on the **Product Insights** page.")
+    empty_state("No summaries in this mode yet", "Generate them on the <b>Product Intelligence</b> page, then judge them here.", "summarize")
     st.stop()
 judged = jstore.latest_by_summary()
+
+
+def _of(found, expected) -> str:
+    """'2 of 3 (price value, performance)' from the deterministic-check lists."""
+    if isinstance(found, list) and isinstance(expected, list):
+        return f"{len(found)} of {len(expected)}" + (f" ({', '.join(pretty(x) for x in found)})" if found else "")
+    return f"{found} of {expected}"
 
 
 def records_for(summary: ProductSummary):
@@ -62,72 +75,129 @@ def run_judge(targets: list[ProductSummary]) -> None:
     st.rerun()
 
 
+# ---------------------------------------------------------------- actions
 require_llm_note()
-st.caption(f"Judge model: **{s.effective_judge_provider} / {s.effective_judge_model}**" + (" (same as the summariser; a different judge model reduces self-preference bias — set JUDGE_PROVIDER/JUDGE_MODEL)" if s.effective_judge_model == s.llm_model and not use_mock() else ""))
-c1, c2 = st.columns(2)
 unjudged = [x for sid, x in summaries.items() if sid not in judged]
-if c1.button(f"Judge all unjudged summaries ({len(unjudged)})", type="primary", disabled=not unjudged or not llm_ready()):
+c1, c2 = st.columns([3, 2], vertical_alignment="center")
+same_model = s.effective_judge_model == s.llm_model and not use_mock()
+c1.markdown(
+    f'<div class="riq-panel-caption" style="margin:0">Judge model <b style="color:var(--riq-text)">{esc(s.effective_judge_provider)} / {esc(s.effective_judge_model)}</b>'
+    + (" · same as the summariser; set JUDGE_PROVIDER / JUDGE_MODEL to reduce self-preference bias" if same_model else "")
+    + f" · {len(judged)} of {len(summaries)} summaries judged</div>",
+    unsafe_allow_html=True,
+)
+if c2.button(f"Judge all unjudged summaries ({len(unjudged)})", type="primary", icon=":material/gavel:", disabled=not unjudged or not llm_ready(), width="stretch"):
     run_judge(unjudged)
+with st.expander("Judge rubric", icon=":material/rule:"):
+    st.code(RUBRIC, language="text")
 
 # ---------------------------------------------------------------- overview
-rows = judgements_table([judged[sid] for sid in summaries if sid in judged], summaries)
-if rows:
-    st.plotly_chart(judge_scores_bar(rows), width="stretch")
-    table = pd.DataFrame(rows)
-    st.dataframe(table, width="stretch", hide_index=True)
-    d = st.columns(3)
-    d[0].download_button("Judgements (CSV)", dataframe_to_csv_bytes(table), "judgements.csv", "text/csv", width="stretch")
-    d[1].download_button("Judgements (JSON)", json.dumps([judged[sid].model_dump(mode="json") for sid in summaries if sid in judged], indent=2), "judgements.json", "application/json", width="stretch")
-    d[2].download_button("Manual inspection sample (MD)", export_inspection_sample([judged[sid] for sid in summaries if sid in judged], summaries, n=3), "judge_inspection_sample.md", "text/markdown", width="stretch")
+judged_list = [judged[sid] for sid in summaries if sid in judged]
+rows = judgements_table(judged_list, summaries)
+if not rows:
+    empty_state("No judgements yet", "Click <b>Judge all unjudged summaries</b> to score them on faithfulness, coverage, consistency and hallucination.", "gavel")
 else:
-    st.caption("No judgements yet.")
+    table = pd.DataFrame(rows)
+    cards = []
+    for key, label, cap in DIMENSIONS:
+        mean = table[key].mean()
+        cards.append(
+            f'<div class="riq-kpi"><div class="riq-kpi-label">{esc(label)}</div>'
+            f'<div class="riq-kpi-value">{mean:.2f}<span style="font-size:14px;color:var(--riq-muted);font-weight:500"> / 5</span></div>'
+            f'{score_html(round(mean))}<div class="riq-kpi-caption">{esc(cap)} · mean of {len(table)}</div></div>'
+        )
+    md(f'<div class="riq-kpi-grid">{"".join(cards)}</div>')
+    if any(r["is_mock"] for r in rows):
+        callout("<b>MOCK judge verdicts</b> — placeholder values, not an LLM assessment.", "warning", tag="Mock")
 
-# ---------------------------------------------------------------- inspection
-st.divider()
-st.subheader("Inspect a summary and its judgement")
-sid = st.selectbox("Summary", list(summaries), format_func=lambda i: f"{(summaries[i].product_title or summaries[i].product_id)[:70]} {'✅' if i in judged else '—'}")
+    a, b = st.columns([2, 3], gap="medium")
+    with a, panel("Mean score per dimension", "1 = poor · 5 = excellent"):
+        chart(judge_scores_bar(rows), key="se_mean")
+    with b, panel("Scores per summary"):
+        chart(judge_scores_per_summary(rows), key="se_heat")
+
+    section("Evaluation history", "Latest judgement per summary")
+    hist = table[["product_title", "product_id", "faithfulness", "coverage", "consistency", "hallucination", "mean_score", "unsupported_claims", "judge_model"]].copy()
+    st.dataframe(
+        hist,
+        width="stretch",
+        hide_index=True,
+        column_config={
+            "product_title": st.column_config.TextColumn("product", width="large"),
+            "mean_score": st.column_config.ProgressColumn("mean", min_value=1.0, max_value=5.0, format="%.2f"),
+        },
+    )
+    d = st.columns(3)
+    d[0].download_button("Judgements (CSV)", dataframe_to_csv_bytes(table), "judgements.csv", "text/csv", icon=":material/table:", width="stretch")
+    d[1].download_button("Judgements (JSON)", json.dumps([j.model_dump(mode="json") for j in judged_list], indent=2), "judgements.json", "application/json", icon=":material/data_object:", width="stretch")
+    d[2].download_button("Manual inspection sample (MD)", export_inspection_sample(judged_list, summaries, n=3), "judge_inspection_sample.md", "text/markdown", icon=":material/fact_check:", width="stretch")
+
+# ---------------------------------------------------------------- detailed view
+section("Detailed evaluation", "Generated summary, its sources and the judge's assessment")
+sid = st.selectbox("Summary", list(summaries), format_func=lambda i: f"{(summaries[i].product_title or summaries[i].product_id)[:70]} · {'judged' if i in judged else 'not judged'}")
 summ = summaries[sid]
 j = judged.get(sid)
-left, right = st.columns(2)
+c = summ.content
+left, right = st.columns([3, 2], gap="medium")
 with left:
-    st.markdown("#### Generated summary")
-    if summ.is_mock:
-        st.warning("MOCK template summary.")
-    st.json(summ.content.model_dump(mode="json"), expanded=True)
-    st.markdown("#### Source: aggregated statistics")
-    agg = summ.aggregate
-    st.write({"total_reviews": agg.total_reviews, "sentiment_percentages": agg.sentiment_percentages, "complaint_counts": agg.complaint_counts})
-    st.dataframe(pd.DataFrame([x.model_dump() for x in agg.aspect_stats])[["aspect_category", "mentions", "positive", "negative", "neutral"]], width="stretch", hide_index=True)
-    with st.expander("Source: evidence quotes"):
-        for q in agg.positive_evidence + agg.negative_evidence:
-            st.markdown(f"- `{q.review_id}` ({q.sentiment}, {q.aspect_category}) *“{q.quote}”*")
-with right:
-    st.markdown("#### Judge verdict")
-    if not j:
-        st.caption("Not judged yet.")
-        if st.button("Judge this summary", disabled=not llm_ready()):
-            run_judge([summ])
-    else:
-        if j.is_mock:
-            st.warning("MOCK judge verdict — placeholder values, not an LLM assessment.")
-        v = j.verdict
-        m = st.columns(4)
-        for col, dim in zip(m, ["faithfulness", "coverage", "consistency", "hallucination"]):
-            col.metric(dim.capitalize(), f"{getattr(v, dim).score}/5")
-        for dim in ["faithfulness", "coverage", "consistency", "hallucination"]:
-            st.markdown(f"**{dim.capitalize()}** — {getattr(v, dim).justification}")
-        st.markdown("**Unsupported claims flagged:** " + (", ".join(f"“{c}”" for c in v.unsupported_claims) or "none"))
-        st.markdown(f"**Overall comment:** {v.overall_comment}")
-        st.markdown("#### Deterministic checks (no LLM)")
-        dc = j.deterministic_checks
-        st.write(
-            {
-                "percentages in summary not found in statistics": dc.get("percentages_not_in_statistics"),
-                "top-3 aspects mentioned": f"{dc.get('top_aspects_mentioned')} of {dc.get('top_aspects')}",
-                "top complaints mentioned": f"{dc.get('top_complaints_mentioned')} of {dc.get('top_complaints')}",
-                "all cited review ids belong to product": dc.get("cited_ids_all_in_product"),
-            }
+    with panel("Generated summary", right_html=badge("AI-generated", "accent")):
+        if summ.is_mock:
+            callout("<b>MOCK template summary.</b>", "warning", tag="Mock")
+        md(f'<div class="riq-summary-opinion">{esc(c.overall_opinion)}</div>')
+        md(
+            '<div class="riq-list-title">What customers appreciate</div><ul class="riq-list">'
+            + "".join(f"<li>{esc(p.point)} <span class='riq-chip'>{esc(', '.join(p.supporting_review_ids))}</span></li>" for p in c.appreciated)
+            + '</ul><div class="riq-list-title">Common complaints</div><ul class="riq-list">'
+            + "".join(f"<li>{esc(p.point)} <span class='riq-chip'>{esc(', '.join(p.supporting_review_ids))}</span></li>" for p in c.complaints)
+            + "</ul>"
         )
-        st.caption(f"{j.judge_provider}/{j.judge_model} · prompt {j.prompt_version} · repairs {j.repair_attempts} · {j.created_at}")
-        if st.button("Re-judge", disabled=not llm_ready()):
+        with st.expander("Full summary JSON", icon=":material/data_object:"):
+            st.json(c.model_dump(mode="json"), expanded=True)
+    agg = summ.aggregate
+    with panel("Source · aggregated statistics", right_html=badge("Calculated", "neutral")):
+        sp = agg.sentiment_percentages
+        md(kv_html([
+            ("Reviews", agg.total_reviews),
+            ("Positive / negative", f"{sp.get('positive', 0)}% / {sp.get('negative', 0)}%"),
+            ("Neutral / mixed", f"{sp.get('neutral', 0)}% / {sp.get('mixed', 0)}%"),
+            ("Top complaint", next((f"{pretty(k)} ({v})" for k, v in agg.complaint_counts.items()), "none")),
+        ]))
+        asp = pd.DataFrame([x.model_dump() for x in agg.aspect_stats])
+        if not asp.empty:
+            asp = asp[["aspect_category", "mentions", "positive", "negative", "neutral"]].assign(aspect_category=lambda d: d["aspect_category"].map(pretty)).rename(columns={"aspect_category": "aspect"})
+            st.dataframe(asp, width="stretch", hide_index=True)
+    with st.expander(f"Source · evidence quotes ({len(agg.positive_evidence) + len(agg.negative_evidence)})", icon=":material/format_quote:"):
+        md("".join(
+            f'<div class="riq-quote {"pos" if q.sentiment == "positive" else "neg"}">“{esc(q.quote)}”<span class="riq-quote-meta">{esc(q.review_id)} · {esc(q.sentiment)} · {esc(pretty(q.aspect_category))}</span></div>'
+            for q in agg.positive_evidence + agg.negative_evidence
+        ))
+with right:
+    with panel("Judge assessment"):
+        if not j:
+            md('<div class="riq-panel-caption">Not judged yet.</div>')
+            if st.button("Judge this summary", icon=":material/gavel:", disabled=not llm_ready()):
+                run_judge([summ])
+        else:
+            if j.is_mock:
+                callout("<b>MOCK judge verdict</b> — placeholder values, not an LLM assessment.", "warning", tag="Mock")
+            v = j.verdict
+            md("".join(
+                f'<div class="riq-dim"><div class="riq-dim-head"><span>{esc(label)}</span><span>{getattr(v, key).score} / 5</span></div>'
+                f'{score_html(getattr(v, key).score)}<div class="riq-dim-body">{esc(getattr(v, key).justification)}</div></div>'
+                for key, label, _ in DIMENSIONS
+            ))
+            claims = "".join(f'<div class="riq-quote neg">“{esc(cl)}”</div>' for cl in v.unsupported_claims) or '<div class="riq-panel-caption">None flagged.</div>'
+            md(f'<div class="riq-list-title">Unsupported claims</div>{claims}<div class="riq-list-title">Overall comment</div><div class="riq-dim-body">{esc(v.overall_comment)}</div>')
+    if j:
+        with panel("Deterministic checks", "Computed without an LLM", right_html=badge("Calculated", "neutral")):
+            dc = j.deterministic_checks
+            pct = dc.get("percentages_not_in_statistics") or []
+            md(kv_html([
+                ("Percentages not in statistics", ", ".join(map(str, pct)) if pct else "none"),
+                ("Top-3 aspects mentioned", _of(dc.get("top_aspects_mentioned"), dc.get("top_aspects"))),
+                ("Top complaints mentioned", _of(dc.get("top_complaints_mentioned"), dc.get("top_complaints"))),
+                ("Cited IDs belong to product", "yes" if dc.get("cited_ids_all_in_product") else "no"),
+            ]))
+        md(f'<div class="riq-panel-caption">{esc(j.judge_provider)}/{esc(j.judge_model)} · prompt {esc(j.prompt_version)} · repairs {j.repair_attempts} · {esc(j.created_at)}</div>')
+        if st.button("Re-judge", icon=":material/refresh:", disabled=not llm_ready()):
             run_judge([summ])
