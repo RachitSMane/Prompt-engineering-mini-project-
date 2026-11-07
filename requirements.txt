@@ -1,0 +1,25 @@
+# Core
+pydantic>=2.7,<3
+langchain-core>=1.0,<2
+python-dotenv>=1.0
+
+# Default LLM provider (Google Gemini)
+langchain-google-genai>=4.0,<5
+
+# Data / evaluation
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.5
+
+# Frontend / visualisation
+streamlit>=1.40
+plotly>=5.20
+
+# Testing
+pytest>=8.0
+
+# Optional providers — install only the one you use:
+#   pip install langchain-openai      # LLM_PROVIDER=openai
+#   pip install langchain-anthropic   # LLM_PROVIDER=anthropic
+#   pip install langchain-groq        # LLM_PROVIDER=groq
+#   pip install langchain-ollama      # LLM_PROVIDER=ollama
