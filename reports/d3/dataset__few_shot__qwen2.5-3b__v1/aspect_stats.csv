@@ -1,0 +1,133 @@
+product_id,aspect_category,mentions,positive,negative,neutral,net_sentiment,top_aspect_names
+B0BTY63SFY,performance,10,8,2,0,0.6,container functionality; multiple uses; capacity for chicken eggs
+B0BTY63SFY,ease_of_use,8,7,1,0,0.75,storage convenience; convenience; lid removal
+B0BTY63SFY,design_build,5,4,0,1,0.8,design; lid material; container design
+B0BTY63SFY,size_capacity,5,5,0,0,1.0,thickness; capacity; size and grip
+B0BTY63SFY,compatibility,4,2,2,0,0.0,capacity for duck eggs; fit; compatibility with packaging
+B0BTY63SFY,other,4,3,1,0,0.5,usefulness; purchase intention; dishwasher compatibility
+B0BTY63SFY,quality_durability,3,3,0,0,1.0,sturdiness; material quality
+B0BTY63SFY,installation_setup,2,0,2,0,-1.0,foot alignment; leg size
+B0BTY63SFY,safety,1,1,0,0,1.0,material safety
+B0C5G1WGBN,performance,16,4,14,0,-0.556,drying time; performance; effectiveness
+B0C5G1WGBN,ease_of_use,8,1,6,1,-0.625,operation; frequency of lint removal; button clarity
+B0C5G1WGBN,price_value,4,4,0,0,1.0,price value; cost savings; price
+B0C5G1WGBN,compatibility,3,0,3,0,-1.0,usefulness; replacement parts; missing parts
+B0C5G1WGBN,other,3,1,2,0,-0.333,finance; return policy; portability
+B0C5G1WGBN,quality_durability,3,0,3,0,-1.0,durability; initial quality
+B0C5G1WGBN,size_capacity,3,1,2,0,-0.333,size
+B0C5G1WGBN,customer_service,2,0,2,0,-1.0,refund process; return policy
+B0C5G1WGBN,installation_setup,2,0,2,0,-1.0,filter removal; compatibility
+B0C5G1WGBN,design_build,1,0,1,0,-1.0,design
+B0C5G1WGBN,noise,1,0,1,0,-1.0,startup noise
+B0C5G1WGBN,safety,1,0,1,0,-1.0,physical damage
+B0C5G1WGBN,shipping_packaging,1,0,1,0,-1.0,delivery condition
+B001ONHE8S,compatibility,9,7,2,0,0.556,fit; compatibility; fit with model
+B001ONHE8S,other,5,3,2,1,0.167,color match; design_changes; personal satisfaction
+B001ONHE8S,performance,4,4,0,0,1.0,functionality; washing capacity; general performance
+B001ONHE8S,ease_of_use,3,0,3,0,-1.0,lid usability; lid stability; gift satisfaction
+B001ONHE8S,size_capacity,3,0,3,0,-1.0,size; size_capacity; dimensions
+B001ONHE8S,design_build,2,1,0,1,0.5,color; material
+B001ONHE8S,quality_durability,2,2,0,0,1.0,quality; sturdiness
+B001ONHE8S,price_value,1,0,1,0,-1.0,price
+B001ONHE8S,shipping_packaging,1,1,0,0,1.0,delivery timing
+B01FZJXITU,performance,4,4,0,0,1.0,coil replacement; resolution of issue; product performance
+B01FZJXITU,quality_durability,4,2,2,0,0.0,durability; reliability; quality of parts
+B01FZJXITU,compatibility,2,2,0,0,1.0,fit with model; compatibility
+B01FZJXITU,installation_setup,2,2,0,0,1.0,installation; gas coil replacement
+B01FZJXITU,price_value,2,2,0,0,1.0,price; repair cost
+B01FZJXITU,shipping_packaging,1,1,0,0,1.0,delivery speed
+B00LHRAGHW,compatibility,7,4,2,1,0.286,fit; fit with model; compatibility
+B00LHRAGHW,design_build,3,0,2,1,-0.667,appearance; design; color
+B00LHRAGHW,other,2,1,1,0,0.0,gift satisfaction; manufacturer authenticity
+B00LHRAGHW,quality_durability,2,0,2,0,-1.0,product condition; reliability; durability
+B00LHRAGHW,installation_setup,1,0,1,0,-1.0,installation
+B00LHRAGHW,performance,1,1,0,0,1.0,functionality
+B00LHRAGHW,price_value,1,1,0,0,1.0,price
+B00LHRAGHW,shipping_packaging,1,1,0,0,1.0,delivery speed
+B09WWM1WLS,compatibility,8,2,5,1,-0.375,compatibility; fit with model; thermostat inclusion
+B09WWM1WLS,performance,7,5,3,0,0.25,performance; heating element; thermostats
+B09WWM1WLS,installation_setup,5,4,0,1,0.8,installation; connectors
+B09WWM1WLS,quality_durability,5,2,3,0,-0.2,durability; longevity; construction quality
+B09WWM1WLS,shipping_packaging,3,1,2,0,-0.333,packing material; delivery speed; condition upon arrival
+B09WWM1WLS,ease_of_use,2,1,1,0,0.0,ease of use; instructions for use
+B09WWM1WLS,other,2,0,2,0,-1.0,thermostat description; return
+B09WWM1WLS,price_value,1,1,0,0,1.0,price
+B07XG8QQL5,installation_setup,11,6,4,1,0.182,installation; replacement parts; installation difficulty
+B07XG8QQL5,performance,10,4,7,0,-0.273,heating performance; heating element; dryer performance
+B07XG8QQL5,quality_durability,9,1,8,0,-0.778,durability; reliability; product quality
+B07XG8QQL5,price_value,4,0,4,0,-1.0,price value; warranty; cost
+B07XG8QQL5,customer_service,2,0,2,0,-1.0,warranty; warranty coverage; seller support
+B07XG8QQL5,other,2,1,0,1,0.5,description accuracy; replaced with another brand
+B07XG8QQL5,compatibility,1,0,1,0,-1.0,compatibility_fit_issue
+B07XG8QQL5,ease_of_use,1,1,0,0,1.0,usage
+B0081N3YW4,performance,27,5,22,1,-0.607,performance; coffee taste; functionality
+B0081N3YW4,ease_of_use,15,4,11,1,-0.438,ease_of_use; ease of use; lid operation
+B0081N3YW4,compatibility,12,1,11,0,-0.833,compatibility; fit with model; origin of filters
+B0081N3YW4,other,11,7,5,0,0.167,idea; alternative method; product satisfaction
+B0081N3YW4,quality_durability,6,0,6,0,-1.0,durability; material thickness; material_quality
+B0081N3YW4,price_value,5,2,3,0,-0.2,cost savings; cost-effectiveness; price
+B0081N3YW4,design_build,4,0,3,1,-0.75,material hardness; lid durability; lid material
+B0081N3YW4,shipping_packaging,3,3,0,0,1.0,delivery; delivery speed
+B0081N3YW4,customer_service,2,0,2,0,-1.0,likelihood of repurchasing; customer_service
+B0081N3YW4,installation_setup,1,0,1,0,-1.0,instructions
+B00B0ZMNOU,performance,17,7,11,0,-0.222,coffee strength; taste; leak prevention
+B00B0ZMNOU,compatibility,11,0,11,0,-1.0,compatibility; compatibility with model; compatibility with vue
+B00B0ZMNOU,ease_of_use,6,2,4,0,-0.333,ease of use; ease_of_use; cup removal
+B00B0ZMNOU,customer_service,3,0,3,0,-1.0,customer_service; replacement
+B00B0ZMNOU,design_build,3,1,1,1,0.0,screen effectiveness; adapter; inner cup design change
+B00B0ZMNOU,installation_setup,2,0,2,0,-1.0,installation_setup; installation
+B00B0ZMNOU,price_value,2,1,1,0,0.0,cost savings; price
+B00B0ZMNOU,quality_durability,2,1,1,0,0.0,material; wire mesh durability
+B001TH7GZU,compatibility,13,4,8,1,-0.308,fit with model; fit; compatibility
+B001TH7GZU,quality_durability,8,2,6,0,-0.5,quality; quality_durability; quality of parts
+B001TH7GZU,performance,6,2,4,0,-0.333,reliability; stain resistance; effectiveness
+B001TH7GZU,ease_of_use,5,1,3,1,-0.4,ease_of_use; cleaning effort; ease of cleaning
+B001TH7GZU,price_value,5,4,1,0,0.6,price; price value; price_value
+B001TH7GZU,installation_setup,4,0,4,0,-1.0,installation; condition upon arrival; fit in stove
+B001TH7GZU,size_capacity,4,0,3,1,-0.75,size; burners size; size_capacity
+B001TH7GZU,customer_service,3,0,2,1,-0.667,customer_service; replacement
+B001TH7GZU,shipping_packaging,3,2,1,0,0.333,delivery speed; delivery; delivery condition
+B001TH7GZU,design_build,2,0,2,0,-1.0,appearance
+B01LZHJF55,performance,13,4,9,0,-0.385,water quality; performance; air flow
+B01LZHJF55,compatibility,10,6,5,0,0.091,fit; compatibility; fit with model
+B01LZHJF55,price_value,6,2,3,1,-0.167,value; value for money; price
+B01LZHJF55,quality_durability,3,0,3,0,-1.0,filter quality; reliability; quality of product
+B01LZHJF55,customer_service,2,0,2,0,-1.0,delivery handling; purchase intention
+B01LZHJF55,installation_setup,2,1,1,0,0.0,installation_setup; installation
+B01LZHJF55,other,2,1,0,1,0.5,time to determine; need met
+B01LZHJF55,safety,2,0,2,0,-1.0,leakage; leaks
+B01LZHJF55,shipping_packaging,2,1,1,0,0.0,box damage; delivery speed
+B01LZHJF55,design_build,1,0,1,0,-1.0,design
+B0759KR8JX,performance,10,7,3,0,0.4,performance; filter performance; taste
+B0759KR8JX,compatibility,5,4,1,0,0.6,fit; compatibility; filter availability
+B0759KR8JX,price_value,5,5,0,0,1.0,repeated purchase; price comparison; cost savings
+B0759KR8JX,customer_service,3,3,0,0,1.0,service; satisfaction; customer_service
+B0759KR8JX,other,3,2,1,0,0.333,recommendation; comparison to original; product_relevance
+B0759KR8JX,installation_setup,2,0,2,0,-1.0,installation; fit
+B0759KR8JX,ease_of_use,1,0,1,0,-1.0,ease of use
+B0759KR8JX,noise,1,0,1,0,-1.0,noise level
+B0759KR8JX,quality_durability,1,1,0,0,1.0,longevity
+B0759KR8JX,shipping_packaging,1,1,0,0,1.0,delivery speed
+B00DM8K1NS,installation_setup,5,4,1,0,0.6,installation; installation_setup; installation difficulty
+B00DM8K1NS,quality_durability,5,2,2,1,0.0,durability; expected durability; longevity
+B00DM8K1NS,compatibility,4,1,3,0,-0.5,compatibility; wire ice sensor bar; fit with model
+B00DM8K1NS,price_value,4,3,1,0,0.5,value; cost; price
+B00DM8K1NS,performance,3,2,1,0,0.333,performance; fix for problem; ice production
+B00DM8K1NS,customer_service,2,0,2,0,-1.0,return policy; customer service; return process
+B00DM8K1NS,ease_of_use,1,0,1,0,-1.0,usability
+B001DHKBXU,installation_setup,10,3,6,1,-0.3,installation; installation_setup
+B001DHKBXU,performance,10,2,8,0,-0.6,performance; performance_issue; part replacement
+B001DHKBXU,quality_durability,7,0,7,0,-1.0,durability; product durability; lid switch durability
+B001DHKBXU,price_value,6,0,6,0,-1.0,value; price; price_value
+B001DHKBXU,customer_service,5,1,4,0,-0.6,seller support; customer_service; replacement
+B001DHKBXU,ease_of_use,4,0,3,1,-0.75,ease_of_use; installation; operation
+B001DHKBXU,compatibility,3,0,2,1,-0.667,compatibility; replacement part
+B001DHKBXU,shipping_packaging,3,3,0,0,1.0,delivery speed; delivery
+B008YDTFYW,compatibility,5,5,0,0,1.0,fit with model; compatibility; replacement part fit
+B008YDTFYW,performance,4,2,2,0,0.0,functionality; cleaning effectiveness; stains
+B008YDTFYW,quality_durability,4,3,0,1,0.75,durability; material quality; sturdiness
+B008YDTFYW,size_capacity,3,0,2,1,-0.667,number of compartments; compartment_size; part dimensions
+B008YDTFYW,design_build,2,0,2,0,-1.0,design_build; lid type
+B008YDTFYW,ease_of_use,2,2,0,0,1.0,ease of use; customization ease
+B008YDTFYW,installation_setup,1,1,0,0,1.0,assembly
+B008YDTFYW,noise,1,1,0,0,1.0,dishwasher noise reduction

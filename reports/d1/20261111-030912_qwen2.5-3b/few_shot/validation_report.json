@@ -1,0 +1,115 @@
+{
+  "run_id": "20261111-030912_qwen2.5-3b",
+  "strategy": "few_shot",
+  "model": "qwen2.5:3b",
+  "provider": "ollama",
+  "reviews_in_run": 299,
+  "predictions_stored": 299,
+  "missing_predictions": 0,
+  "coverage": 1.0,
+  "valid_records": 285,
+  "failed_output": 14,
+  "failed_provider": 0,
+  "validity_rate": 0.9532,
+  "first_attempt_valid": 282,
+  "needed_llm_repair": 17,
+  "repaired_successfully": 3,
+  "repair_attempts_distribution": {
+    "0": 282,
+    "1": 3,
+    "2": 14
+  },
+  "records_with_local_fixes": 85,
+  "top_attempt_errors": {
+    "invalid JSON": 10,
+    "aspects.0.aspect_category": 9,
+    "complaint_categories.0": 7,
+    "aspects.0.evidence": 7,
+    "aspects.1.evidence": 3,
+    "aspects.3.evidence": 3,
+    "aspects.2.evidence": 3,
+    "aspects.1.aspect_category": 3,
+    "complaint_categories.2": 1,
+    "aspects.5.evidence": 1
+  },
+  "failure_errors": [
+    {
+      "review_id": "R3936467669fb",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.1.evidence: String should have at most 300 characters"
+    },
+    {
+      "review_id": "R12153e2344dc",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.aspect_category: Input should be 'performance', 'quality_durability', 'design_build', 'ease_of_use', 'installation_setup', 'noise', 'size_capacity', 'compatibility', 'price_value', 'customer_service', 'shipping_packaging', 'safety' or 'other'"
+    },
+    {
+      "review_id": "R22c2ae3f5f5e",
+      "error": "Output still invalid after 2 repair attempt(s): invalid JSON: Expecting value at line 162 column 18"
+    },
+    {
+      "review_id": "Rf28a59584713",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.3.evidence: evidence \"I don't think it pulls fabric like commercial or home units. It has shot up my e\" is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R7221d5e772ba",
+      "error": "Output still invalid after 2 repair attempt(s): invalid JSON: Unterminated string starting at at line 167 column 5"
+    },
+    {
+      "review_id": "Rfe95c8abb789",
+      "error": "Output still invalid after 2 repair attempt(s): invalid JSON: Unterminated string starting at at line 153 column 5"
+    },
+    {
+      "review_id": "Rd1d55023e6fd",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "R1d1832973ec9",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'Great purchase! Recommended purchase' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R71e993199614",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "Reb1ecc83b4e7",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.2.evidence: evidence 'We love our 77-L egg container. We love the high sides and the spacing between t' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R4a5c174051f0",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.aspect_category: Input should be 'performance', 'quality_durability', 'design_build', 'ease_of_use', 'installation_setup', 'noise', 'size_capacity', 'compatibility', 'price_value', 'customer_service', 'shipping_packaging', 'safety' or 'other'"
+    },
+    {
+      "review_id": "R82e08ead8ec9",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'It just makes a weird noise. It just does not spin or anything' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R3b4b64dd2026",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'The second or third time we’ve replaced the heating element for our Samsung drye' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R59874d4d9366",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.aspect_category: Input should be 'performance', 'quality_durability', 'design_build', 'ease_of_use', 'installation_setup', 'noise', 'size_capacity', 'compatibility', 'price_value', 'customer_service', 'shipping_packaging', 'safety' or 'other'"
+    }
+  ],
+  "runtime_s": {
+    "total": 16076.8,
+    "mean": 53.77,
+    "median": 35.81,
+    "p95": 109.1,
+    "max": 993.45
+  },
+  "tokens": {
+    "input_total": 862456,
+    "output_total": 68146
+  },
+  "files": {
+    "json": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\few_shot\\records.json",
+    "csv": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\few_shot\\records.csv",
+    "aspects_csv": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\few_shot\\records_aspects.csv",
+    "failures_csv": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\few_shot\\failures.csv"
+  },
+  "revalidation": {
+    "reloaded_records": 285,
+    "revalidated_ok": 285,
+    "revalidation_errors": []
+  }
+}

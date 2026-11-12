@@ -1,0 +1,127 @@
+{
+  "run_id": "20261111-030912_qwen2.5-3b",
+  "strategy": "zero_shot",
+  "model": "qwen2.5:3b",
+  "provider": "ollama",
+  "reviews_in_run": 299,
+  "predictions_stored": 299,
+  "missing_predictions": 0,
+  "coverage": 1.0,
+  "valid_records": 282,
+  "failed_output": 17,
+  "failed_provider": 0,
+  "validity_rate": 0.9431,
+  "first_attempt_valid": 273,
+  "needed_llm_repair": 26,
+  "repaired_successfully": 9,
+  "repair_attempts_distribution": {
+    "0": 273,
+    "1": 7,
+    "2": 19
+  },
+  "records_with_local_fixes": 12,
+  "top_attempt_errors": {
+    "aspects.0.evidence": 24,
+    "complaint_categories.0": 22,
+    "aspects.1.evidence": 8,
+    "overall_sentiment": 7,
+    "aspect_name": 7,
+    "aspect_category": 7,
+    "sentiment": 7,
+    "evidence": 7,
+    "complaint_categories.1": 5,
+    "aspects.2.evidence": 5
+  },
+  "failure_errors": [
+    {
+      "review_id": "R3936467669fb",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.1.evidence: String should have at most 300 characters"
+    },
+    {
+      "review_id": "Rb6fd13816de5",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: String should have at most 300 characters"
+    },
+    {
+      "review_id": "Rec16a339ebbc",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "R4bd55a149bd3",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: String should have at most 300 characters"
+    },
+    {
+      "review_id": "R02f621435777",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence \"It's a miracle this thing didn't break my Keurig! Didn't fit properly and almost\" is not a verbatim quote from the review text; copy the exact words from the review; complaint_categories.0: Input should be 'product_defect'"
+    },
+    {
+      "review_id": "Rf28a59584713",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'very quiet, very movable, easy to use and install' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "Re02ef86668af",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "Rb3975bb1c59a",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "R1d1832973ec9",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'The lights fit our structure, like a glove.' is not a verbatim quote from the review text; copy the exact words from the review; complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_iss"
+    },
+    {
+      "review_id": "Rd1bbcb595b1f",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: String should have at most 300 characters; aspects.4.evidence: String should have at most 300 characters"
+    },
+    {
+      "review_id": "Rbd2a0049f12f",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.0: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "R755425de6ae7",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'They are sturdy & easy to clean. They have provided us with space saving.' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R1c492cdbe101",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence \"They're great for storing lots of eggs. They're perfect for the storage of those\" is not a verbatim quote from the review text; copy the exact words from the review; aspects.1.evidence: evidence \"They're great for storing "
+    },
+    {
+      "review_id": "R5f83464aea35",
+      "error": "Output still invalid after 2 repair attempt(s): overall_sentiment: Field required; aspect_name: Extra inputs are not permitted; aspect_category: Extra inputs are not permitted; sentiment: Extra inputs are not permitted; evidence: Extra inputs are not permitted"
+    },
+    {
+      "review_id": "R3b4b64dd2026",
+      "error": "Output still invalid after 2 repair attempt(s): aspects.0.evidence: evidence 'The second or third time we’ve replaced the heating element for our Samsung drye' is not a verbatim quote from the review text; copy the exact words from the review"
+    },
+    {
+      "review_id": "R6e47845099ff",
+      "error": "Output still invalid after 2 repair attempt(s): complaint_categories.1: Input should be 'product_defect', 'poor_durability', 'performance_issue', 'noise_issue', 'installation_difficulty', 'usability_issue', 'compatibility_fit_issue', 'poor_value', 'shipping_damage', 'missing_parts', 'not_as_describe"
+    },
+    {
+      "review_id": "R681a812a58d9",
+      "error": "Output still invalid after 2 repair attempt(s): overall_sentiment: Field required; aspect_name: Extra inputs are not permitted; aspect_category: Extra inputs are not permitted; sentiment: Extra inputs are not permitted; evidence: Extra inputs are not permitted"
+    }
+  ],
+  "runtime_s": {
+    "total": 12314.5,
+    "mean": 41.19,
+    "median": 25.45,
+    "p95": 143.29,
+    "max": 598.65
+  },
+  "tokens": {
+    "input_total": 615159,
+    "output_total": 64126
+  },
+  "files": {
+    "json": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\zero_shot\\records.json",
+    "csv": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\zero_shot\\records.csv",
+    "aspects_csv": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\zero_shot\\records_aspects.csv",
+    "failures_csv": "C:\\Users\\Lenovo\\Downloads\\prompt mini project\\Prompt-engineering-mini-project-\\outputs\\live\\d1\\20261111-030912_qwen2.5-3b\\zero_shot\\failures.csv"
+  },
+  "revalidation": {
+    "reloaded_records": 282,
+    "revalidated_ok": 282,
+    "revalidation_errors": []
+  }
+}

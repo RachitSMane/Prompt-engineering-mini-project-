@@ -1,0 +1,44 @@
+{
+  "source": "dataset__few_shot__qwen2.5-3b__v1",
+  "judge_model": "llama3.2",
+  "products": 15,
+  "pairs_judged": 3,
+  "failed_corrupted_judgements": 2,
+  "skipped_original_not_judged": [
+    "B001DHKBXU",
+    "B001TH7GZU",
+    "B0081N3YW4",
+    "B00B0ZMNOU",
+    "B00LHRAGHW",
+    "B01FZJXITU",
+    "B01LZHJF55",
+    "B0759KR8JX",
+    "B0BTY63SFY",
+    "B0C5G1WGBN"
+  ],
+  "corruption": [
+    "overall opinion inverted with a fabricated percentage",
+    "invented feature: 'Reviewers praise the built-in Wi-Fi app control and voice-assistant support.'",
+    "all complaints removed"
+  ],
+  "mean_original": {
+    "faithfulness": 4,
+    "coverage": 4,
+    "consistency": 3.33,
+    "hallucination": 1.33,
+    "mean": 3.17
+  },
+  "mean_corrupted": {
+    "faithfulness": 4,
+    "coverage": 3.33,
+    "consistency": 3,
+    "hallucination": 1.33,
+    "mean": 2.92
+  },
+  "corrupted_scored_lower_mean": 3,
+  "corrupted_scored_equal_mean": 0,
+  "corrupted_scored_higher_mean": 0,
+  "corrupted_faithfulness_lower": 0,
+  "flagged_fabricated_feature": 0,
+  "flagged_fabricated_percentage": 3
+}

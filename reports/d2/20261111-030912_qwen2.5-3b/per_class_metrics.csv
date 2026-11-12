@@ -1,0 +1,13 @@
+strategy,class,precision,recall,f1-score,support
+zero_shot,positive,0.9516,0.5315,0.6821,111
+zero_shot,negative,0.8676,0.8369,0.852,141
+zero_shot,neutral,0.0253,0.4,0.0476,5
+zero_shot,mixed,0.8,0.0952,0.1702,42
+few_shot,positive,0.9273,0.9189,0.9231,111
+few_shot,negative,0.8301,0.9007,0.8639,141
+few_shot,neutral,0.1429,0.2,0.1667,5
+few_shot,mixed,0.8667,0.3095,0.4561,42
+cot,positive,0.9444,0.4595,0.6182,111
+cot,negative,0.8828,0.8014,0.8401,141
+cot,neutral,0.0532,1.0,0.101,5
+cot,mixed,1.0,0.0714,0.1333,42

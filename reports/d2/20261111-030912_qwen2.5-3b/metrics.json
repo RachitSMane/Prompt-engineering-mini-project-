@@ -1,0 +1,1210 @@
+{
+  "run_id": "20261111-030912_qwen2.5-3b",
+  "is_mock": false,
+  "model_name": "qwen2.5:3b",
+  "provider": "ollama",
+  "evaluated_at": "2026-11-12T03:46:16+00:00",
+  "n_gold_available": 299,
+  "reference_provenance": {
+    "total": 299,
+    "human": 1,
+    "ai_assisted": 298
+  },
+  "required_gold": 299,
+  "status": "complete",
+  "missing_predictions": {
+    "zero_shot": 0,
+    "few_shot": 0,
+    "cot": 0
+  },
+  "strategies": {
+    "zero_shot": {
+      "operational": {
+        "n": 299,
+        "valid": 282,
+        "failed": 17,
+        "validity_rate": 0.9431,
+        "first_attempt_valid_rate": 0.913,
+        "needed_llm_repair": 26,
+        "mean_repair_attempts": 0.1505,
+        "local_fixes": 28,
+        "mean_latency_s": 41.1856,
+        "total_latency_s": 12314.49,
+        "total_input_tokens": 615159,
+        "total_output_tokens": 64126,
+        "mean_input_tokens": 2057.4,
+        "mean_output_tokens": 214.5
+      },
+      "missing_predictions": 0,
+      "coverage": 1.0,
+      "classification": {
+        "n_evaluated": 299,
+        "n_failed_extractions": 17,
+        "overall_sentiment": {
+          "n": 299,
+          "accuracy": 0.612,
+          "macro_precision": 0.6611,
+          "macro_recall": 0.4659,
+          "macro_f1": 0.438,
+          "weighted_precision": 0.8752,
+          "weighted_recall": 0.612,
+          "weighted_f1": 0.6797,
+          "per_class": {
+            "positive": {
+              "precision": 0.9516,
+              "recall": 0.5315,
+              "f1-score": 0.6821,
+              "support": 111
+            },
+            "negative": {
+              "precision": 0.8676,
+              "recall": 0.8369,
+              "f1-score": 0.852,
+              "support": 141
+            },
+            "neutral": {
+              "precision": 0.0253,
+              "recall": 0.4,
+              "f1-score": 0.0476,
+              "support": 5
+            },
+            "mixed": {
+              "precision": 0.8,
+              "recall": 0.0952,
+              "f1-score": 0.1702,
+              "support": 42
+            }
+          },
+          "labels": [
+            "positive",
+            "negative",
+            "neutral",
+            "mixed"
+          ],
+          "macro_labels": [
+            "positive",
+            "negative",
+            "neutral",
+            "mixed"
+          ],
+          "confusion_matrix": [
+            [
+              59,
+              2,
+              44,
+              0
+            ],
+            [
+              0,
+              118,
+              16,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              0
+            ],
+            [
+              3,
+              13,
+              17,
+              4
+            ]
+          ],
+          "invalid_predictions": 17
+        },
+        "complaints": {
+          "n": 299,
+          "micro_precision": 0.3705,
+          "micro_recall": 0.3487,
+          "micro_f1": 0.3593,
+          "macro_precision": 0.3544,
+          "macro_recall": 0.3617,
+          "macro_f1": 0.3029,
+          "weighted_precision": 0.5237,
+          "weighted_recall": 0.3487,
+          "weighted_f1": 0.3916,
+          "samples_precision": 0.231,
+          "samples_recall": 0.2341,
+          "samples_f1": 0.2259,
+          "hamming_loss": 0.0707,
+          "subset_accuracy": 0.505,
+          "per_label": {
+            "product_defect": {
+              "precision": 0.125,
+              "recall": 0.2143,
+              "f1": 0.1579,
+              "support": 14
+            },
+            "poor_durability": {
+              "precision": 0.7308,
+              "recall": 0.3585,
+              "f1": 0.481,
+              "support": 53
+            },
+            "performance_issue": {
+              "precision": 0.5417,
+              "recall": 0.2766,
+              "f1": 0.3662,
+              "support": 47
+            },
+            "noise_issue": {
+              "precision": 0.1111,
+              "recall": 0.5,
+              "f1": 0.1818,
+              "support": 2
+            },
+            "installation_difficulty": {
+              "precision": 0.1176,
+              "recall": 0.8,
+              "f1": 0.2051,
+              "support": 5
+            },
+            "usability_issue": {
+              "precision": 0.5833,
+              "recall": 0.2593,
+              "f1": 0.359,
+              "support": 27
+            },
+            "compatibility_fit_issue": {
+              "precision": 0.6571,
+              "recall": 0.5349,
+              "f1": 0.5897,
+              "support": 43
+            },
+            "poor_value": {
+              "precision": 0.0741,
+              "recall": 0.3333,
+              "f1": 0.1212,
+              "support": 6
+            },
+            "shipping_damage": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 8
+            },
+            "missing_parts": {
+              "precision": 0.6667,
+              "recall": 0.6667,
+              "f1": 0.6667,
+              "support": 3
+            },
+            "not_as_described": {
+              "precision": 0.1875,
+              "recall": 0.2308,
+              "f1": 0.2069,
+              "support": 13
+            },
+            "customer_service_issue": {
+              "precision": 0.5,
+              "recall": 0.6667,
+              "f1": 0.5714,
+              "support": 6
+            },
+            "safety_concern": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 2
+            },
+            "other": {
+              "precision": 0.6667,
+              "recall": 0.2222,
+              "f1": 0.3333,
+              "support": 9
+            }
+          },
+          "macro_f1_present_labels": 0.3029,
+          "macro_labels": [
+            "product_defect",
+            "poor_durability",
+            "performance_issue",
+            "noise_issue",
+            "installation_difficulty",
+            "usability_issue",
+            "compatibility_fit_issue",
+            "poor_value",
+            "shipping_damage",
+            "missing_parts",
+            "not_as_described",
+            "customer_service_issue",
+            "safety_concern",
+            "other"
+          ]
+        },
+        "aspect_detection": {
+          "n": 299,
+          "micro_precision": 0.6519,
+          "micro_recall": 0.4354,
+          "micro_f1": 0.5221,
+          "macro_precision": 0.5833,
+          "macro_recall": 0.3717,
+          "macro_f1": 0.4147,
+          "weighted_precision": 0.7196,
+          "weighted_recall": 0.4354,
+          "weighted_f1": 0.5037,
+          "samples_precision": 0.599,
+          "samples_recall": 0.4577,
+          "samples_f1": 0.4971,
+          "hamming_loss": 0.1111,
+          "subset_accuracy": 0.2609,
+          "per_label": {
+            "performance": {
+              "precision": 0.75,
+              "recall": 0.4154,
+              "f1": 0.5347,
+              "support": 130
+            },
+            "quality_durability": {
+              "precision": 0.7037,
+              "recall": 0.2405,
+              "f1": 0.3585,
+              "support": 79
+            },
+            "design_build": {
+              "precision": 0.8333,
+              "recall": 0.1961,
+              "f1": 0.3175,
+              "support": 51
+            },
+            "ease_of_use": {
+              "precision": 0.55,
+              "recall": 0.5238,
+              "f1": 0.5366,
+              "support": 42
+            },
+            "installation_setup": {
+              "precision": 0.5349,
+              "recall": 0.697,
+              "f1": 0.6053,
+              "support": 33
+            },
+            "noise": {
+              "precision": 0.5,
+              "recall": 0.5714,
+              "f1": 0.5333,
+              "support": 7
+            },
+            "size_capacity": {
+              "precision": 0.8333,
+              "recall": 0.3226,
+              "f1": 0.4651,
+              "support": 31
+            },
+            "compatibility": {
+              "precision": 0.6458,
+              "recall": 0.775,
+              "f1": 0.7045,
+              "support": 80
+            },
+            "price_value": {
+              "precision": 0.875,
+              "recall": 0.4667,
+              "f1": 0.6087,
+              "support": 45
+            },
+            "customer_service": {
+              "precision": 0.3571,
+              "recall": 0.4167,
+              "f1": 0.3846,
+              "support": 12
+            },
+            "shipping_packaging": {
+              "precision": 1.0,
+              "recall": 0.2069,
+              "f1": 0.3429,
+              "support": 29
+            },
+            "safety": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 3
+            },
+            "other": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "macro_f1_present_labels": 0.4147,
+          "macro_labels": [
+            "performance",
+            "quality_durability",
+            "design_build",
+            "ease_of_use",
+            "installation_setup",
+            "noise",
+            "size_capacity",
+            "compatibility",
+            "price_value",
+            "customer_service",
+            "shipping_packaging",
+            "safety",
+            "other"
+          ]
+        },
+        "aspect_sentiment": {
+          "n": 236,
+          "accuracy": 0.7542,
+          "macro_precision": 0.5848,
+          "macro_recall": 0.5798,
+          "macro_f1": 0.5514,
+          "weighted_precision": 0.8408,
+          "weighted_recall": 0.7542,
+          "weighted_f1": 0.7761,
+          "per_class": {
+            "positive": {
+              "precision": 0.9351,
+              "recall": 0.6102,
+              "f1-score": 0.7385,
+              "support": 118
+            },
+            "negative": {
+              "precision": 0.7778,
+              "recall": 0.9292,
+              "f1-score": 0.8468,
+              "support": 113
+            },
+            "neutral": {
+              "precision": 0.0417,
+              "recall": 0.2,
+              "f1-score": 0.069,
+              "support": 5
+            }
+          },
+          "labels": [
+            "positive",
+            "negative",
+            "neutral"
+          ],
+          "macro_labels": [
+            "positive",
+            "negative",
+            "neutral"
+          ],
+          "confusion_matrix": [
+            [
+              72,
+              28,
+              18
+            ],
+            [
+              3,
+              105,
+              5
+            ],
+            [
+              2,
+              2,
+              1
+            ]
+          ],
+          "invalid_predictions": 0
+        },
+        "aspect_joint": {
+          "n": 299,
+          "micro_precision": 0.4917,
+          "micro_recall": 0.3284,
+          "micro_f1": 0.3938
+        }
+      }
+    },
+    "few_shot": {
+      "operational": {
+        "n": 299,
+        "valid": 285,
+        "failed": 14,
+        "validity_rate": 0.9532,
+        "first_attempt_valid_rate": 0.9431,
+        "needed_llm_repair": 17,
+        "mean_repair_attempts": 0.1037,
+        "local_fixes": 110,
+        "mean_latency_s": 53.7686,
+        "total_latency_s": 16076.8,
+        "total_input_tokens": 862456,
+        "total_output_tokens": 68146,
+        "mean_input_tokens": 2884.5,
+        "mean_output_tokens": 227.9
+      },
+      "missing_predictions": 0,
+      "coverage": 1.0,
+      "classification": {
+        "n_evaluated": 299,
+        "n_failed_extractions": 14,
+        "overall_sentiment": {
+          "n": 299,
+          "accuracy": 0.8127,
+          "macro_precision": 0.6917,
+          "macro_recall": 0.5823,
+          "macro_f1": 0.6025,
+          "weighted_precision": 0.8598,
+          "weighted_recall": 0.8127,
+          "weighted_f1": 0.817,
+          "per_class": {
+            "positive": {
+              "precision": 0.9273,
+              "recall": 0.9189,
+              "f1-score": 0.9231,
+              "support": 111
+            },
+            "negative": {
+              "precision": 0.8301,
+              "recall": 0.9007,
+              "f1-score": 0.8639,
+              "support": 141
+            },
+            "neutral": {
+              "precision": 0.1429,
+              "recall": 0.2,
+              "f1-score": 0.1667,
+              "support": 5
+            },
+            "mixed": {
+              "precision": 0.8667,
+              "recall": 0.3095,
+              "f1-score": 0.4561,
+              "support": 42
+            }
+          },
+          "labels": [
+            "positive",
+            "negative",
+            "neutral",
+            "mixed"
+          ],
+          "macro_labels": [
+            "positive",
+            "negative",
+            "neutral",
+            "mixed"
+          ],
+          "confusion_matrix": [
+            [
+              102,
+              3,
+              2,
+              1
+            ],
+            [
+              1,
+              127,
+              3,
+              1
+            ],
+            [
+              0,
+              4,
+              1,
+              0
+            ],
+            [
+              7,
+              19,
+              1,
+              13
+            ]
+          ],
+          "invalid_predictions": 14
+        },
+        "complaints": {
+          "n": 299,
+          "micro_precision": 0.3666,
+          "micro_recall": 0.479,
+          "micro_f1": 0.4153,
+          "macro_precision": 0.4045,
+          "macro_recall": 0.4987,
+          "macro_f1": 0.3599,
+          "weighted_precision": 0.545,
+          "weighted_recall": 0.479,
+          "weighted_f1": 0.4642,
+          "samples_precision": 0.2402,
+          "samples_recall": 0.3052,
+          "samples_f1": 0.2549,
+          "hamming_loss": 0.0767,
+          "subset_accuracy": 0.4849,
+          "per_label": {
+            "product_defect": {
+              "precision": 0.2059,
+              "recall": 0.5,
+              "f1": 0.2917,
+              "support": 14
+            },
+            "poor_durability": {
+              "precision": 0.7812,
+              "recall": 0.4717,
+              "f1": 0.5882,
+              "support": 53
+            },
+            "performance_issue": {
+              "precision": 0.525,
+              "recall": 0.4468,
+              "f1": 0.4828,
+              "support": 47
+            },
+            "noise_issue": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 2
+            },
+            "installation_difficulty": {
+              "precision": 0.1,
+              "recall": 0.8,
+              "f1": 0.1778,
+              "support": 5
+            },
+            "usability_issue": {
+              "precision": 0.4444,
+              "recall": 0.2963,
+              "f1": 0.3556,
+              "support": 27
+            },
+            "compatibility_fit_issue": {
+              "precision": 0.7179,
+              "recall": 0.6512,
+              "f1": 0.6829,
+              "support": 43
+            },
+            "poor_value": {
+              "precision": 0.12,
+              "recall": 1.0,
+              "f1": 0.2143,
+              "support": 6
+            },
+            "shipping_damage": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 8
+            },
+            "missing_parts": {
+              "precision": 0.3333,
+              "recall": 0.6667,
+              "f1": 0.4444,
+              "support": 3
+            },
+            "not_as_described": {
+              "precision": 0.2917,
+              "recall": 0.5385,
+              "f1": 0.3784,
+              "support": 13
+            },
+            "customer_service_issue": {
+              "precision": 0.1429,
+              "recall": 0.5,
+              "f1": 0.2222,
+              "support": 6
+            },
+            "safety_concern": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 2
+            },
+            "other": {
+              "precision": 1.0,
+              "recall": 0.1111,
+              "f1": 0.2,
+              "support": 9
+            }
+          },
+          "macro_f1_present_labels": 0.3599,
+          "macro_labels": [
+            "product_defect",
+            "poor_durability",
+            "performance_issue",
+            "noise_issue",
+            "installation_difficulty",
+            "usability_issue",
+            "compatibility_fit_issue",
+            "poor_value",
+            "shipping_damage",
+            "missing_parts",
+            "not_as_described",
+            "customer_service_issue",
+            "safety_concern",
+            "other"
+          ]
+        },
+        "aspect_detection": {
+          "n": 299,
+          "micro_precision": 0.6276,
+          "micro_recall": 0.6716,
+          "micro_f1": 0.6488,
+          "macro_precision": 0.6177,
+          "macro_recall": 0.5532,
+          "macro_f1": 0.5557,
+          "weighted_precision": 0.7048,
+          "weighted_recall": 0.6716,
+          "weighted_f1": 0.6678,
+          "samples_precision": 0.6283,
+          "samples_recall": 0.6834,
+          "samples_f1": 0.6253,
+          "hamming_loss": 0.1014,
+          "subset_accuracy": 0.3077,
+          "per_label": {
+            "performance": {
+              "precision": 0.7042,
+              "recall": 0.7692,
+              "f1": 0.7353,
+              "support": 130
+            },
+            "quality_durability": {
+              "precision": 0.6719,
+              "recall": 0.5443,
+              "f1": 0.6014,
+              "support": 79
+            },
+            "design_build": {
+              "precision": 0.8696,
+              "recall": 0.3922,
+              "f1": 0.5405,
+              "support": 51
+            },
+            "ease_of_use": {
+              "precision": 0.5357,
+              "recall": 0.7143,
+              "f1": 0.6122,
+              "support": 42
+            },
+            "installation_setup": {
+              "precision": 0.52,
+              "recall": 0.7879,
+              "f1": 0.6265,
+              "support": 33
+            },
+            "noise": {
+              "precision": 1.0,
+              "recall": 0.4286,
+              "f1": 0.6,
+              "support": 7
+            },
+            "size_capacity": {
+              "precision": 0.7778,
+              "recall": 0.4516,
+              "f1": 0.5714,
+              "support": 31
+            },
+            "compatibility": {
+              "precision": 0.6907,
+              "recall": 0.8375,
+              "f1": 0.7571,
+              "support": 80
+            },
+            "price_value": {
+              "precision": 0.7609,
+              "recall": 0.7778,
+              "f1": 0.7692,
+              "support": 45
+            },
+            "customer_service": {
+              "precision": 0.25,
+              "recall": 0.5,
+              "f1": 0.3333,
+              "support": 12
+            },
+            "shipping_packaging": {
+              "precision": 1.0,
+              "recall": 0.6552,
+              "f1": 0.7917,
+              "support": 29
+            },
+            "safety": {
+              "precision": 0.25,
+              "recall": 0.3333,
+              "f1": 0.2857,
+              "support": 3
+            },
+            "other": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "macro_f1_present_labels": 0.5557,
+          "macro_labels": [
+            "performance",
+            "quality_durability",
+            "design_build",
+            "ease_of_use",
+            "installation_setup",
+            "noise",
+            "size_capacity",
+            "compatibility",
+            "price_value",
+            "customer_service",
+            "shipping_packaging",
+            "safety",
+            "other"
+          ]
+        },
+        "aspect_sentiment": {
+          "n": 364,
+          "accuracy": 0.8599,
+          "macro_precision": 0.6417,
+          "macro_recall": 0.6678,
+          "macro_f1": 0.6479,
+          "weighted_precision": 0.8783,
+          "weighted_recall": 0.8599,
+          "weighted_f1": 0.8659,
+          "per_class": {
+            "positive": {
+              "precision": 0.9461,
+              "recall": 0.8316,
+              "f1-score": 0.8852,
+              "support": 190
+            },
+            "negative": {
+              "precision": 0.8361,
+              "recall": 0.9217,
+              "f1-score": 0.8768,
+              "support": 166
+            },
+            "neutral": {
+              "precision": 0.1429,
+              "recall": 0.25,
+              "f1-score": 0.1818,
+              "support": 8
+            }
+          },
+          "labels": [
+            "positive",
+            "negative",
+            "neutral"
+          ],
+          "macro_labels": [
+            "positive",
+            "negative",
+            "neutral"
+          ],
+          "confusion_matrix": [
+            [
+              158,
+              26,
+              6
+            ],
+            [
+              7,
+              153,
+              6
+            ],
+            [
+              2,
+              4,
+              2
+            ]
+          ],
+          "invalid_predictions": 0
+        },
+        "aspect_joint": {
+          "n": 299,
+          "micro_precision": 0.5397,
+          "micro_recall": 0.5775,
+          "micro_f1": 0.5579
+        }
+      }
+    },
+    "cot": {
+      "operational": {
+        "n": 299,
+        "valid": 279,
+        "failed": 20,
+        "validity_rate": 0.9331,
+        "first_attempt_valid_rate": 0.9164,
+        "needed_llm_repair": 25,
+        "mean_repair_attempts": 0.1572,
+        "local_fixes": 25,
+        "mean_latency_s": 47.5273,
+        "total_latency_s": 14210.65,
+        "total_input_tokens": 686970,
+        "total_output_tokens": 66718,
+        "mean_input_tokens": 2297.6,
+        "mean_output_tokens": 223.1
+      },
+      "missing_predictions": 0,
+      "coverage": 1.0,
+      "classification": {
+        "n_evaluated": 299,
+        "n_failed_extractions": 20,
+        "overall_sentiment": {
+          "n": 299,
+          "accuracy": 0.5753,
+          "macro_precision": 0.7201,
+          "macro_recall": 0.5831,
+          "macro_f1": 0.4232,
+          "weighted_precision": 0.9083,
+          "weighted_recall": 0.5753,
+          "weighted_f1": 0.6461,
+          "per_class": {
+            "positive": {
+              "precision": 0.9444,
+              "recall": 0.4595,
+              "f1-score": 0.6182,
+              "support": 111
+            },
+            "negative": {
+              "precision": 0.8828,
+              "recall": 0.8014,
+              "f1-score": 0.8401,
+              "support": 141
+            },
+            "neutral": {
+              "precision": 0.0532,
+              "recall": 1.0,
+              "f1-score": 0.101,
+              "support": 5
+            },
+            "mixed": {
+              "precision": 1.0,
+              "recall": 0.0714,
+              "f1-score": 0.1333,
+              "support": 42
+            }
+          },
+          "labels": [
+            "positive",
+            "negative",
+            "neutral",
+            "mixed"
+          ],
+          "macro_labels": [
+            "positive",
+            "negative",
+            "neutral",
+            "mixed"
+          ],
+          "confusion_matrix": [
+            [
+              51,
+              1,
+              51,
+              0
+            ],
+            [
+              0,
+              113,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              0
+            ],
+            [
+              3,
+              14,
+              18,
+              3
+            ]
+          ],
+          "invalid_predictions": 20
+        },
+        "complaints": {
+          "n": 299,
+          "micro_precision": 0.393,
+          "micro_recall": 0.3782,
+          "micro_f1": 0.3854,
+          "macro_precision": 0.3579,
+          "macro_recall": 0.3646,
+          "macro_f1": 0.2846,
+          "weighted_precision": 0.5507,
+          "weighted_recall": 0.3782,
+          "weighted_f1": 0.4193,
+          "samples_precision": 0.2522,
+          "samples_recall": 0.2559,
+          "samples_f1": 0.2461,
+          "hamming_loss": 0.0686,
+          "subset_accuracy": 0.5184,
+          "per_label": {
+            "product_defect": {
+              "precision": 0.125,
+              "recall": 0.1429,
+              "f1": 0.1333,
+              "support": 14
+            },
+            "poor_durability": {
+              "precision": 0.7353,
+              "recall": 0.4717,
+              "f1": 0.5747,
+              "support": 53
+            },
+            "performance_issue": {
+              "precision": 0.5625,
+              "recall": 0.383,
+              "f1": 0.4557,
+              "support": 47
+            },
+            "noise_issue": {
+              "precision": 0.3333,
+              "recall": 1.0,
+              "f1": 0.5,
+              "support": 2
+            },
+            "installation_difficulty": {
+              "precision": 0.1053,
+              "recall": 0.8,
+              "f1": 0.186,
+              "support": 5
+            },
+            "usability_issue": {
+              "precision": 0.6923,
+              "recall": 0.3333,
+              "f1": 0.45,
+              "support": 27
+            },
+            "compatibility_fit_issue": {
+              "precision": 0.6897,
+              "recall": 0.4651,
+              "f1": 0.5556,
+              "support": 43
+            },
+            "poor_value": {
+              "precision": 0.1034,
+              "recall": 0.5,
+              "f1": 0.1714,
+              "support": 6
+            },
+            "shipping_damage": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 8
+            },
+            "missing_parts": {
+              "precision": 0.25,
+              "recall": 0.3333,
+              "f1": 0.2857,
+              "support": 3
+            },
+            "not_as_described": {
+              "precision": 0.2143,
+              "recall": 0.2308,
+              "f1": 0.2222,
+              "support": 13
+            },
+            "customer_service_issue": {
+              "precision": 0.2,
+              "recall": 0.3333,
+              "f1": 0.25,
+              "support": 6
+            },
+            "safety_concern": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 2
+            },
+            "other": {
+              "precision": 1.0,
+              "recall": 0.1111,
+              "f1": 0.2,
+              "support": 9
+            }
+          },
+          "macro_f1_present_labels": 0.2846,
+          "macro_labels": [
+            "product_defect",
+            "poor_durability",
+            "performance_issue",
+            "noise_issue",
+            "installation_difficulty",
+            "usability_issue",
+            "compatibility_fit_issue",
+            "poor_value",
+            "shipping_damage",
+            "missing_parts",
+            "not_as_described",
+            "customer_service_issue",
+            "safety_concern",
+            "other"
+          ]
+        },
+        "aspect_detection": {
+          "n": 299,
+          "micro_precision": 0.6464,
+          "micro_recall": 0.4114,
+          "micro_f1": 0.5028,
+          "macro_precision": 0.5804,
+          "macro_recall": 0.3476,
+          "macro_f1": 0.3886,
+          "weighted_precision": 0.7333,
+          "weighted_recall": 0.4114,
+          "weighted_f1": 0.4854,
+          "samples_precision": 0.5619,
+          "samples_recall": 0.4285,
+          "samples_f1": 0.4634,
+          "hamming_loss": 0.1135,
+          "subset_accuracy": 0.2308,
+          "per_label": {
+            "performance": {
+              "precision": 0.7541,
+              "recall": 0.3538,
+              "f1": 0.4817,
+              "support": 130
+            },
+            "quality_durability": {
+              "precision": 0.6286,
+              "recall": 0.2785,
+              "f1": 0.386,
+              "support": 79
+            },
+            "design_build": {
+              "precision": 1.0,
+              "recall": 0.1765,
+              "f1": 0.3,
+              "support": 51
+            },
+            "ease_of_use": {
+              "precision": 0.65,
+              "recall": 0.619,
+              "f1": 0.6341,
+              "support": 42
+            },
+            "installation_setup": {
+              "precision": 0.4528,
+              "recall": 0.7273,
+              "f1": 0.5581,
+              "support": 33
+            },
+            "noise": {
+              "precision": 0.4444,
+              "recall": 0.5714,
+              "f1": 0.5,
+              "support": 7
+            },
+            "size_capacity": {
+              "precision": 0.8571,
+              "recall": 0.3871,
+              "f1": 0.5333,
+              "support": 31
+            },
+            "compatibility": {
+              "precision": 0.6914,
+              "recall": 0.7,
+              "f1": 0.6957,
+              "support": 80
+            },
+            "price_value": {
+              "precision": 0.9,
+              "recall": 0.4,
+              "f1": 0.5538,
+              "support": 45
+            },
+            "customer_service": {
+              "precision": 0.1667,
+              "recall": 0.1667,
+              "f1": 0.1667,
+              "support": 12
+            },
+            "shipping_packaging": {
+              "precision": 1.0,
+              "recall": 0.1379,
+              "f1": 0.2424,
+              "support": 29
+            },
+            "safety": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 3
+            },
+            "other": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "macro_f1_present_labels": 0.3886,
+          "macro_labels": [
+            "performance",
+            "quality_durability",
+            "design_build",
+            "ease_of_use",
+            "installation_setup",
+            "noise",
+            "size_capacity",
+            "compatibility",
+            "price_value",
+            "customer_service",
+            "shipping_packaging",
+            "safety",
+            "other"
+          ]
+        },
+        "aspect_sentiment": {
+          "n": 223,
+          "accuracy": 0.7354,
+          "macro_precision": 0.6002,
+          "macro_recall": 0.6497,
+          "macro_f1": 0.5524,
+          "weighted_precision": 0.8433,
+          "weighted_recall": 0.7354,
+          "weighted_f1": 0.7605,
+          "per_class": {
+            "positive": {
+              "precision": 0.9483,
+              "recall": 0.55,
+              "f1-score": 0.6962,
+              "support": 100
+            },
+            "negative": {
+              "precision": 0.781,
+              "recall": 0.8992,
+              "f1-score": 0.8359,
+              "support": 119
+            },
+            "neutral": {
+              "precision": 0.0714,
+              "recall": 0.5,
+              "f1-score": 0.125,
+              "support": 4
+            }
+          },
+          "labels": [
+            "positive",
+            "negative",
+            "neutral"
+          ],
+          "macro_labels": [
+            "positive",
+            "negative",
+            "neutral"
+          ],
+          "confusion_matrix": [
+            [
+              55,
+              29,
+              16
+            ],
+            [
+              2,
+              107,
+              10
+            ],
+            [
+              1,
+              1,
+              2
+            ]
+          ],
+          "invalid_predictions": 0
+        },
+        "aspect_joint": {
+          "n": 299,
+          "micro_precision": 0.4754,
+          "micro_recall": 0.3026,
+          "micro_f1": 0.3698
+        }
+      }
+    }
+  }
+}

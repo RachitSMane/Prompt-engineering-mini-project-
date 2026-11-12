@@ -1,0 +1,4633 @@
+[
+ {
+  "summary_id": "2f2f868f0ec7",
+  "product_id": "B001DHKBXU",
+  "product_title": "Whirlpool 3949238 Washer Lid Switch",
+  "content": {
+   "overall_opinion": "The Whirlpool 3949238 Washer Lid Switch received a mixed to negative overall sentiment with 78.9% of reviews being negative and 15 out of 19 reviews containing complaints. The most frequently mentioned aspects were installation setup, performance, quality durability, price value, customer service, ease of use, and compatibility. The main complaints were related to poor durability (8 out of 15 reviews), installation difficulty (7 out of 15 reviews), poor value (6 out of 15 reviews), product defects (5 out of 15 reviews), customer service issues (4 out of 15 reviews), performance issues (4 out of 15 reviews), and compatibility fit issues (1 out of 15 reviews).",
+   "appreciated": [
+    {
+     "point": "Installation was easy and the part arrived on time.",
+     "supporting_review_ids": [
+      "R326a034e9581",
+      "R67a4f9906504"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "The product failed in less than 3 months.",
+     "supporting_review_ids": [
+      "R55ca2e9dc390"
+     ]
+    },
+    {
+     "point": "Installation was difficult and the part did not work as intended.",
+     "supporting_review_ids": [
+      "R326a034e9581",
+      "R037714d5ebd7"
+     ]
+    },
+    {
+     "point": "The product did not provide good value for money.",
+     "supporting_review_ids": [
+      "R28878e067e18"
+     ]
+    },
+    {
+     "point": "The product had issues with functionality and customer service.",
+     "supporting_review_ids": [
+      "R55ca2e9dc390",
+      "R037714d5ebd7"
+     ]
+    },
+    {
+     "point": "The product did not perform as expected and had compatibility issues.",
+     "supporting_review_ids": [
+      "R55ca2e9dc390",
+      "R28878e067e18"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "installation_setup",
+    "performance",
+    "quality_durability",
+    "price_value",
+    "customer_service",
+    "ease_of_use",
+    "compatibility"
+   ],
+   "improvement_areas": [
+    "Improving the durability of the product",
+    "Enhancing the installation process",
+    "Improving the value for money",
+    "Improving customer service",
+    "Ensuring compatibility with other products",
+    "Improving the ease of use"
+   ],
+   "recommendations": [
+    "Invest in a more durable product",
+    "Ensure proper installation",
+    "Consider the value for money",
+    "Seek better customer service",
+    "Ensure compatibility with other products",
+    "Simplify the product's operation"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B001DHKBXU",
+   "product_title": "Whirlpool 3949238 Washer Lid Switch",
+   "total_reviews": 19,
+   "sentiment_counts": {
+    "positive": 4,
+    "negative": 15,
+    "neutral": 0,
+    "mixed": 0
+   },
+   "sentiment_percentages": {
+    "positive": 21.1,
+    "negative": 78.9,
+    "neutral": 0.0,
+    "mixed": 0.0
+   },
+   "average_rating": 2.16,
+   "aspect_stats": [
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 10,
+     "positive": 3,
+     "negative": 6,
+     "neutral": 1,
+     "net_sentiment": -0.3,
+     "top_aspect_names": [
+      "installation",
+      "installation_setup"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 10,
+     "positive": 2,
+     "negative": 8,
+     "neutral": 0,
+     "net_sentiment": -0.6,
+     "top_aspect_names": [
+      "performance",
+      "performance_issue",
+      "part replacement"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 7,
+     "positive": 0,
+     "negative": 7,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "durability",
+      "product durability",
+      "lid switch durability"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 6,
+     "positive": 0,
+     "negative": 6,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "value",
+      "price",
+      "price_value"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 5,
+     "positive": 1,
+     "negative": 4,
+     "neutral": 0,
+     "net_sentiment": -0.6,
+     "top_aspect_names": [
+      "seller support",
+      "customer_service",
+      "replacement"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 4,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 1,
+     "net_sentiment": -0.75,
+     "top_aspect_names": [
+      "ease_of_use",
+      "installation",
+      "operation"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": -0.667,
+     "top_aspect_names": [
+      "compatibility",
+      "replacement part"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 3,
+     "positive": 3,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "delivery speed",
+      "delivery"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "poor_durability": 8,
+    "installation_difficulty": 7,
+    "poor_value": 6,
+    "product_defect": 5,
+    "customer_service_issue": 4,
+    "performance_issue": 4,
+    "compatibility_fit_issue": 1,
+    "usability_issue": 1
+   },
+   "complaint_percentages": {
+    "poor_durability": 42.1,
+    "installation_difficulty": 36.8,
+    "poor_value": 31.6,
+    "product_defect": 26.3,
+    "customer_service_issue": 21.1,
+    "performance_issue": 21.1,
+    "compatibility_fit_issue": 5.3,
+    "usability_issue": 5.3
+   },
+   "reviews_with_complaints": 15,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R326a034e9581",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "easy to install"
+    },
+    {
+     "review_id": "R67a4f9906504",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "Installed the part two weeks ago and it is working fine"
+    },
+    {
+     "review_id": "R1f47f5436c31",
+     "aspect_category": "shipping_packaging",
+     "sentiment": "positive",
+     "quote": "Product arrived on time and as described"
+    },
+    {
+     "review_id": "R037714d5ebd7",
+     "aspect_category": "shipping_packaging",
+     "sentiment": "positive",
+     "quote": "Part came quickly"
+    },
+    {
+     "review_id": "Rab29ccc098a8",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "It works and has worked as intended for at least a year of regular 3+ loads of laundry a week"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R326a034e9581",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "worked perfectly for about 6 months and then it simply stopped working"
+    },
+    {
+     "review_id": "R037714d5ebd7",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "no switch function, no continuity"
+    },
+    {
+     "review_id": "R55ca2e9dc390",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "Product Failed in less than 3 months"
+    },
+    {
+     "review_id": "Re103bac0e40c",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "only lasted 1 day after i placed it"
+    },
+    {
+     "review_id": "R28878e067e18",
+     "aspect_category": "price_value",
+     "sentiment": "negative",
+     "quote": "After seeing how much Sears was charging for a replacement part"
+    }
+   ],
+   "review_ids": [
+    "R28878e067e18",
+    "Rab29ccc098a8",
+    "Rc3ae51a75bdb",
+    "R2ac41d087893",
+    "R5a549d4f8f01",
+    "Re98c674dfc8e",
+    "R5caf7dd50929",
+    "Re103bac0e40c",
+    "R55ca2e9dc390",
+    "R326a034e9581",
+    "Rfc87bcb33bb7",
+    "R88206a7f14bb",
+    "Re0fad5297841",
+    "Rae0e49a31a14",
+    "R037714d5ebd7",
+    "R1f47f5436c31",
+    "R5f8c75fd9a81",
+    "R67a4f9906504",
+    "R2079a0152739"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 142.284,
+  "input_tokens": 1957,
+  "output_tokens": 670,
+  "created_at": "2026-11-11T17:42:59+00:00"
+ },
+ {
+  "summary_id": "5526b78f5543",
+  "product_id": "B001ONHE8S",
+  "product_title": "Dishwasher Silverware Basket",
+  "content": {
+   "overall_opinion": "The Dishwasher Silverware Basket has a mixed reception with a slight leaning towards positive reviews, though there are notable issues with compatibility, ease of use, and size capacity that warrant attention.",
+   "appreciated": [
+    {
+     "point": "The silverware basket fits well with the dishwasher and is of good quality.",
+     "supporting_review_ids": [
+      "R367a9032d3a9",
+      "R59333e58b8e2"
+     ]
+    },
+    {
+     "point": "It performs well in terms of washing capacity.",
+     "supporting_review_ids": [
+      "R29e07566f9c9",
+      "R367a9032d3a9"
+     ]
+    },
+    {
+     "point": "Customers are generally happy with their purchase.",
+     "supporting_review_ids": [
+      "R367a9032d3a9"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "There are issues with the compatibility of the lid falling off after each use.",
+     "supporting_review_ids": [
+      "Rbbad4caccd2c",
+      "R29e07566f9c9"
+     ]
+    },
+    {
+     "point": "The size of the basket is longer than expected, causing issues with the dishwasher.",
+     "supporting_review_ids": [
+      "Rbbad4caccd2c",
+      "Reba1c4c65324"
+     ]
+    },
+    {
+     "point": "The color does not match the customer's expectations.",
+     "supporting_review_ids": [
+      "Ra80c0ab10e91"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "compatibility",
+    "ease_of_use",
+    "size_capacity"
+   ],
+   "improvement_areas": [
+    "Improving the lid stability and compatibility with different dishwashers.",
+    "Ensuring the basket size matches the customer's expectations.",
+    "Ensuring the color matches the customer's expectations."
+   ],
+   "recommendations": [
+    "Investigate and improve the lid stability and compatibility with different dishwashers.",
+    "Ensure the basket size matches the customer's expectations.",
+    "Ensure the color matches the customer's expectations."
+   ]
+  },
+  "aggregate": {
+   "product_id": "B001ONHE8S",
+   "product_title": "Dishwasher Silverware Basket",
+   "total_reviews": 16,
+   "sentiment_counts": {
+    "positive": 10,
+    "negative": 5,
+    "neutral": 0,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 62.5,
+    "negative": 31.2,
+    "neutral": 0.0,
+    "mixed": 6.2
+   },
+   "average_rating": 3.44,
+   "aspect_stats": [
+    {
+     "aspect_category": "compatibility",
+     "mentions": 9,
+     "positive": 7,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": 0.556,
+     "top_aspect_names": [
+      "fit",
+      "compatibility",
+      "fit with model"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 5,
+     "positive": 3,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": 0.167,
+     "top_aspect_names": [
+      "color match",
+      "design_changes",
+      "personal satisfaction"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 4,
+     "positive": 4,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "functionality",
+      "washing capacity",
+      "general performance"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "lid usability",
+      "lid stability",
+      "gift satisfaction"
+     ]
+    },
+    {
+     "aspect_category": "size_capacity",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "size",
+      "size_capacity",
+      "dimensions"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 1,
+     "net_sentiment": 0.5,
+     "top_aspect_names": [
+      "color",
+      "material"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 2,
+     "positive": 2,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "quality",
+      "sturdiness"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "delivery timing"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "compatibility_fit_issue": 3,
+    "not_as_described": 3,
+    "poor_value": 2
+   },
+   "complaint_percentages": {
+    "compatibility_fit_issue": 18.8,
+    "not_as_described": 18.8,
+    "poor_value": 12.5
+   },
+   "reviews_with_complaints": 6,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R367a9032d3a9",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "Love it, fit in nicely in my dishwasher"
+    },
+    {
+     "review_id": "R59333e58b8e2",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "Fit perfectly in my dishwasher"
+    },
+    {
+     "review_id": "R1c7a7245e8b0",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "very good, can washed 95 spoons at one time"
+    },
+    {
+     "review_id": "R29e07566f9c9",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "Works ok"
+    },
+    {
+     "review_id": "R367a9032d3a9",
+     "aspect_category": "other",
+     "sentiment": "positive",
+     "quote": "So happy that I purchased this!"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "Ra80c0ab10e91",
+     "aspect_category": "ease_of_use",
+     "sentiment": "negative",
+     "quote": "the lid that falls off after each use"
+    },
+    {
+     "review_id": "R29e07566f9c9",
+     "aspect_category": "ease_of_use",
+     "sentiment": "negative",
+     "quote": "I wish the lid on the larger basket would stay in the up position when placed there"
+    },
+    {
+     "review_id": "Rbbad4caccd2c",
+     "aspect_category": "size_capacity",
+     "sentiment": "negative",
+     "quote": "This is basket is 21 inches in length, longer than indicated"
+    },
+    {
+     "review_id": "Reba1c4c65324",
+     "aspect_category": "size_capacity",
+     "sentiment": "negative",
+     "quote": "it actually measures 20.5\" long and my dishwasher is 19.75"
+    },
+    {
+     "review_id": "Ra80c0ab10e91",
+     "aspect_category": "other",
+     "sentiment": "negative",
+     "quote": "the color is not a match to anything"
+    }
+   ],
+   "review_ids": [
+    "R1c7a7245e8b0",
+    "Ra80c0ab10e91",
+    "R326c018c483d",
+    "R29e07566f9c9",
+    "R72b95b8d2976",
+    "R59333e58b8e2",
+    "Ra13fd5fa40cd",
+    "R17f7b03011ae",
+    "R83f0e767fa23",
+    "Rbbad4caccd2c",
+    "R367a9032d3a9",
+    "R30eb3e4d18d8",
+    "Reba1c4c65324",
+    "Rbd5a60e32ead",
+    "Re7bebc34323b",
+    "R754889b645bf"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 147.837,
+  "input_tokens": 1906,
+  "output_tokens": 522,
+  "created_at": "2026-11-11T17:45:27+00:00"
+ },
+ {
+  "summary_id": "00423f485daa",
+  "product_id": "B001TH7GZU",
+  "product_title": "Stanco 60555905 4 Pack Drip Bowl, GE/Hotpoint, Chrome",
+  "content": {
+   "overall_opinion": "The product received a mixed reception with a majority of negative feedback, indicating issues with compatibility, quality, and durability.",
+   "appreciated": [
+    {
+     "point": "The product offers good value for money, as evidenced by reviews like [R6514363f6a80] and [Rad21206f7fad].",
+     "supporting_review_ids": [
+      "R6514363f6a80",
+      "Rad21206f7fad"
+     ]
+    },
+    {
+     "point": "The product fits well with the stove, as seen in reviews like [Reb94a97eece2] and [R47b5f814aaef].",
+     "supporting_review_ids": [
+      "Reb94a97eece2",
+      "R47b5f814aaef"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "There are significant issues with compatibility, as evidenced by reviews like [R0a9f78063aaa] and [R29e1499a1df7].",
+     "supporting_review_ids": [
+      "R0a9f78063aaa",
+      "R29e1499a1df7"
+     ]
+    },
+    {
+     "point": "The quality and durability of the product are poor, as seen in reviews like [R51b33f91d82d] and [R5f5f5536be04].",
+     "supporting_review_ids": [
+      "R51b33f91d82d",
+      "R5f5f5536be04"
+     ]
+    },
+    {
+     "point": "Installation and setup are difficult, as indicated by reviews like [R5cf9f7add0a3].",
+     "supporting_review_ids": [
+      "R5cf9f7add0a3"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "compatibility",
+    "quality_durability",
+    "installation_setup"
+   ],
+   "improvement_areas": [
+    "Improving the compatibility and fit of the product",
+    "Enhancing the quality and durability of the product",
+    "Simplifying the installation and setup process"
+   ],
+   "recommendations": [
+    "Ensure the product is ordered by the correct part number to avoid compatibility issues",
+    "Invest in higher quality materials to improve durability",
+    "Provide clear and detailed installation instructions to reduce setup difficulties"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B001TH7GZU",
+   "product_title": "Stanco 60555905 4 Pack Drip Bowl, GE/Hotpoint, Chrome",
+   "total_reviews": 28,
+   "sentiment_counts": {
+    "positive": 9,
+    "negative": 18,
+    "neutral": 0,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 32.1,
+    "negative": 64.3,
+    "neutral": 0.0,
+    "mixed": 3.6
+   },
+   "average_rating": 2.89,
+   "aspect_stats": [
+    {
+     "aspect_category": "compatibility",
+     "mentions": 13,
+     "positive": 4,
+     "negative": 8,
+     "neutral": 1,
+     "net_sentiment": -0.308,
+     "top_aspect_names": [
+      "fit with model",
+      "fit",
+      "compatibility"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 8,
+     "positive": 2,
+     "negative": 6,
+     "neutral": 0,
+     "net_sentiment": -0.5,
+     "top_aspect_names": [
+      "quality",
+      "quality_durability",
+      "quality of parts"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 6,
+     "positive": 2,
+     "negative": 4,
+     "neutral": 0,
+     "net_sentiment": -0.333,
+     "top_aspect_names": [
+      "reliability",
+      "stain resistance",
+      "effectiveness"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 5,
+     "positive": 1,
+     "negative": 3,
+     "neutral": 1,
+     "net_sentiment": -0.4,
+     "top_aspect_names": [
+      "ease_of_use",
+      "cleaning effort",
+      "ease of cleaning"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 5,
+     "positive": 4,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.6,
+     "top_aspect_names": [
+      "price",
+      "price value",
+      "price_value"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 4,
+     "positive": 0,
+     "negative": 4,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "installation",
+      "condition upon arrival",
+      "fit in stove"
+     ]
+    },
+    {
+     "aspect_category": "size_capacity",
+     "mentions": 4,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 1,
+     "net_sentiment": -0.75,
+     "top_aspect_names": [
+      "size",
+      "burners size",
+      "size_capacity"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": -0.667,
+     "top_aspect_names": [
+      "customer_service",
+      "replacement"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 3,
+     "positive": 2,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.333,
+     "top_aspect_names": [
+      "delivery speed",
+      "delivery",
+      "delivery condition"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "appearance"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "compatibility_fit_issue": 8,
+    "installation_difficulty": 6,
+    "poor_value": 5,
+    "poor_durability": 3,
+    "not_as_described": 2,
+    "product_defect": 2,
+    "usability_issue": 2,
+    "customer_service_issue": 1,
+    "performance_issue": 1
+   },
+   "complaint_percentages": {
+    "compatibility_fit_issue": 28.6,
+    "installation_difficulty": 21.4,
+    "poor_value": 17.9,
+    "poor_durability": 10.7,
+    "not_as_described": 7.1,
+    "product_defect": 7.1,
+    "usability_issue": 7.1,
+    "customer_service_issue": 3.6,
+    "performance_issue": 3.6
+   },
+   "reviews_with_complaints": 19,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R6514363f6a80",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "Better than the ones I could get from our local mart"
+    },
+    {
+     "review_id": "Rad21206f7fad",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "Good price and swift delivery"
+    },
+    {
+     "review_id": "Reb94a97eece2",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "These where a perfect fit for our stove"
+    },
+    {
+     "review_id": "R47b5f814aaef",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "Better fit than the generic ones found in discount/hardware stores"
+    },
+    {
+     "review_id": "Rad21206f7fad",
+     "aspect_category": "shipping_packaging",
+     "sentiment": "positive",
+     "quote": "swift delivery"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R0a9f78063aaa",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "Don’t fit correctly even though I ordered by the part number"
+    },
+    {
+     "review_id": "R29e1499a1df7",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "These do not fit very well. They're just a little off, causing the pans to tilt slightly"
+    },
+    {
+     "review_id": "R51b33f91d82d",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "Very thin material, they start to rust after a week or two"
+    },
+    {
+     "review_id": "R5f5f5536be04",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "poor quality. they melt"
+    },
+    {
+     "review_id": "R5cf9f7add0a3",
+     "aspect_category": "installation_setup",
+     "sentiment": "negative",
+     "quote": "Came with a dent in them"
+    }
+   ],
+   "review_ids": [
+    "R5f5f5536be04",
+    "Raeebacd4a981",
+    "R5cf9f7add0a3",
+    "Ra9fd7c2129cf",
+    "Rad21206f7fad",
+    "R6176d831a128",
+    "Reb94a97eece2",
+    "R47b5f814aaef",
+    "R29e1499a1df7",
+    "R6514363f6a80",
+    "R2e5c991added",
+    "Rf1714f990004",
+    "R0a9f78063aaa",
+    "Re9fb91f962ad",
+    "Ra32194a8889b",
+    "Raf7b5727c306",
+    "R874385071b16",
+    "R65b553a1eba4",
+    "R7f020621e561",
+    "R51b33f91d82d",
+    "Rdd2f2008a72f",
+    "Rb3ddf496c9fa",
+    "Rf0b129618883",
+    "R5f0c3e845a72",
+    "R4962b84cb100",
+    "Rc847f1b1cac5",
+    "Rdfc0041006cf",
+    "R3aeb252b6888"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 197.238,
+  "input_tokens": 2139,
+  "output_tokens": 586,
+  "created_at": "2026-11-11T17:48:44+00:00"
+ },
+ {
+  "summary_id": "c56321fb1ed2",
+  "product_id": "B0081N3YW4",
+  "product_title": "SIMPLECUPS Disposable Cups for Use in Keurig Brewers - 50Cups, Lids, and Filters - Use Your Own Coffee - Reuse or Dispose of your K Cups",
+  "content": {
+   "overall_opinion": "The product received a mixed reception with a majority of negative reviews, indicating issues with performance, usability, and compatibility.",
+   "appreciated": [
+    {
+     "point": "This product is a great idea and works well for making a good cup of coffee.",
+     "supporting_review_ids": [
+      "R05c76a3d243c"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Users experienced usability issues, such as difficulty getting the correct grind and compatibility issues with their brewer.",
+     "supporting_review_ids": [
+      "R387f040c6548",
+      "R7036c4b305d7",
+      "R17cb703c00a0",
+      "Reb5ce50377fd"
+     ]
+    },
+    {
+     "point": "Performance issues were common, with users reporting cups not fitting properly and not being able to reuse them multiple times.",
+     "supporting_review_ids": [
+      "R007b123950c3",
+      "R387f040c6548"
+     ]
+    },
+    {
+     "point": "Users faced issues with customer service, with some users indicating they would not repurchase the product.",
+     "supporting_review_ids": [
+      "R17cb703c00a0",
+      "Reb5ce50377fd"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "ease_of_use",
+    "compatibility"
+   ],
+   "improvement_areas": [
+    "Improving the compatibility with different brewer models",
+    "Enhancing the ease of use, particularly with the correct grind",
+    "Addressing performance issues, such as cups not fitting properly or not being reusable"
+   ],
+   "recommendations": [
+    "Ensure compatibility with the user's specific brewer model",
+    "Provide clearer instructions and troubleshooting guides",
+    "Investigate and improve the durability and performance of the cups"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B0081N3YW4",
+   "product_title": "SIMPLECUPS Disposable Cups for Use in Keurig Brewers - 50Cups, Lids, and Filters - Use Your Own Coffee - Reuse or Dispose of your K Cups",
+   "total_reviews": 42,
+   "sentiment_counts": {
+    "positive": 9,
+    "negative": 27,
+    "neutral": 1,
+    "mixed": 5
+   },
+   "sentiment_percentages": {
+    "positive": 21.4,
+    "negative": 64.3,
+    "neutral": 2.4,
+    "mixed": 11.9
+   },
+   "average_rating": 2.67,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 27,
+     "positive": 5,
+     "negative": 22,
+     "neutral": 1,
+     "net_sentiment": -0.607,
+     "top_aspect_names": [
+      "performance",
+      "coffee taste",
+      "functionality"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 15,
+     "positive": 4,
+     "negative": 11,
+     "neutral": 1,
+     "net_sentiment": -0.438,
+     "top_aspect_names": [
+      "ease_of_use",
+      "ease of use",
+      "lid operation"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 12,
+     "positive": 1,
+     "negative": 11,
+     "neutral": 0,
+     "net_sentiment": -0.833,
+     "top_aspect_names": [
+      "compatibility",
+      "fit with model",
+      "origin of filters"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 11,
+     "positive": 7,
+     "negative": 5,
+     "neutral": 0,
+     "net_sentiment": 0.167,
+     "top_aspect_names": [
+      "idea",
+      "alternative method",
+      "product satisfaction"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 6,
+     "positive": 0,
+     "negative": 6,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "durability",
+      "material thickness",
+      "material_quality"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 5,
+     "positive": 2,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -0.2,
+     "top_aspect_names": [
+      "cost savings",
+      "cost-effectiveness",
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 4,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 1,
+     "net_sentiment": -0.75,
+     "top_aspect_names": [
+      "material hardness",
+      "lid durability",
+      "lid material"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 3,
+     "positive": 3,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "delivery",
+      "delivery speed"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "likelihood of repurchasing",
+      "customer_service"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "instructions"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "usability_issue": 11,
+    "performance_issue": 10,
+    "poor_value": 10,
+    "compatibility_fit_issue": 8,
+    "installation_difficulty": 6,
+    "not_as_described": 4,
+    "product_defect": 4,
+    "customer_service_issue": 2,
+    "poor_durability": 2,
+    "safety_concern": 2,
+    "missing_parts": 1,
+    "noise_issue": 1,
+    "other": 1
+   },
+   "complaint_percentages": {
+    "usability_issue": 26.2,
+    "performance_issue": 23.8,
+    "poor_value": 23.8,
+    "compatibility_fit_issue": 19.0,
+    "installation_difficulty": 14.3,
+    "not_as_described": 9.5,
+    "product_defect": 9.5,
+    "customer_service_issue": 4.8,
+    "poor_durability": 4.8,
+    "safety_concern": 4.8,
+    "missing_parts": 2.4,
+    "noise_issue": 2.4,
+    "other": 2.4
+   },
+   "reviews_with_complaints": 30,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R05c76a3d243c",
+     "aspect_category": "other",
+     "sentiment": "positive",
+     "quote": "this is just what the doctor ordered!"
+    },
+    {
+     "review_id": "Rf1d424f5db23",
+     "aspect_category": "other",
+     "sentiment": "positive",
+     "quote": "Great idea"
+    },
+    {
+     "review_id": "R23ca4a45a96f",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "Works well good cup of coffee"
+    },
+    {
+     "review_id": "R387f040c6548",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "took a little fiddling, but once I got the correct grind, these work great"
+    },
+    {
+     "review_id": "R387f040c6548",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "took a little fiddling, but once I got the correct grind, these work great"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R007b123950c3",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "I tried to reuse the plastic cups just to see how many times I could use them and only was able to get two uses"
+    },
+    {
+     "review_id": "R17cb703c00a0",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "The Hamilton Beach Flexbrew will not put a hole in the top of the cup and leaving it off is not an option"
+    },
+    {
+     "review_id": "R7036c4b305d7",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "The liquid will not flow through"
+    },
+    {
+     "review_id": "Reb5ce50377fd",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "These cups did not fit my Keurig like the description said they would"
+    },
+    {
+     "review_id": "R17cb703c00a0",
+     "aspect_category": "ease_of_use",
+     "sentiment": "negative",
+     "quote": "May as well brew coffee with loose grounds like was designed"
+    }
+   ],
+   "review_ids": [
+    "R4e7277d4393b",
+    "R45adb9f56fe8",
+    "Ra9cb981f0773",
+    "Rf1d424f5db23",
+    "Rceb313ddd839",
+    "R23ca4a45a96f",
+    "R17cb703c00a0",
+    "R681a812a58d9",
+    "Rc5b2d6a55f82",
+    "R387f040c6548",
+    "R8f5a01228d01",
+    "R2b5714015ce4",
+    "R23022780a14d",
+    "R1cec8053b10c",
+    "R61a6b0ba7260",
+    "R471cb9e14354",
+    "R007b123950c3",
+    "Ra5dbe3d71703",
+    "R10b8fdb4b1fa",
+    "Rd7961e63c8ee",
+    "R800ed3b8626c",
+    "Rf0680f2c3f3e",
+    "R1d6bf975e202",
+    "Re29ac14745ea",
+    "R602dfec916c5",
+    "R6991235cac7c",
+    "R8c094e46b6c8",
+    "Ra67c39c1bcd2",
+    "Ra2d4e53c15ab",
+    "R19cfe4578fef",
+    "Rbcf289eaedb9",
+    "Rfd563031f5c6",
+    "R05c76a3d243c",
+    "Rca9a21529609",
+    "R7036c4b305d7",
+    "R906ab7a68d21",
+    "Reb5ce50377fd",
+    "R2818bcbab6e3",
+    "R6c62842d8f9a",
+    "R15e880c21d8d",
+    "Rb67633e84311",
+    "R90c83f6f91a3"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 177.507,
+  "input_tokens": 2276,
+  "output_tokens": 465,
+  "created_at": "2026-11-11T17:51:41+00:00"
+ },
+ {
+  "summary_id": "87499b2eecb4",
+  "product_id": "B008YDTFYW",
+  "product_title": "Whirlpool 6-918873 Silverware Basket",
+  "content": {
+   "overall_opinion": "The Whirlpool 6-918873 Silverware Basket received mixed feedback with a slight majority of positive reviews. Users appreciated its compatibility with their dishwashers and its durability, but also noted issues with its performance and size capacity.",
+   "appreciated": [
+    {
+     "point": "Users found the basket to fit perfectly with their dishwashers, as evidenced by reviews [R1d6448278a26] and [R3033dfac7c9e].",
+     "supporting_review_ids": [
+      "R1d6448278a26",
+      "R3033dfac7c9e"
+     ]
+    },
+    {
+     "point": "The basket is described as sturdy and durable, as seen in reviews [R09279be33f8f] and [Re30a101fa150].",
+     "supporting_review_ids": [
+      "R09279be33f8f",
+      "Re30a101fa150"
+     ]
+    },
+    {
+     "point": "Users found it easy to customize the basket for their specific needs, as indicated by review [Re30a101fa150].",
+     "supporting_review_ids": [
+      "Re30a101fa150"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Some users reported issues with the basket not fitting their dishwashers, as mentioned in reviews [R5f498d4e1c89] and [R86f127bb9642].",
+     "supporting_review_ids": [
+      "R5f498d4e1c89",
+      "R86f127bb9642"
+     ]
+    },
+    {
+     "point": "Users noted that the basket was not as clean as expected, as stated in review [R5f498d4e1c89].",
+     "supporting_review_ids": [
+      "R5f498d4e1c89"
+     ]
+    },
+    {
+     "point": "The basket was found to be less sturdy than the original, as described in review [R2e2d724a7782].",
+     "supporting_review_ids": [
+      "R2e2d724a7782"
+     ]
+    },
+    {
+     "point": "Users reported that the basket was not an exact match to what it replaced, as mentioned in review [R0c25bf5618a0].",
+     "supporting_review_ids": [
+      "R0c25bf5618a0"
+     ]
+    },
+    {
+     "point": "The basket was found to be taller than the original, as noted in review [R0c25bf5618a0].",
+     "supporting_review_ids": [
+      "R0c25bf5618a0"
+     ]
+    },
+    {
+     "point": "Users complained about the darker color and lack of hinge on the cover, as described in review [R0c25bf5618a0].",
+     "supporting_review_ids": [
+      "R0c25bf5618a0"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "compatibility",
+    "performance",
+    "quality_durability",
+    "size_capacity",
+    "design_build",
+    "ease_of_use",
+    "installation_setup",
+    "noise"
+   ],
+   "improvement_areas": [
+    "Ensure better compatibility with various dishwasher models.",
+    "Improve the cleaning effectiveness of the silverware.",
+    "Enhance the durability of the basket.",
+    "Optimize the size and design for better fit and functionality.",
+    "Address the design and build issues, such as color and hinge.",
+    "Improve the ease of use and customization options."
+   ],
+   "recommendations": [
+    "Ensure the basket is compatible with a wider range of dishwashers.",
+    "Invest in better cleaning mechanisms to improve performance.",
+    "Enhance the durability of the basket to last longer.",
+    "Optimize the design and size for better fit and functionality.",
+    "Address the design and build issues, such as color and hinge.",
+    "Improve the ease of use and customization options."
+   ]
+  },
+  "aggregate": {
+   "product_id": "B008YDTFYW",
+   "product_title": "Whirlpool 6-918873 Silverware Basket",
+   "total_reviews": 11,
+   "sentiment_counts": {
+    "positive": 6,
+    "negative": 4,
+    "neutral": 0,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 54.5,
+    "negative": 36.4,
+    "neutral": 0.0,
+    "mixed": 9.1
+   },
+   "average_rating": 3.91,
+   "aspect_stats": [
+    {
+     "aspect_category": "compatibility",
+     "mentions": 5,
+     "positive": 5,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "fit with model",
+      "compatibility",
+      "replacement part fit"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 4,
+     "positive": 2,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "functionality",
+      "cleaning effectiveness",
+      "stains"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 4,
+     "positive": 3,
+     "negative": 0,
+     "neutral": 1,
+     "net_sentiment": 0.75,
+     "top_aspect_names": [
+      "durability",
+      "material quality",
+      "sturdiness"
+     ]
+    },
+    {
+     "aspect_category": "size_capacity",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": -0.667,
+     "top_aspect_names": [
+      "number of compartments",
+      "compartment_size",
+      "part dimensions"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "design_build",
+      "lid type"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 2,
+     "positive": 2,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "ease of use",
+      "customization ease"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "assembly"
+     ]
+    },
+    {
+     "aspect_category": "noise",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "dishwasher noise reduction"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "not_as_described": 2,
+    "installation_difficulty": 1,
+    "poor_durability": 1
+   },
+   "complaint_percentages": {
+    "not_as_described": 18.2,
+    "installation_difficulty": 9.1,
+    "poor_durability": 9.1
+   },
+   "reviews_with_complaints": 4,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R1d6448278a26",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "This new fit my Maytag dishwasher perfect!"
+    },
+    {
+     "review_id": "R3033dfac7c9e",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "It fit perfect in my dishwasher"
+    },
+    {
+     "review_id": "R09279be33f8f",
+     "aspect_category": "quality_durability",
+     "sentiment": "positive",
+     "quote": "My old basket was falling apart; this looks as if it will last"
+    },
+    {
+     "review_id": "Re30a101fa150",
+     "aspect_category": "quality_durability",
+     "sentiment": "positive",
+     "quote": "This is also much more sturdy than the original trays"
+    },
+    {
+     "review_id": "Re30a101fa150",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "I was able to take it apart and make 2 long skinny silverware trays to fit my Maytag"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R5f498d4e1c89",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "I put the silverware in and they don't seem to get too clean"
+    },
+    {
+     "review_id": "R86f127bb9642",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "the tab the allows the basket to hang on the rack broke off of one of them already"
+    },
+    {
+     "review_id": "R2e2d724a7782",
+     "aspect_category": "size_capacity",
+     "sentiment": "negative",
+     "quote": "Not a exact match to what it replaced, less compartments"
+    },
+    {
+     "review_id": "Rec16a339ebbc",
+     "aspect_category": "size_capacity",
+     "sentiment": "negative",
+     "quote": "a little taller than the original"
+    },
+    {
+     "review_id": "R0c25bf5618a0",
+     "aspect_category": "design_build",
+     "sentiment": "negative",
+     "quote": "Darker than the inside of my dishwasher and the cover doesn't have a hinge so you have to take completely out to use the compartments"
+    }
+   ],
+   "review_ids": [
+    "R1d6448278a26",
+    "R2e2d724a7782",
+    "R0c25bf5618a0",
+    "Rdc9b73f8c8f7",
+    "R5f498d4e1c89",
+    "R09279be33f8f",
+    "Rec16a339ebbc",
+    "R3033dfac7c9e",
+    "Re30a101fa150",
+    "R86f127bb9642",
+    "R341db9461c5e"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 1,
+  "latency_s": 576.302,
+  "input_tokens": 4686,
+  "output_tokens": 1968,
+  "created_at": "2026-11-11T18:01:18+00:00"
+ },
+ {
+  "summary_id": "7e9abf406a54",
+  "product_id": "B00B0ZMNOU",
+  "product_title": "Solofill V1 GOLD CUP 24K Plated Refillable Filter Cup for Coffee Pod",
+  "content": {
+   "overall_opinion": "The Solofill V1 GOLD CUP 24K Plated Refillable Filter Cup received a mixed overall sentiment with 25% of reviews being positive and 66.7% negative. The average star rating is 2.67, indicating a generally negative user experience.",
+   "appreciated": [
+    {
+     "point": "The cup is easy to use and keeps clean",
+     "supporting_review_ids": [
+      "R4fdf5f87e35c",
+      "Re02ef86668af"
+     ]
+    },
+    {
+     "point": "The coffee grounds do not leak into the coffee",
+     "supporting_review_ids": [
+      "R1a135c0c927e"
+     ]
+    },
+    {
+     "point": "It saves money compared to pre-filled containers",
+     "supporting_review_ids": [
+      "R1d5bbcd4788b"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "The cup leaks coffee into the coffee",
+     "supporting_review_ids": [
+      "R4b53fe6d6b3b"
+     ]
+    },
+    {
+     "point": "The cup does not fit the machine",
+     "supporting_review_ids": [
+      "R02f621435777"
+     ]
+    },
+    {
+     "point": "The cup is not compatible with the machine",
+     "supporting_review_ids": [
+      "R21adda6eccf1"
+     ]
+    },
+    {
+     "point": "The cup is not user-friendly",
+     "supporting_review_ids": [
+      "R02f621435777"
+     ]
+    },
+    {
+     "point": "The cup is not durable",
+     "supporting_review_ids": [
+      "R6c95bfc5c402"
+     ]
+    },
+    {
+     "point": "The cup does not meet expectations",
+     "supporting_review_ids": [
+      "R6c95bfc5c402"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "compatibility",
+    "ease_of_use"
+   ],
+   "improvement_areas": [
+    "Improving compatibility with different machines",
+    "Enhancing the durability of the cup",
+    "Improving the ease of use"
+   ],
+   "recommendations": [
+    "Ensure the cup fits the machine before purchase",
+    "Check compatibility with different machines",
+    "Look for reviews from users who have had positive experiences with the cup"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B00B0ZMNOU",
+   "product_title": "Solofill V1 GOLD CUP 24K Plated Refillable Filter Cup for Coffee Pod",
+   "total_reviews": 24,
+   "sentiment_counts": {
+    "positive": 6,
+    "negative": 16,
+    "neutral": 0,
+    "mixed": 2
+   },
+   "sentiment_percentages": {
+    "positive": 25.0,
+    "negative": 66.7,
+    "neutral": 0.0,
+    "mixed": 8.3
+   },
+   "average_rating": 2.67,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 17,
+     "positive": 7,
+     "negative": 11,
+     "neutral": 0,
+     "net_sentiment": -0.222,
+     "top_aspect_names": [
+      "coffee strength",
+      "taste",
+      "leak prevention"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 11,
+     "positive": 0,
+     "negative": 11,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "compatibility",
+      "compatibility with model",
+      "compatibility with vue"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 6,
+     "positive": 2,
+     "negative": 4,
+     "neutral": 0,
+     "net_sentiment": -0.333,
+     "top_aspect_names": [
+      "ease of use",
+      "ease_of_use",
+      "cup removal"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "customer_service",
+      "replacement"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 3,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 1,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "screen effectiveness",
+      "adapter",
+      "inner cup design change"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "installation_setup",
+      "installation"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "cost savings",
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "material",
+      "wire mesh durability"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "compatibility_fit_issue": 6,
+    "poor_value": 6,
+    "customer_service_issue": 4,
+    "performance_issue": 4,
+    "product_defect": 4,
+    "installation_difficulty": 3,
+    "not_as_described": 3,
+    "usability_issue": 2,
+    "poor_durability": 1
+   },
+   "complaint_percentages": {
+    "compatibility_fit_issue": 25.0,
+    "poor_value": 25.0,
+    "customer_service_issue": 16.7,
+    "performance_issue": 16.7,
+    "product_defect": 16.7,
+    "installation_difficulty": 12.5,
+    "not_as_described": 12.5,
+    "usability_issue": 8.3,
+    "poor_durability": 4.2
+   },
+   "reviews_with_complaints": 16,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "Rf0a3aa25f6e1",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "This is AMAZING for making loose leaf teas"
+    },
+    {
+     "review_id": "R1a135c0c927e",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "I like that the coffee grounds don’t leak out into my coffee"
+    },
+    {
+     "review_id": "R4fdf5f87e35c",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "VERY EASY TO USE AND KEEP CLEAN!!"
+    },
+    {
+     "review_id": "Re02ef86668af",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "easy to clean, use whatever coffee"
+    },
+    {
+     "review_id": "R1d5bbcd4788b",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "saving major bucks on the over priced pre-filled containers"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R4b53fe6d6b3b",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "it still gives coffee tasting like a plastic"
+    },
+    {
+     "review_id": "R6c95bfc5c402",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "If you like lots of muddy sediment in the bottom of your cup of coffee, it's wonderful"
+    },
+    {
+     "review_id": "R02f621435777",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "The description said that it should fit my machine but when I tried it, it got stuck in the machine"
+    },
+    {
+     "review_id": "R21adda6eccf1",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "Did not work in my keurig vue"
+    },
+    {
+     "review_id": "R02f621435777",
+     "aspect_category": "ease_of_use",
+     "sentiment": "negative",
+     "quote": "It's a miracle this thing didn't break my Keurig"
+    }
+   ],
+   "review_ids": [
+    "R1a135c0c927e",
+    "Rb68cc3e2e89f",
+    "Rc7408023b1c8",
+    "R1d5bbcd4788b",
+    "R4fdf5f87e35c",
+    "R11c49fc1a474",
+    "R1a19f963f999",
+    "R105d35a69ed8",
+    "R98179ff09e70",
+    "Re02ef86668af",
+    "R21adda6eccf1",
+    "Rd1bbcb595b1f",
+    "R6c95bfc5c402",
+    "R02f621435777",
+    "Rf0a3aa25f6e1",
+    "R5ecf24e09fa8",
+    "R2b0dbb33d381",
+    "R6e47845099ff",
+    "R4b53fe6d6b3b",
+    "R37ca45f4d756",
+    "R4a467187c36f",
+    "R7cc775411fd8",
+    "R6c5b0087bff6",
+    "Raad52418a001"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 59.42,
+  "input_tokens": 2014,
+  "output_tokens": 586,
+  "created_at": "2026-11-12T02:43:44+00:00"
+ },
+ {
+  "summary_id": "2fb2110754ba",
+  "product_id": "B00DM8K1NS",
+  "product_title": "Whirlpool 2198597 Icemaker, White",
+  "content": {
+   "overall_opinion": "The Whirlpool 2198597 Icemaker, White (B00DM8K1NS) has a mixed overall sentiment with a neutral to slightly positive tone, indicated by the average star rating of 3.38 and 3 positive reviews out of 13. Users appreciate the ease of installation and the good value for money, but also face issues with compatibility and customer service.",
+   "appreciated": [
+    {
+     "point": "Users find the installation process to be straightforward, taking about 5 minutes as mentioned in [R4390bdc1831a] and [R35390dca0dfa].",
+     "supporting_review_ids": [
+      "R4390bdc1831a",
+      "R35390dca0dfa"
+     ]
+    },
+    {
+     "point": "The product offers good value for money, as evidenced by [Rb78a11c7a138] who stated it's worth it if you don't want to replace the icemaker frequently.",
+     "supporting_review_ids": [
+      "Rb78a11c7a138"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Users face difficulties with compatibility, as seen in [R90bd62dda22c] who had to return the product due to the unit not fitting their fridge.",
+     "supporting_review_ids": [
+      "R90bd62dda22c"
+     ]
+    },
+    {
+     "point": "There are issues with missing parts, as mentioned in [R6db9d41f0fdf] who noted the wire ice sensor bar was missing.",
+     "supporting_review_ids": [
+      "R6db9d41f0fdf"
+     ]
+    },
+    {
+     "point": "Customer service is a point of contention, with users facing issues in [R6db9d41f0fdf] who had to return the product due to the unit not working and [R90bd62dda22c] who had to return it due to warranty issues.",
+     "supporting_review_ids": [
+      "R6db9d41f0fdf",
+      "R90bd62dda22c"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "installation_setup",
+    "compatibility",
+    "price_value",
+    "customer_service",
+    "quality_durability",
+    "performance"
+   ],
+   "improvement_areas": [
+    "Improving the compatibility and fit with different fridges",
+    "Enhancing customer service response and resolution",
+    "Ensuring all necessary parts are included with the product"
+   ],
+   "recommendations": [
+    "Ensure compatibility with the user's fridge before purchase",
+    "Contact customer service for assistance with warranty and return issues",
+    "Include all necessary parts with the product to avoid customer dissatisfaction"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B00DM8K1NS",
+   "product_title": "Whirlpool 2198597 Icemaker, White",
+   "total_reviews": 13,
+   "sentiment_counts": {
+    "positive": 5,
+    "negative": 6,
+    "neutral": 1,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 38.5,
+    "negative": 46.2,
+    "neutral": 7.7,
+    "mixed": 7.7
+   },
+   "average_rating": 3.38,
+   "aspect_stats": [
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 5,
+     "positive": 4,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.6,
+     "top_aspect_names": [
+      "installation",
+      "installation_setup",
+      "installation difficulty"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 5,
+     "positive": 2,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "durability",
+      "expected durability",
+      "longevity"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 4,
+     "positive": 1,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -0.5,
+     "top_aspect_names": [
+      "compatibility",
+      "wire ice sensor bar",
+      "fit with model"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 4,
+     "positive": 3,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.5,
+     "top_aspect_names": [
+      "value",
+      "cost",
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 3,
+     "positive": 2,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.333,
+     "top_aspect_names": [
+      "performance",
+      "fix for problem",
+      "ice production"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "return policy",
+      "customer service",
+      "return process"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "usability"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "compatibility_fit_issue": 2,
+    "customer_service_issue": 2,
+    "missing_parts": 2,
+    "poor_value": 2,
+    "product_defect": 2,
+    "installation_difficulty": 1,
+    "not_as_described": 1,
+    "performance_issue": 1
+   },
+   "complaint_percentages": {
+    "compatibility_fit_issue": 15.4,
+    "customer_service_issue": 15.4,
+    "missing_parts": 15.4,
+    "poor_value": 15.4,
+    "product_defect": 15.4,
+    "installation_difficulty": 7.7,
+    "not_as_described": 7.7,
+    "performance_issue": 7.7
+   },
+   "reviews_with_complaints": 7,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R4390bdc1831a",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "The icemaker was easy to install in about 5 minutes"
+    },
+    {
+     "review_id": "R35390dca0dfa",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "I found this by accident and it was easy to install"
+    },
+    {
+     "review_id": "Rb78a11c7a138",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "It's worth it if you don't want to be replacing the icemaker every year!"
+    },
+    {
+     "review_id": "Rb8852b710a18",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "It was a good buy"
+    },
+    {
+     "review_id": "Rc8b0713f1a8a",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "It’s been a few months and it works perfect"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R41f1d110aad0",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "this 2198597 did not come with the wire ice senor bar that indicates no more ice is needed"
+    },
+    {
+     "review_id": "R6db9d41f0fdf",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "the unit did not fit my fridge (Whirlpool WRS325FDAM04) despite the fact that Amazons model selector indicated 'this fits your fridge'"
+    },
+    {
+     "review_id": "R90bd62dda22c",
+     "aspect_category": "customer_service",
+     "sentiment": "negative",
+     "quote": "it's warranted for 1 full year. I contacted Whirlpool three times and was told they would not repair or replace it because I bought it at Amazon and must return it to them"
+    },
+    {
+     "review_id": "R6db9d41f0fdf",
+     "aspect_category": "customer_service",
+     "sentiment": "negative",
+     "quote": "If it does not work, then I will have to return it"
+    },
+    {
+     "review_id": "R35390dca0dfa",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "Hopefully, it will last longer than the last 2"
+    }
+   ],
+   "review_ids": [
+    "Rc8b0713f1a8a",
+    "R574ca5038bdd",
+    "R7aebf745a65d",
+    "R41f1d110aad0",
+    "R35390dca0dfa",
+    "Rd9947fce98d3",
+    "Rd8e645c4f963",
+    "R4390bdc1831a",
+    "Rb8852b710a18",
+    "R90bd62dda22c",
+    "Rb78a11c7a138",
+    "Rb6fd13816de5",
+    "R6db9d41f0fdf"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 55.916,
+  "input_tokens": 1962,
+  "output_tokens": 644,
+  "created_at": "2026-11-12T02:44:40+00:00"
+ },
+ {
+  "summary_id": "329800146f6c",
+  "product_id": "B00LHRAGHW",
+  "product_title": "GE WE1M964 Genuine OEM Timer Knob (Grey) for GE Dryers",
+  "content": {
+   "overall_opinion": "The product received mixed feedback with a slight majority of positive reviews, indicating that the product is generally well-received, though with notable issues in durability and compatibility.",
+   "appreciated": [
+    {
+     "point": "The product fits perfectly and is delivered quickly, which are positive aspects.",
+     "supporting_review_ids": [
+      "R9af2bb0d3b34",
+      "R2565d7c78013"
+     ]
+    },
+    {
+     "point": "The product is priced reasonably and performs as expected.",
+     "supporting_review_ids": [
+      "R2565d7c78013"
+     ]
+    },
+    {
+     "point": "The product is delivered in a timely manner.",
+     "supporting_review_ids": [
+      "R2565d7c78013"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "The product is not durable and breaks easily.",
+     "supporting_review_ids": [
+      "R6c588e611eb4",
+      "Rbfc4eb46779e"
+     ]
+    },
+    {
+     "point": "The product does not fit the intended model.",
+     "supporting_review_ids": [
+      "R240631f235bb"
+     ]
+    },
+    {
+     "point": "The product does not match the advertised color.",
+     "supporting_review_ids": [
+      "R943eb189098c"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "compatibility",
+    "quality_durability",
+    "design_build",
+    "installation_setup",
+    "price_value"
+   ],
+   "improvement_areas": [
+    "Improving product durability",
+    "Ensuring product compatibility with intended models",
+    "Maintaining product color consistency"
+   ],
+   "recommendations": [
+    "Invest in more durable materials for the product",
+    "Ensure the product is compatible with the intended model",
+    "Maintain consistent product color across different models"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B00LHRAGHW",
+   "product_title": "GE WE1M964 Genuine OEM Timer Knob (Grey) for GE Dryers",
+   "total_reviews": 10,
+   "sentiment_counts": {
+    "positive": 4,
+    "negative": 5,
+    "neutral": 1,
+    "mixed": 0
+   },
+   "sentiment_percentages": {
+    "positive": 40.0,
+    "negative": 50.0,
+    "neutral": 10.0,
+    "mixed": 0.0
+   },
+   "average_rating": 3.0,
+   "aspect_stats": [
+    {
+     "aspect_category": "compatibility",
+     "mentions": 7,
+     "positive": 4,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": 0.286,
+     "top_aspect_names": [
+      "fit",
+      "fit with model",
+      "compatibility"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 1,
+     "net_sentiment": -0.667,
+     "top_aspect_names": [
+      "appearance",
+      "design",
+      "color"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "gift satisfaction",
+      "manufacturer authenticity"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "product condition",
+      "reliability",
+      "durability"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "installation"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "functionality"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "delivery speed"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "poor_durability": 2,
+    "product_defect": 2,
+    "compatibility_fit_issue": 1,
+    "not_as_described": 1
+   },
+   "complaint_percentages": {
+    "poor_durability": 20.0,
+    "product_defect": 20.0,
+    "compatibility_fit_issue": 10.0,
+    "not_as_described": 10.0
+   },
+   "reviews_with_complaints": 5,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R9af2bb0d3b34",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "Fit perfectly"
+    },
+    {
+     "review_id": "Rca38e22abe6c",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "it fits perfectly!!!!"
+    },
+    {
+     "review_id": "R2565d7c78013",
+     "aspect_category": "shipping_packaging",
+     "sentiment": "positive",
+     "quote": "fast delivery"
+    },
+    {
+     "review_id": "R2565d7c78013",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "great price"
+    },
+    {
+     "review_id": "R2565d7c78013",
+     "aspect_category": "other",
+     "sentiment": "positive",
+     "quote": "Thanks!"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R6c588e611eb4",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "I purchased this in March and it is broken already"
+    },
+    {
+     "review_id": "Rbfc4eb46779e",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "But it breaks. Our original dial lasted 3 years. The first replacement lasted 1 year. Now we are on to replacement #2"
+    },
+    {
+     "review_id": "R240631f235bb",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "Didn't fit my washer"
+    },
+    {
+     "review_id": "R943eb189098c",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "it should have been white and silver not gray & silver"
+    },
+    {
+     "review_id": "R943eb189098c",
+     "aspect_category": "design_build",
+     "sentiment": "negative",
+     "quote": "it should have been white and silver not gray & silver"
+    }
+   ],
+   "review_ids": [
+    "R2565d7c78013",
+    "R943eb189098c",
+    "R240631f235bb",
+    "Rd9197b0f97f8",
+    "R6c588e611eb4",
+    "Rca38e22abe6c",
+    "Rbfc4eb46779e",
+    "R9af2bb0d3b34",
+    "Rfb1f2dc5e3a0",
+    "Rdb3908582fd2"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 53.601,
+  "input_tokens": 1829,
+  "output_tokens": 488,
+  "created_at": "2026-11-12T02:45:34+00:00"
+ },
+ {
+  "summary_id": "f336d1f67313",
+  "product_id": "B01FZJXITU",
+  "product_title": "Exact Fit 279834 Dryer Gas Valve Ignition Solenoid Coil Kit - For Dryers Premium Replacement Part by DR Quality Parts",
+  "content": {
+   "overall_opinion": "The Exact Fit 279834 Dryer Gas Valve Ignition Solenoid Coil Kit by DR Quality Parts is generally well-received with a positive sentiment, as indicated by the majority of reviews (7 out of 9) praising its performance and price value. Users appreciate the product's ability to resolve issues and its affordability compared to original equipment manufacturer (OEM) parts. However, there are concerns about the durability, with 2 out of 9 reviews mentioning issues with the product lasting only a short time.",
+   "appreciated": [
+    {
+     "point": "The product performs well and resolves issues, as seen in the review [R38999856efc6]",
+     "supporting_review_ids": [
+      "R38999856efc6",
+      "R4cfc4943c692"
+     ]
+    },
+    {
+     "point": "The price is competitive and better than OEM parts, as highlighted in the review [R4cfc4943c692]",
+     "supporting_review_ids": [
+      "R4cfc4943c692",
+      "R38999856efc6"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "The product's durability is a concern, as evidenced by the review [R1f9a91f203a0]",
+     "supporting_review_ids": [
+      "R1f9a91f203a0"
+     ]
+    },
+    {
+     "point": "The product's durability is a concern, as seen in the review [Rcd6cf2a30f41]",
+     "supporting_review_ids": [
+      "Rcd6cf2a30f41"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "quality_durability",
+    "compatibility",
+    "installation_setup",
+    "price_value",
+    "installation_setup"
+   ],
+   "improvement_areas": [
+    "durability",
+    "installation_setup"
+   ],
+   "recommendations": [
+    "Ensure compatibility with the dryer model",
+    "Consider the durability of the product",
+    "Check installation instructions for proper setup"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B01FZJXITU",
+   "product_title": "Exact Fit 279834 Dryer Gas Valve Ignition Solenoid Coil Kit - For Dryers Premium Replacement Part by DR Quality Parts",
+   "total_reviews": 9,
+   "sentiment_counts": {
+    "positive": 7,
+    "negative": 2,
+    "neutral": 0,
+    "mixed": 0
+   },
+   "sentiment_percentages": {
+    "positive": 77.8,
+    "negative": 22.2,
+    "neutral": 0.0,
+    "mixed": 0.0
+   },
+   "average_rating": 4.22,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 4,
+     "positive": 4,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "coil replacement",
+      "resolution of issue",
+      "product performance"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 4,
+     "positive": 2,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "durability",
+      "reliability",
+      "quality of parts"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 2,
+     "positive": 2,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "fit with model",
+      "compatibility"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 2,
+     "positive": 2,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "installation",
+      "gas coil replacement"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 2,
+     "positive": 2,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "price",
+      "repair cost"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "delivery speed"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "poor_durability": 2
+   },
+   "complaint_percentages": {
+    "poor_durability": 22.2
+   },
+   "reviews_with_complaints": 2,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R38999856efc6",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "They corrected my sustained no-heat problem. So that is good"
+    },
+    {
+     "review_id": "R4cfc4943c692",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "Everything was as expected"
+    },
+    {
+     "review_id": "R4cfc4943c692",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "I fixed my broken dryer for less than $10!"
+    },
+    {
+     "review_id": "R38999856efc6",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "The price was better than OEM"
+    },
+    {
+     "review_id": "R38999856efc6",
+     "aspect_category": "quality_durability",
+     "sentiment": "positive",
+     "quote": "they have yet to fail"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R1f9a91f203a0",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "it only lasted 2 months"
+    },
+    {
+     "review_id": "Rcd6cf2a30f41",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "They don't last long as they use too"
+    }
+   ],
+   "review_ids": [
+    "Rc8e9321b91d0",
+    "R38999856efc6",
+    "R4cfc4943c692",
+    "R1f9a91f203a0",
+    "Rcd6cf2a30f41",
+    "Rd44b7d23ed2d",
+    "Rf27e1a585c8a",
+    "Re02ea487ce1d",
+    "R02a7a7ae8eda"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 62.976,
+  "input_tokens": 1564,
+  "output_tokens": 495,
+  "created_at": "2026-11-12T02:46:37+00:00"
+ },
+ {
+  "summary_id": "bab8e82fb693",
+  "product_id": "B01LZHJF55",
+  "product_title": "Tier1 ADQ36006101 Refrigerator Water & Air Filter Combo 3-pk | Replacement for LG LT700P, ADQ36006102, Kenmore 46-9690, 469690, ADQ36006101-S, RFC1200A, WSL-3, FML-3, LT120F, Fridge Filter",
+  "content": {
+   "overall_opinion": "The product received mixed feedback with a slightly negative overall sentiment, as indicated by the average star rating of 2.96 and the majority of reviews being negative (58.3%).",
+   "appreciated": [
+    {
+     "point": "Compatibility with models like LG LT700P, ADQ36006102, and Kenmore",
+     "supporting_review_ids": [
+      "R1ef02ad273c8",
+      "R501d66f1ef6a"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Performance issues, such as water tasting bad and filter leakage",
+     "supporting_review_ids": [
+      "R037724d9b441",
+      "R5a8ffd306570"
+     ]
+    },
+    {
+     "point": "Compatibility issues, including not fitting LG models and having a shorter top neck",
+     "supporting_review_ids": [
+      "R32742eca0789",
+      "R497632f2d356"
+     ]
+    },
+    {
+     "point": "Quality and durability concerns, with a questionable taste of the filtered water",
+     "supporting_review_ids": [
+      "R18568db84826"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "compatibility",
+    "price_value",
+    "quality_durability",
+    "customer_service",
+    "installation_setup",
+    "other",
+    "safety"
+   ],
+   "improvement_areas": [
+    "Improving the quality and taste of the filtered water",
+    "Ensuring proper compatibility with various models",
+    "Enhancing customer service and handling",
+    "Addressing quality and durability concerns",
+    "Ensuring proper installation and setup instructions",
+    "Improving the design and build quality"
+   ],
+   "recommendations": [
+    "Invest in a more reliable water filter that meets the needs of various models",
+    "Ensure the product is compatible with different fridge models",
+    "Provide better customer service and support",
+    "Ensure the product is durable and meets quality standards",
+    "Include clear installation and setup instructions",
+    "Consider redesigning the product for better user experience"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B01LZHJF55",
+   "product_title": "Tier1 ADQ36006101 Refrigerator Water & Air Filter Combo 3-pk | Replacement for LG LT700P, ADQ36006102, Kenmore 46-9690, 469690, ADQ36006101-S, RFC1200A, WSL-3, FML-3, LT120F, Fridge Filter",
+   "total_reviews": 24,
+   "sentiment_counts": {
+    "positive": 8,
+    "negative": 14,
+    "neutral": 1,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 33.3,
+    "negative": 58.3,
+    "neutral": 4.2,
+    "mixed": 4.2
+   },
+   "average_rating": 2.96,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 13,
+     "positive": 4,
+     "negative": 9,
+     "neutral": 0,
+     "net_sentiment": -0.385,
+     "top_aspect_names": [
+      "water quality",
+      "performance",
+      "air flow"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 10,
+     "positive": 6,
+     "negative": 5,
+     "neutral": 0,
+     "net_sentiment": 0.091,
+     "top_aspect_names": [
+      "fit",
+      "compatibility",
+      "fit with model"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 6,
+     "positive": 2,
+     "negative": 3,
+     "neutral": 1,
+     "net_sentiment": -0.167,
+     "top_aspect_names": [
+      "value",
+      "value for money",
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "filter quality",
+      "reliability",
+      "quality of product"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "delivery handling",
+      "purchase intention"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "installation_setup",
+      "installation"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 1,
+     "net_sentiment": 0.5,
+     "top_aspect_names": [
+      "time to determine",
+      "need met"
+     ]
+    },
+    {
+     "aspect_category": "safety",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "leakage",
+      "leaks"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "box damage",
+      "delivery speed"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "design"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "poor_value": 7,
+    "compatibility_fit_issue": 4,
+    "performance_issue": 3,
+    "product_defect": 3,
+    "customer_service_issue": 2,
+    "installation_difficulty": 2,
+    "not_as_described": 1,
+    "safety_concern": 1
+   },
+   "complaint_percentages": {
+    "poor_value": 29.2,
+    "compatibility_fit_issue": 16.7,
+    "performance_issue": 12.5,
+    "product_defect": 12.5,
+    "customer_service_issue": 8.3,
+    "installation_difficulty": 8.3,
+    "not_as_described": 4.2,
+    "safety_concern": 4.2
+   },
+   "reviews_with_complaints": 15,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R1ef02ad273c8",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "It fit"
+    },
+    {
+     "review_id": "R501d66f1ef6a",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "Fits my Kenmore fridge perfectly"
+    },
+    {
+     "review_id": "R0502a8705e7b",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "Worked like a charm"
+    },
+    {
+     "review_id": "R1ef02ad273c8",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "water tastes fine"
+    },
+    {
+     "review_id": "R67b3a85e49f1",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "reasonable price"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R037724d9b441",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "But now, i I can taste the chlorine. Water doesn't taste good"
+    },
+    {
+     "review_id": "R5a8ffd306570",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "one of the water filter cartridges leaked due to a dried out o-ring"
+    },
+    {
+     "review_id": "R32742eca0789",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "Does not fit LG models LSXS26366D"
+    },
+    {
+     "review_id": "R497632f2d356",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "However, beware the top neck of this filter is shorter than the OEM ADQ36006101 by maybe 2mm - and as a result, it will not snap into my LG refrigerator"
+    },
+    {
+     "review_id": "R18568db84826",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "I doubt about the quality of the filter because the taste of the filtered wafer is not as good as the bottle water"
+    }
+   ],
+   "review_ids": [
+    "R501d66f1ef6a",
+    "Rf78b0b51ef60",
+    "Rabd517bbd597",
+    "Rc6c0ad00bdab",
+    "R628b79d3e66d",
+    "R5c62da62976e",
+    "R32742eca0789",
+    "Rc9fe8357c51a",
+    "R0a25a8ab064f",
+    "R0502a8705e7b",
+    "Rcb67cddd9dfe",
+    "R497632f2d356",
+    "Rf7ada60e6ad3",
+    "R18568db84826",
+    "R5b2b2ab4d05e",
+    "R67b3a85e49f1",
+    "R037724d9b441",
+    "R5a8ffd306570",
+    "R1ef02ad273c8",
+    "Rce9b5b328005",
+    "R5384d311e50a",
+    "Rd3ed79d2bde5",
+    "R8653fd2c1224",
+    "R9f668c471918"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 78.809,
+  "input_tokens": 2204,
+  "output_tokens": 513,
+  "created_at": "2026-11-12T02:47:55+00:00"
+ },
+ {
+  "summary_id": "babb2ba2d15e",
+  "product_id": "B0759KR8JX",
+  "product_title": "UKF8001 Refrigerator Water Filter 4 Replacement For Maytag UKF8001AXX, EveryDrop EDR4RXD1, Whirlpool 4396395, Kenmore 46-9005, RWF0900A - By Freshflow Water (1 Pack)",
+  "content": {
+   "overall_opinion": "The UKF8001 Refrigerator Water Filter 4 Replacement by Freshflow Water has received a mixed to positive overall sentiment with 71.4% of reviews being positive and 28.6% negative. The average star rating is 3.93, indicating a moderate level of satisfaction.",
+   "appreciated": [
+    {
+     "point": "The filter performs well and the water tastes good (R3314d62a5df6, R57c890165322)",
+     "supporting_review_ids": [
+      "R3314d62a5df6",
+      "R57c890165322"
+     ]
+    },
+    {
+     "point": "It is compatible with the refrigerator and fits perfectly (R351847be0a2c)",
+     "supporting_review_ids": [
+      "R351847be0a2c"
+     ]
+    },
+    {
+     "point": "It offers good value for money, being 40% cheaper than the brand name filter (R351847be0a2c)",
+     "supporting_review_ids": [
+      "R351847be0a2c"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Performance issues occur after a few weeks (R14d348febf15)",
+     "supporting_review_ids": [
+      "R14d348febf15"
+     ]
+    },
+    {
+     "point": "Installation difficulties and noise issues (Rbed7569c1a28, Ra321a48b1949)",
+     "supporting_review_ids": [
+      "Rbed7569c1a28",
+      "Ra321a48b1949"
+     ]
+    },
+    {
+     "point": "Compatibility issues with the replacement light (Rbed7569c1a28)",
+     "supporting_review_ids": [
+      "Rbed7569c1a28"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "compatibility",
+    "price_value",
+    "customer_service",
+    "installation_setup"
+   ],
+   "improvement_areas": [
+    "Improving the installation process to reduce issues",
+    "Addressing compatibility and fit issues",
+    "Enhancing customer service for better support"
+   ],
+   "recommendations": [
+    "Customers should ensure compatibility with their refrigerator before purchasing",
+    "Consider the price value and compare with other brands",
+    "Seek assistance from customer service for installation and troubleshooting"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B0759KR8JX",
+   "product_title": "UKF8001 Refrigerator Water Filter 4 Replacement For Maytag UKF8001AXX, EveryDrop EDR4RXD1, Whirlpool 4396395, Kenmore 46-9005, RWF0900A - By Freshflow Water (1 Pack)",
+   "total_reviews": 14,
+   "sentiment_counts": {
+    "positive": 10,
+    "negative": 4,
+    "neutral": 0,
+    "mixed": 0
+   },
+   "sentiment_percentages": {
+    "positive": 71.4,
+    "negative": 28.6,
+    "neutral": 0.0,
+    "mixed": 0.0
+   },
+   "average_rating": 3.93,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 10,
+     "positive": 7,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": 0.4,
+     "top_aspect_names": [
+      "performance",
+      "filter performance",
+      "taste"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 5,
+     "positive": 4,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.6,
+     "top_aspect_names": [
+      "fit",
+      "compatibility",
+      "filter availability"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 5,
+     "positive": 5,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "repeated purchase",
+      "price comparison",
+      "cost savings"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 3,
+     "positive": 3,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "service",
+      "satisfaction",
+      "customer_service"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 3,
+     "positive": 2,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.333,
+     "top_aspect_names": [
+      "recommendation",
+      "comparison to original",
+      "product_relevance"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "installation",
+      "fit"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "ease of use"
+     ]
+    },
+    {
+     "aspect_category": "noise",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "noise level"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "longevity"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "delivery speed"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "compatibility_fit_issue": 2,
+    "performance_issue": 2,
+    "installation_difficulty": 1,
+    "noise_issue": 1,
+    "poor_value": 1
+   },
+   "complaint_percentages": {
+    "compatibility_fit_issue": 14.3,
+    "performance_issue": 14.3,
+    "installation_difficulty": 7.1,
+    "noise_issue": 7.1,
+    "poor_value": 7.1
+   },
+   "reviews_with_complaints": 4,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R3314d62a5df6",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "does the job"
+    },
+    {
+     "review_id": "R57c890165322",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "This one flows as it should and the water tastes just as good"
+    },
+    {
+     "review_id": "R3314d62a5df6",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "costs far less than the brand the manufacturer recommended"
+    },
+    {
+     "review_id": "R351847be0a2c",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "Saves us money, at 40% less expensive than the brand name filter"
+    },
+    {
+     "review_id": "R351847be0a2c",
+     "aspect_category": "compatibility",
+     "sentiment": "positive",
+     "quote": "Fits perfectly and no issues"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R14d348febf15",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "I purchased this filter based on reviews and it was a let down after few weeks"
+    },
+    {
+     "review_id": "Rbed7569c1a28",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "my replacement light in front of fridge will not go off with this filter in"
+    },
+    {
+     "review_id": "Rbed7569c1a28",
+     "aspect_category": "installation_setup",
+     "sentiment": "negative",
+     "quote": "it is a smidge shorter that the original so had to fold a paper towel and place it in the holder to keep it from falling out"
+    },
+    {
+     "review_id": "Ra321a48b1949",
+     "aspect_category": "installation_setup",
+     "sentiment": "negative",
+     "quote": "After about 2 hours it would only trickle a little water and make a horrible banging noise"
+    },
+    {
+     "review_id": "Ra321a48b1949",
+     "aspect_category": "noise",
+     "sentiment": "negative",
+     "quote": "make a horrible banging noise"
+    }
+   ],
+   "review_ids": [
+    "Rd138ecda765a",
+    "R5ad500fdc7d5",
+    "R351847be0a2c",
+    "R8dc21b608cfd",
+    "R820c7cfecfed",
+    "Ra321a48b1949",
+    "R8c1876c5eaad",
+    "Rc03b62824f8e",
+    "R57c890165322",
+    "R14d348febf15",
+    "R3314d62a5df6",
+    "Rbed7569c1a28",
+    "R5b3e97930f6f",
+    "Re48bfde136c8"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 95.005,
+  "input_tokens": 2094,
+  "output_tokens": 604,
+  "created_at": "2026-11-12T02:49:30+00:00"
+ },
+ {
+  "summary_id": "b575f6ccde9d",
+  "product_id": "B07XG8QQL5",
+  "product_title": "Replace Samsung Heating Element DC47-00019A Dryer Heating Element dryer thermal fuse DC96-00887A DC47-00016A Thermal Fuse DC47-00018A Thermostat -fit for dv42h5000ew/a3 dv45h7000ew/a2 dv48h7400ew/a2",
+  "content": {
+   "overall_opinion": "The dryer has received mixed reviews with a majority of users experiencing performance issues and poor durability, leading to frequent complaints and negative sentiment.",
+   "appreciated": [
+    {
+     "point": "Installation setup is generally easy and quick, with some users reporting a 1.5-hour installation time resulting in a new-like dryer.",
+     "supporting_review_ids": [
+      "R1d2f642f8631",
+      "R0e0c4ec7a249"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Performance issues are the most common complaint, with users experiencing heating coil failure and sensor malfunctions.",
+     "supporting_review_ids": [
+      "R86c40cc45487",
+      "R30ffca1cf480",
+      "R00181bfd96a7"
+     ]
+    },
+    {
+     "point": "Quality and durability are also major concerns, with users reporting the product stopping working within a month of purchase.",
+     "supporting_review_ids": [
+      "R5abf71521381",
+      "R9d36282edb42"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "installation_setup",
+    "performance",
+    "quality_durability"
+   ],
+   "improvement_areas": [
+    "Improving the durability of the product",
+    "Enhancing the installation process",
+    "Addressing performance issues"
+   ],
+   "recommendations": [
+    "Invest in more durable materials for the heating element and dryer components",
+    "Optimize the installation process to reduce time and complexity",
+    "Implement a more robust quality control process to ensure product reliability"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B07XG8QQL5",
+   "product_title": "Replace Samsung Heating Element DC47-00019A Dryer Heating Element dryer thermal fuse DC96-00887A DC47-00016A Thermal Fuse DC47-00018A Thermostat -fit for dv42h5000ew/a3 dv45h7000ew/a2 dv48h7400ew/a2",
+   "total_reviews": 19,
+   "sentiment_counts": {
+    "positive": 4,
+    "negative": 13,
+    "neutral": 1,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 21.1,
+    "negative": 68.4,
+    "neutral": 5.3,
+    "mixed": 5.3
+   },
+   "average_rating": 2.63,
+   "aspect_stats": [
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 11,
+     "positive": 6,
+     "negative": 4,
+     "neutral": 1,
+     "net_sentiment": 0.182,
+     "top_aspect_names": [
+      "installation",
+      "replacement parts",
+      "installation difficulty"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 10,
+     "positive": 4,
+     "negative": 7,
+     "neutral": 0,
+     "net_sentiment": -0.273,
+     "top_aspect_names": [
+      "heating performance",
+      "heating element",
+      "dryer performance"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 9,
+     "positive": 1,
+     "negative": 8,
+     "neutral": 0,
+     "net_sentiment": -0.778,
+     "top_aspect_names": [
+      "durability",
+      "reliability",
+      "product quality"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 4,
+     "positive": 0,
+     "negative": 4,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "price value",
+      "warranty",
+      "cost"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "warranty",
+      "warranty coverage",
+      "seller support"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 1,
+     "net_sentiment": 0.5,
+     "top_aspect_names": [
+      "description accuracy",
+      "replaced with another brand"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "compatibility_fit_issue"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "usage"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "performance_issue": 6,
+    "poor_durability": 6,
+    "product_defect": 6,
+    "installation_difficulty": 5,
+    "poor_value": 5,
+    "customer_service_issue": 3,
+    "not_as_described": 1
+   },
+   "complaint_percentages": {
+    "performance_issue": 31.6,
+    "poor_durability": 31.6,
+    "product_defect": 31.6,
+    "installation_difficulty": 26.3,
+    "poor_value": 26.3,
+    "customer_service_issue": 15.8,
+    "not_as_described": 5.3
+   },
+   "reviews_with_complaints": 13,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R1d2f642f8631",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "1.5 hr install time and dryer has worked like it’s brand new!!!"
+    },
+    {
+     "review_id": "R0e0c4ec7a249",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "It was easy to install"
+    },
+    {
+     "review_id": "R30ffca1cf480",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "The dryer is back to business"
+    },
+    {
+     "review_id": "R86c40cc45487",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "fixed my problem instantly"
+    },
+    {
+     "review_id": "R30ffca1cf480",
+     "aspect_category": "quality_durability",
+     "sentiment": "positive",
+     "quote": "Good quality product"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R82d461b488ed",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "Heating coil went completely out after about a week of use"
+    },
+    {
+     "review_id": "R00181bfd96a7",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "One of the sensors was dead in arrival DOA"
+    },
+    {
+     "review_id": "R5abf71521381",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "Purchased Nov. 15 and it’s already stopped working by Dec. 09"
+    },
+    {
+     "review_id": "R9d36282edb42",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "didn’t last and a month I have to replace it"
+    },
+    {
+     "review_id": "R00181bfd96a7",
+     "aspect_category": "installation_setup",
+     "sentiment": "negative",
+     "quote": "One of the sensors was dead in arrival DOA"
+    }
+   ],
+   "review_ids": [
+    "Rbce9e17ff151",
+    "R30ffca1cf480",
+    "R22baa403f45a",
+    "R1d2f642f8631",
+    "R0e0c4ec7a249",
+    "R5abf71521381",
+    "R6d041ea994d5",
+    "Rb1ed3e0396d5",
+    "Ra3facd6f1a25",
+    "R00181bfd96a7",
+    "R08a7af20f611",
+    "Rceac4e3bbb64",
+    "R86c40cc45487",
+    "R9d36282edb42",
+    "R5075e8e71b18",
+    "R82d461b488ed",
+    "R26ecf863469f",
+    "Rd1f7c1ea198e",
+    "R20537dad87ce"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 67.071,
+  "input_tokens": 2014,
+  "output_tokens": 390,
+  "created_at": "2026-11-12T02:50:37+00:00"
+ },
+ {
+  "summary_id": "0d9eb10c50a7",
+  "product_id": "B09WWM1WLS",
+  "product_title": "Napco Made in America 279838 AND 279816 279838 and 279816 Dryer Heating Element and Thermostat Combo Pack",
+  "content": {
+   "overall_opinion": "The product received mixed reviews with a slightly negative overall sentiment, as indicated by the average star rating of 3.11 and the 47.4% of negative reviews. Users appreciated the performance and installation setup, but had issues with compatibility, quality/durability, and performance.",
+   "appreciated": [
+    {
+     "point": "The product works well and is easy to install.",
+     "supporting_review_ids": [
+      "R0a55b9a0f30b",
+      "R7c1299c6e481"
+     ]
+    },
+    {
+     "point": "The product has good performance.",
+     "supporting_review_ids": [
+      "Rc428a2344ba7",
+      "R8c6d7aed9484"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "There are compatibility issues with the product.",
+     "supporting_review_ids": [
+      "R237167965ef9",
+      "Rc6cb1c5385f5"
+     ]
+    },
+    {
+     "point": "The product's quality and durability are poor.",
+     "supporting_review_ids": [
+      "R6fae6e36a9fd",
+      "R4db5ae1e77c2",
+      "Rce9458ed21a2"
+     ]
+    },
+    {
+     "point": "The product's performance is inconsistent and it stops working after a short period.",
+     "supporting_review_ids": [
+      "Rce9458ed21a2"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "compatibility",
+    "performance",
+    "installation_setup",
+    "quality_durability",
+    "ease_of_use",
+    "other"
+   ],
+   "improvement_areas": [
+    "Improving the compatibility and fit of the product",
+    "Enhancing the quality and durability of the product",
+    "Ensuring consistent and reliable performance of the product"
+   ],
+   "recommendations": [
+    "Ensure compatibility with the user's dryer model",
+    "Increase the durability of the product",
+    "Ensure consistent and reliable performance of the product"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B09WWM1WLS",
+   "product_title": "Napco Made in America 279838 AND 279816 279838 and 279816 Dryer Heating Element and Thermostat Combo Pack",
+   "total_reviews": 19,
+   "sentiment_counts": {
+    "positive": 7,
+    "negative": 9,
+    "neutral": 2,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 36.8,
+    "negative": 47.4,
+    "neutral": 10.5,
+    "mixed": 5.3
+   },
+   "average_rating": 3.11,
+   "aspect_stats": [
+    {
+     "aspect_category": "compatibility",
+     "mentions": 8,
+     "positive": 2,
+     "negative": 5,
+     "neutral": 1,
+     "net_sentiment": -0.375,
+     "top_aspect_names": [
+      "compatibility",
+      "fit with model",
+      "thermostat inclusion"
+     ]
+    },
+    {
+     "aspect_category": "performance",
+     "mentions": 7,
+     "positive": 5,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": 0.25,
+     "top_aspect_names": [
+      "performance",
+      "heating element",
+      "thermostats"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 5,
+     "positive": 4,
+     "negative": 0,
+     "neutral": 1,
+     "net_sentiment": 0.8,
+     "top_aspect_names": [
+      "installation",
+      "connectors"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 5,
+     "positive": 2,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -0.2,
+     "top_aspect_names": [
+      "durability",
+      "longevity",
+      "construction quality"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 3,
+     "positive": 1,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -0.333,
+     "top_aspect_names": [
+      "packing material",
+      "delivery speed",
+      "condition upon arrival"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 2,
+     "positive": 1,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "ease of use",
+      "instructions for use"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "thermostat description",
+      "return"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "price"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "not_as_described": 4,
+    "compatibility_fit_issue": 2,
+    "installation_difficulty": 2,
+    "performance_issue": 2,
+    "poor_durability": 2,
+    "missing_parts": 1,
+    "poor_value": 1
+   },
+   "complaint_percentages": {
+    "not_as_described": 21.1,
+    "compatibility_fit_issue": 10.5,
+    "installation_difficulty": 10.5,
+    "performance_issue": 10.5,
+    "poor_durability": 10.5,
+    "missing_parts": 5.3,
+    "poor_value": 5.3
+   },
+   "reviews_with_complaints": 10,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "Rc428a2344ba7",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "Works great! My dryer is much warmer (hot!) and dries like it should."
+    },
+    {
+     "review_id": "R8c6d7aed9484",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "works very well"
+    },
+    {
+     "review_id": "R0a55b9a0f30b",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "Was fairly easy to install"
+    },
+    {
+     "review_id": "R7c1299c6e481",
+     "aspect_category": "installation_setup",
+     "sentiment": "positive",
+     "quote": "easy to install"
+    },
+    {
+     "review_id": "R7c1299c6e481",
+     "aspect_category": "quality_durability",
+     "sentiment": "positive",
+     "quote": "is still working a couple of months later"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R237167965ef9",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "Fuses where different couldn't use"
+    },
+    {
+     "review_id": "Rc6cb1c5385f5",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "Combo package where the Thermostat was completely missing from the package"
+    },
+    {
+     "review_id": "R6fae6e36a9fd",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "Construction of this item is definitely unpolished with burrs, razor sharp edges and the like"
+    },
+    {
+     "review_id": "R4db5ae1e77c2",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "This one didn't last all that long"
+    },
+    {
+     "review_id": "Rce9458ed21a2",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "it has stopped working after only a few weeks"
+    }
+   ],
+   "review_ids": [
+    "Rec0eb2ee9549",
+    "Rc6cb1c5385f5",
+    "Ra40c1ab0f3f0",
+    "R237167965ef9",
+    "R79c96d295b59",
+    "R7c1299c6e481",
+    "R6fae6e36a9fd",
+    "R9520ceea22d8",
+    "Rce9458ed21a2",
+    "Rd5044afe20bf",
+    "Rc428a2344ba7",
+    "Re0f37ba2507a",
+    "Rea86c1ff9060",
+    "Rb3862f447830",
+    "Rddab3455e7cf",
+    "R4db5ae1e77c2",
+    "R8c6d7aed9484",
+    "R0a55b9a0f30b",
+    "Rc7e2b6c1dd14"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 89.384,
+  "input_tokens": 1959,
+  "output_tokens": 518,
+  "created_at": "2026-11-12T02:52:07+00:00"
+ },
+ {
+  "summary_id": "a61df84f4901",
+  "product_id": "B0BTY63SFY",
+  "product_title": "77L Deviled Egg Containers with Lid, (Set of 2), Plastic Egg Holder for Refrigerator for 48 Eggs, Clear Storage Deviled Egg Tray Carrier, Fridge Stackable Countertop Portable Egg Dispenser",
+  "content": {
+   "overall_opinion": "The 77L Deviled Egg Containers with Lid received a positive overall sentiment with an average star rating of 4.2, indicating that customers generally found the product satisfactory. The most frequently mentioned aspects were performance, ease of use, and size capacity, with positive sentiments from 80% of the reviews. Customers appreciated the container's functionality, convenience, and capacity for storing eggs. However, there were some complaints regarding compatibility and performance issues, with 67% of negative reviews mentioning these aspects. Customers also had concerns about the installation setup and usability.",
+   "appreciated": [
+    {
+     "point": "The containers are great for storing lots of eggs and work well for stacking and transporting.",
+     "supporting_review_ids": [
+      "R1c492cdbe101",
+      "R20460c8c3dfd"
+     ]
+    },
+    {
+     "point": "The containers are flat and easy to store and stack in the fridge.",
+     "supporting_review_ids": [
+      "R191eedb7fda7",
+      "R24b8b37aae15"
+     ]
+    },
+    {
+     "point": "The containers are suitable for holding larger eggs and fit well in the fridge.",
+     "supporting_review_ids": [
+      "R80f511ff60c4"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "The containers do not fit properly for larger eggs and are too tall for the container.",
+     "supporting_review_ids": [
+      "R90688f008c98",
+      "R80f511ff60c4"
+     ]
+    },
+    {
+     "point": "The lids do not seal properly and the containers do not stack or snap together as expected.",
+     "supporting_review_ids": [
+      "Rd1d0ae81cb05",
+      "Rbd2a0049f12f"
+     ]
+    },
+    {
+     "point": "The containers have small legs that do not fit properly.",
+     "supporting_review_ids": [
+      "Rbd2a0049f12f"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "ease_of_use",
+    "size_capacity",
+    "compatibility",
+    "installation_setup",
+    "quality_durability"
+   ],
+   "improvement_areas": [
+    "Improving the compatibility and fit for larger eggs and containers.",
+    "Ensuring proper sealing of the lids.",
+    "Optimizing the installation setup for better fit and stability.",
+    "Enhancing the design and material quality for durability.",
+    "Improving the stacking and snap-together functionality.",
+    "Ensuring the containers fit properly with the included legs."
+   ],
+   "recommendations": [
+    "Customers should ensure that the containers are compatible with the size of the eggs they intend to store.",
+    "Consider providing instructions or tips for proper lid sealing.",
+    "Ensure that the included legs are compatible with the container design.",
+    "Invest in better material quality and design for increased durability.",
+    "Consider redesigning the stacking and snap-together functionality.",
+    "Ensure that the included legs fit properly with the container design."
+   ]
+  },
+  "aggregate": {
+   "product_id": "B0BTY63SFY",
+   "product_title": "77L Deviled Egg Containers with Lid, (Set of 2), Plastic Egg Holder for Refrigerator for 48 Eggs, Clear Storage Deviled Egg Tray Carrier, Fridge Stackable Countertop Portable Egg Dispenser",
+   "total_reviews": 15,
+   "sentiment_counts": {
+    "positive": 13,
+    "negative": 2,
+    "neutral": 0,
+    "mixed": 0
+   },
+   "sentiment_percentages": {
+    "positive": 86.7,
+    "negative": 13.3,
+    "neutral": 0.0,
+    "mixed": 0.0
+   },
+   "average_rating": 4.2,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 10,
+     "positive": 8,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": 0.6,
+     "top_aspect_names": [
+      "container functionality",
+      "multiple uses",
+      "capacity for chicken eggs"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 8,
+     "positive": 7,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.75,
+     "top_aspect_names": [
+      "storage convenience",
+      "convenience",
+      "lid removal"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 5,
+     "positive": 4,
+     "negative": 0,
+     "neutral": 1,
+     "net_sentiment": 0.8,
+     "top_aspect_names": [
+      "design",
+      "lid material",
+      "container design"
+     ]
+    },
+    {
+     "aspect_category": "size_capacity",
+     "mentions": 5,
+     "positive": 5,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "thickness",
+      "capacity",
+      "size and grip"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 4,
+     "positive": 2,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": 0.0,
+     "top_aspect_names": [
+      "capacity for duck eggs",
+      "fit",
+      "compatibility with packaging"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 4,
+     "positive": 3,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": 0.5,
+     "top_aspect_names": [
+      "usefulness",
+      "purchase intention",
+      "dishwasher compatibility"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 3,
+     "positive": 3,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "sturdiness",
+      "material quality"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "foot alignment",
+      "leg size"
+     ]
+    },
+    {
+     "aspect_category": "safety",
+     "mentions": 1,
+     "positive": 1,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "material safety"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "compatibility_fit_issue": 1,
+    "not_as_described": 1,
+    "performance_issue": 1,
+    "usability_issue": 1
+   },
+   "complaint_percentages": {
+    "compatibility_fit_issue": 6.7,
+    "not_as_described": 6.7,
+    "performance_issue": 6.7,
+    "usability_issue": 6.7
+   },
+   "reviews_with_complaints": 3,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "R191eedb7fda7",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "it worked!"
+    },
+    {
+     "review_id": "R1c492cdbe101",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "They're great for storing lots of eggs"
+    },
+    {
+     "review_id": "Rfb9c8485dff0",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "Great idea! I love that this container is flat and can be easily stored/stacked on all the shelves of fridge"
+    },
+    {
+     "review_id": "R20460c8c3dfd",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "being able to fully prepare everything at home and then transport it to the event without any fuss is MUCH more convenient"
+    },
+    {
+     "review_id": "R24b8b37aae15",
+     "aspect_category": "size_capacity",
+     "sentiment": "positive",
+     "quote": "The size is just convenient to hold in two hands and also to fit in the fridge"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R80f511ff60c4",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "A view put larger eggs the let will not close properly"
+    },
+    {
+     "review_id": "R90688f008c98",
+     "aspect_category": "compatibility",
+     "sentiment": "negative",
+     "quote": "however they’re too tall for the container!"
+    },
+    {
+     "review_id": "Rd1d0ae81cb05",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "The lids do not seal at all!!! Was very disappointed in that"
+    },
+    {
+     "review_id": "Rbd2a0049f12f",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "I hoped they would stack better, even snap together but that isn't the case"
+    },
+    {
+     "review_id": "R80f511ff60c4",
+     "aspect_category": "installation_setup",
+     "sentiment": "negative",
+     "quote": "Only small legs fit"
+    }
+   ],
+   "review_ids": [
+    "R191eedb7fda7",
+    "Rfb9c8485dff0",
+    "R90688f008c98",
+    "R20460c8c3dfd",
+    "Rb55829f3cf17",
+    "Rbd2a0049f12f",
+    "Rd1d0ae81cb05",
+    "R1de2f9ca542b",
+    "R1c492cdbe101",
+    "Ra35744a92fff",
+    "R24b8b37aae15",
+    "R755425de6ae7",
+    "R80f511ff60c4",
+    "R4bd55a149bd3",
+    "R2ea88646e424"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 124.773,
+  "input_tokens": 1998,
+  "output_tokens": 704,
+  "created_at": "2026-11-12T02:54:12+00:00"
+ },
+ {
+  "summary_id": "95d7c1c7e9d5",
+  "product_id": "B0C5G1WGBN",
+  "product_title": "BLACK+DECKER BCED37 Compact Dryer for Standard Wall Outlet, Small, 4 Modes, Load Volume 13.2 lbs., White",
+  "content": {
+   "overall_opinion": "The overall sentiment of the reviews is predominantly negative, with a few positive reviews indicating that the product works well but faces significant issues with performance, ease of use, and durability.",
+   "appreciated": [
+    {
+     "point": "The product works well for its intended purpose, as evidenced by positive reviews like [Rf06c65f9d7b5].",
+     "supporting_review_ids": [
+      "Rf06c65f9d7b5"
+     ]
+    },
+    {
+     "point": "It offers good value for money, as seen in reviews like [R4cc079d33dae].",
+     "supporting_review_ids": [
+      "R4cc079d33dae"
+     ]
+    }
+   ],
+   "complaints": [
+    {
+     "point": "Performance issues are a major concern, as evidenced by reviews like [R1aa0f7f16a62] and [R5f83464aea35].",
+     "supporting_review_ids": [
+      "R1aa0f7f16a62",
+      "R5f83464aea35"
+     ]
+    },
+    {
+     "point": "Ease of use is problematic, as seen in reviews like [R71252accdac5] and [R8e57244c4737].",
+     "supporting_review_ids": [
+      "R71252accdac5",
+      "R8e57244c4737"
+     ]
+    },
+    {
+     "point": "Durability is a significant issue, as indicated by reviews like [Re9988061c1c9].",
+     "supporting_review_ids": [
+      "Re9988061c1c9"
+     ]
+    }
+   ],
+   "frequent_aspects": [
+    "performance",
+    "ease_of_use",
+    "quality_durability"
+   ],
+   "improvement_areas": [
+    "Addressing performance issues",
+    "Improving ease of use",
+    "Enhancing durability"
+   ],
+   "recommendations": [
+    "Invest in a separate vent for users with small bathroom windows",
+    "Ensure clear and visible controls for better ease of use",
+    "Increase durability testing during the manufacturing process"
+   ]
+  },
+  "aggregate": {
+   "product_id": "B0C5G1WGBN",
+   "product_title": "BLACK+DECKER BCED37 Compact Dryer for Standard Wall Outlet, Small, 4 Modes, Load Volume 13.2 lbs., White",
+   "total_reviews": 22,
+   "sentiment_counts": {
+    "positive": 8,
+    "negative": 13,
+    "neutral": 0,
+    "mixed": 1
+   },
+   "sentiment_percentages": {
+    "positive": 36.4,
+    "negative": 59.1,
+    "neutral": 0.0,
+    "mixed": 4.5
+   },
+   "average_rating": 2.68,
+   "aspect_stats": [
+    {
+     "aspect_category": "performance",
+     "mentions": 16,
+     "positive": 4,
+     "negative": 14,
+     "neutral": 0,
+     "net_sentiment": -0.556,
+     "top_aspect_names": [
+      "drying time",
+      "performance",
+      "effectiveness"
+     ]
+    },
+    {
+     "aspect_category": "ease_of_use",
+     "mentions": 8,
+     "positive": 1,
+     "negative": 6,
+     "neutral": 1,
+     "net_sentiment": -0.625,
+     "top_aspect_names": [
+      "operation",
+      "frequency of lint removal",
+      "button clarity"
+     ]
+    },
+    {
+     "aspect_category": "price_value",
+     "mentions": 4,
+     "positive": 4,
+     "negative": 0,
+     "neutral": 0,
+     "net_sentiment": 1.0,
+     "top_aspect_names": [
+      "price value",
+      "cost savings",
+      "price"
+     ]
+    },
+    {
+     "aspect_category": "compatibility",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "usefulness",
+      "replacement parts",
+      "missing parts"
+     ]
+    },
+    {
+     "aspect_category": "other",
+     "mentions": 3,
+     "positive": 1,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -0.333,
+     "top_aspect_names": [
+      "finance",
+      "return policy",
+      "portability"
+     ]
+    },
+    {
+     "aspect_category": "quality_durability",
+     "mentions": 3,
+     "positive": 0,
+     "negative": 3,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "durability",
+      "initial quality"
+     ]
+    },
+    {
+     "aspect_category": "size_capacity",
+     "mentions": 3,
+     "positive": 1,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -0.333,
+     "top_aspect_names": [
+      "size"
+     ]
+    },
+    {
+     "aspect_category": "customer_service",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "refund process",
+      "return policy"
+     ]
+    },
+    {
+     "aspect_category": "installation_setup",
+     "mentions": 2,
+     "positive": 0,
+     "negative": 2,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "filter removal",
+      "compatibility"
+     ]
+    },
+    {
+     "aspect_category": "design_build",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "design"
+     ]
+    },
+    {
+     "aspect_category": "noise",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "startup noise"
+     ]
+    },
+    {
+     "aspect_category": "safety",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "physical damage"
+     ]
+    },
+    {
+     "aspect_category": "shipping_packaging",
+     "mentions": 1,
+     "positive": 0,
+     "negative": 1,
+     "neutral": 0,
+     "net_sentiment": -1.0,
+     "top_aspect_names": [
+      "delivery condition"
+     ]
+    }
+   ],
+   "complaint_counts": {
+    "installation_difficulty": 6,
+    "performance_issue": 6,
+    "product_defect": 6,
+    "poor_durability": 5,
+    "poor_value": 5,
+    "customer_service_issue": 3,
+    "missing_parts": 2,
+    "compatibility_fit_issue": 1,
+    "not_as_described": 1,
+    "safety_concern": 1,
+    "usability_issue": 1
+   },
+   "complaint_percentages": {
+    "installation_difficulty": 27.3,
+    "performance_issue": 27.3,
+    "product_defect": 27.3,
+    "poor_durability": 22.7,
+    "poor_value": 22.7,
+    "customer_service_issue": 13.6,
+    "missing_parts": 9.1,
+    "compatibility_fit_issue": 4.5,
+    "not_as_described": 4.5,
+    "safety_concern": 4.5,
+    "usability_issue": 4.5
+   },
+   "reviews_with_complaints": 15,
+   "aspect_trend": [],
+   "positive_evidence": [
+    {
+     "review_id": "Rd0cd50eb1c72",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "I love this machine. Granted i bought a seperate vent for our small bathroom window, but other then that small thing, it works perfectly."
+    },
+    {
+     "review_id": "Rf06c65f9d7b5",
+     "aspect_category": "performance",
+     "sentiment": "positive",
+     "quote": "Overall is working great"
+    },
+    {
+     "review_id": "R1a5040c839f6",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "Yep great price"
+    },
+    {
+     "review_id": "R83348325447b",
+     "aspect_category": "price_value",
+     "sentiment": "positive",
+     "quote": "Great dryer for half the price of a full-size"
+    },
+    {
+     "review_id": "R4cc079d33dae",
+     "aspect_category": "ease_of_use",
+     "sentiment": "positive",
+     "quote": "Worked good the first day using it again for the second time"
+    }
+   ],
+   "negative_evidence": [
+    {
+     "review_id": "R1aa0f7f16a62",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "I haven’t had this dryer a year and it has quit working already"
+    },
+    {
+     "review_id": "R5f83464aea35",
+     "aspect_category": "performance",
+     "sentiment": "negative",
+     "quote": "The timer knob is so basic and not the wisest design. You get 200 minutes total if you'd wish- However, only 80 of those minutes are on the warm to hot temp and then the twmp starts coooling down as the minutes reduce...."
+    },
+    {
+     "review_id": "R71252accdac5",
+     "aspect_category": "ease_of_use",
+     "sentiment": "negative",
+     "quote": "Other than the location of the control knob it's a great dryer"
+    },
+    {
+     "review_id": "R8e57244c4737",
+     "aspect_category": "ease_of_use",
+     "sentiment": "negative",
+     "quote": "The dial is on the bottom {weird} so you cant really see it unless you constantly bend down"
+    },
+    {
+     "review_id": "Re9988061c1c9",
+     "aspect_category": "quality_durability",
+     "sentiment": "negative",
+     "quote": "I only had this dryer for 3 months and it gave out"
+    }
+   ],
+   "review_ids": [
+    "Re9988061c1c9",
+    "R1aa0f7f16a62",
+    "R4cc079d33dae",
+    "Rbe5f5a6a52de",
+    "R97fcbaff458f",
+    "Rdf9f0693026b",
+    "Rc8dc7a9b9652",
+    "R8e57244c4737",
+    "Rf2e0b3764bde",
+    "R1a5040c839f6",
+    "R7dfd18bc465e",
+    "R295f92a95307",
+    "Rfaac2709c44e",
+    "R699eef662f85",
+    "Rf06c65f9d7b5",
+    "R83348325447b",
+    "Rbf217a6db122",
+    "Rb3975bb1c59a",
+    "R5f83464aea35",
+    "Rf16750f0ac7a",
+    "Rd0cd50eb1c72",
+    "R71252accdac5"
+   ]
+  },
+  "source_extraction": "dataset__few_shot__qwen2.5-3b__v1",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "is_mock": false,
+  "prompt_version": "v1",
+  "repair_attempts": 0,
+  "latency_s": 106.491,
+  "input_tokens": 2438,
+  "output_tokens": 526,
+  "created_at": "2026-11-12T02:55:58+00:00"
+ }
+]
