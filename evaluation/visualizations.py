@@ -131,12 +131,12 @@ def confusion_heatmap(matrix: list[list[int]], labels: list[str], title: str | N
         go.Heatmap(
             z=matrix, x=labels, y=labels, text=matrix, texttemplate="%{text}", textfont=dict(color=COLORS["text"], size=12),
             colorscale=[[0, COLORS["surface_2"]], [1, COLORS["accent_hover"]]], showscale=False, xgap=2, ygap=2,
-            hovertemplate="human: %{y}<br>predicted: %{x}<br>count: %{z}<extra></extra>",
+            hovertemplate="reference: %{y}<br>predicted: %{x}<br>count: %{z}<extra></extra>",
         )
     )
     fig.update_yaxes(autorange="reversed", showgrid=False)
     fig.update_xaxes(showgrid=False, side="bottom")
-    return _finish(fig, title, 300, xaxis_title="predicted", yaxis_title="human label")
+    return _finish(fig, title, 300, xaxis_title="predicted", yaxis_title="reference label")
 
 
 def metric_comparison_bar(table: pd.DataFrame, metrics: list[str], title: str | None = None) -> go.Figure:

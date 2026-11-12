@@ -4,8 +4,11 @@
 * ``AnnotationStore`` persists labels in ``data/annotations/annotations.json``
   (atomic writes) and imports/exports CSV.
 
-Labels saved here are produced ONLY by a human through the UI or the CSV
-template. Nothing in this project writes model predictions into this store.
+Labels saved through the UI or the CSV template are human labels. Nothing in the
+pipeline writes model predictions into this store. A label file may also contain
+documented AI-assisted reference labels (per-record ``notes`` beginning with
+``AI_ASSISTED_MARKER`` and ``meta.annotation_method``); ``label_provenance``
+reports the split so the app and reports never call them "human" labels.
 """
 
 from __future__ import annotations
@@ -26,6 +29,23 @@ ANNOTATION_CSV_COLUMNS = [
     "review_id", "product_id", "review_text", "overall_sentiment", "aspects",
     "complaint_categories", "annotator", "notes", "status", "annotated_at",
 ]
+AI_ASSISTED_MARKER = "AI-assisted label"
+
+
+def label_provenance(annotations) -> dict:
+    """Count human vs AI-assisted labels (marker at the start of ``notes``)."""
+    ai = sum(1 for a in annotations if (a.notes or "").startswith(AI_ASSISTED_MARKER))
+    return {"total": len(annotations), "human": len(annotations) - ai, "ai_assisted": ai}
+
+
+def provenance_text(prov: dict) -> str:
+    if not prov.get("total"):
+        return "no reference labels"
+    if not prov["ai_assisted"]:
+        return f"{prov['total']} human labels"
+    return f"{prov['total']} reference labels: {prov['human']} human, {prov['ai_assisted']} AI-assisted (documented in annotations.json)"
+
+
 TEMPLATE_HELP = (
     "aspects format: 'category:sentiment; category:sentiment' e.g. 'noise:negative; performance:positive'. "
     "complaint_categories format: 'cat1; cat2'. Leave both empty if none."
@@ -122,9 +142,10 @@ class AnnotationStore:
             self._flush()
 
     def _flush(self) -> None:
+        # Keep an existing description (e.g. one documenting AI-assisted labels); only new files get the default.
+        self.meta.setdefault("description", "Human-created ground-truth labels. Never populated from model output.")
         self.meta.update(
             {
-                "description": "Human-created ground-truth labels. Never populated from model output.",
                 "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "count": len(self._items),
             }
@@ -146,7 +167,10 @@ class AnnotationStore:
         ids = set(sample_ids)
         done = [a for a in self._items.values() if a.review_id in ids]
         complete = sum(a.status == "complete" for a in done)
-        return {"total": len(ids), "complete": complete, "flagged": len(done) - complete, "remaining": len(ids) - len(done)}
+        flagged = len(done) - complete
+        # Flagged reviews are excluded from evaluation, so readiness is measured against the evaluable reviews.
+        return {"total": len(ids), "complete": complete, "flagged": flagged, "remaining": len(ids) - len(done),
+                "evaluable": len(ids) - flagged}
 
     # --------------------------------------------------------------- export / import
     def to_dataframe(self, sample: pd.DataFrame | None = None) -> pd.DataFrame:

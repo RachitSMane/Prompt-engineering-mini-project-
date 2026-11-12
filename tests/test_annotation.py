@@ -67,7 +67,7 @@ def test_progress_and_flagged_excluded(tmp_path):
     store.save(_ann("R1"))
     store.save(_ann("R2", status="flagged"))
     prog = store.progress(["R1", "R2", "R3"])
-    assert prog == {"total": 3, "complete": 1, "flagged": 1, "remaining": 1}
+    assert prog == {"total": 3, "complete": 1, "flagged": 1, "remaining": 1, "evaluable": 2}
     assert [a.review_id for a in store.completed()] == ["R1"]
 
 

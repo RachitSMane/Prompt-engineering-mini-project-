@@ -103,12 +103,31 @@ def test_annotation_save_persists(isolated):
 
 
 def test_live_mode_without_key_shows_message(isolated, monkeypatch):
-    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    import ui.common as common
+
+    keyed = replace(isolated, llm_provider="groq", llm_model="openai/gpt-oss-120b")  # a provider that needs a key
+    monkeypatch.setattr(common, "get_settings", lambda: keyed)
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
     at = AppTest.from_file(str(ROOT / "ui" / "review_analysis.py"), default_timeout=60)
     at.session_state["use_mock"] = False
     at.run()
     assert not at.exception
     assert _shows(at, "API key")
+    assert next(b for b in at.button if "Run extraction" in b.label).disabled
+
+
+def test_ollama_not_running_shows_message(isolated, monkeypatch):
+    """Ollama needs no key, but a dead local server must disable live actions with a clear message."""
+    import ui.common as common
+
+    local = replace(isolated, llm_provider="ollama", llm_model="qwen2.5:3b", ollama_base_url="http://127.0.0.1:9")  # nothing listens on port 9
+    monkeypatch.setattr(common, "get_settings", lambda: local)
+    common._ollama_models.clear()
+    at = AppTest.from_file(str(ROOT / "ui" / "review_analysis.py"), default_timeout=60)
+    at.session_state["use_mock"] = False
+    at.run()
+    assert not at.exception
+    assert _shows(at, "Ollama") and _shows(at, "ollama serve")
     assert next(b for b in at.button if "Run extraction" in b.label).disabled
 
 
@@ -243,7 +262,7 @@ def test_prompt_experiments_with_human_labels(isolated):
     for i, row in enumerate(sample.itertuples()):
         store.save(Annotation(review_id=row.review_id, product_id=row.product_id, overall_sentiment=["positive", "negative", "mixed"][i % 3], aspects=[], complaint_categories=[], annotator="test"))
     at = _page("prompt_comparison").run()
-    at = _click(at, "Run experiment")  # default scope: human-annotated reviews only
+    at = _click(at, "Run experiment")  # default scope: annotated reviews only
     assert not at.exception, [e.value for e in at.exception]
     at = _page("prompt_comparison").run()
     assert not at.exception, [e.value for e in at.exception]
@@ -269,3 +288,25 @@ def test_theme_tokens_and_chart_template():
     fig = sentiment_pie({"positive": 3, "negative": 1, "neutral": 0, "mixed": 0})
     assert fig.layout.template.layout.paper_bgcolor == "rgba(0,0,0,0)"  # no white chart backgrounds
     assert list(fig.data[0].marker.colors) == [SENTIMENT["positive"], SENTIMENT["negative"]]
+
+
+def test_summary_evaluation_shows_stored_judge_failure(isolated):
+    """A stored judge failure is shown as 'judge failed', not 'not judged yet', and is excluded from the batch button."""
+    import json as _json
+
+    at = _page("product_insights").run()
+    at.number_input[0].set_value(3)
+    at = _click(at, "Run extraction")
+    at = _page("product_insights").run()
+    at = _click(at, "Generate summary for this product")
+    assert not at.exception, [e.value for e in at.exception]
+    summaries = (isolated.paths.outputs / "mock" / "summaries" / "summaries.jsonl").read_text(encoding="utf-8").splitlines()
+    s = _json.loads(summaries[-1])
+    fail = isolated.paths.outputs / "mock" / "judgements" / "judge_failures.jsonl"
+    fail.parent.mkdir(parents=True, exist_ok=True)
+    fail.write_text(_json.dumps({"summary_id": s["summary_id"], "product_id": s["product_id"], "judge_model": "mock", "error": "invalid verdict"}) + "\n", encoding="utf-8")
+
+    at = _page("summary_evaluation").run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert _shows(at, "1 judge call(s) failed") and _shows(at, "Judge failed.")
+    assert any(b.label.startswith("Judge all unjudged summaries (0)") for b in at.button)

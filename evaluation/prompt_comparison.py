@@ -7,7 +7,7 @@ label definitions (see prompts/common.py).
 Each run lives in ``outputs/<live|mock>/experiments/<run_id>/``:
   config.json              settings snapshot, strategies, git commit, review ids
   predictions_<s>.jsonl    resumable per-strategy predictions (incl. raw outputs & repair logs)
-  metrics.json             evaluation against human annotations + operational stats
+  metrics.json             evaluation against reference annotations + operational stats
   report.md                human-readable report
 """
 
@@ -22,10 +22,11 @@ from typing import Callable
 
 import pandas as pd
 
+from annotation.annotation_manager import label_provenance, provenance_text
 from config import PROJECT_ROOT, Settings
 from evaluation.classification_metrics import evaluate_predictions
 from llm.base import LLMClient
-from pipeline.extraction import ExtractionStore, ReviewExtractor
+from pipeline.extraction import ExtractionStopped, ExtractionStore, ReviewExtractor, is_provider_failure
 from prompts.common import PROMPT_VERSION
 from prompts.strategies import STRATEGIES, get_strategy
 from schemas.evaluation_schema import Annotation
@@ -57,19 +58,30 @@ def new_run_id(model_name: str, is_mock: bool) -> str:
     return f"{'MOCK-' if is_mock else ''}{stamp}_{slug(model_name)}"
 
 
-def evaluation_status(is_mock: bool, n_evaluated: int, required: int) -> str:
+class ExperimentStopped(RuntimeError):
+    """The run stopped on a provider error; predictions so far are saved and the run can be resumed."""
+
+    def __init__(self, message: str, run_dir: Path):
+        super().__init__(message)
+        self.run_dir = run_dir
+
+
+def evaluation_status(is_mock: bool, n_evaluated: int, required: int, missing_predictions: int = 0) -> str:
     if is_mock:
         return "mock_demo"
     if n_evaluated == 0:
         return "awaiting_annotations"
+    if missing_predictions:
+        return "incomplete"  # never "complete" while any strategy lacks predictions for reviews in the run
     return "complete" if n_evaluated >= required else "provisional"
 
 
 STATUS_TEXT = {
     "mock_demo": "Mock demo — not a result",
-    "awaiting_annotations": "Awaiting human annotations — no classification metrics yet",
-    "provisional": "Provisional — fewer than the required number of human-labelled reviews",
-    "complete": "Complete — evaluated against the full human-labelled set",
+    "awaiting_annotations": "Awaiting annotations — no classification metrics yet",
+    "provisional": "Provisional — fewer than the required number of labelled reviews",
+    "incomplete": "Incomplete — the run stopped before every strategy predicted every review; resume it before reporting",
+    "complete": "Complete — evaluated against the full reference-labelled set",
 }
 
 
@@ -106,8 +118,13 @@ def run_experiment(
     gold: list[Annotation],
     run_id: str | None = None,
     progress: Callable[[str, int, int], None] | None = None,
+    required_gold: int | None = None,
 ) -> Path:
-    """Run (or resume) an experiment and write predictions, metrics and report."""
+    """Run (or resume) an experiment and write predictions, metrics and report.
+
+    ``required_gold``: labels needed for a "complete" evaluation, normally the number of
+    evaluable (non-flagged) sample reviews; defaults to the configured sample size.
+    """
     for s in strategies:
         get_strategy(s)
     run_id = run_id or new_run_id(client.model_name, client.is_mock)
@@ -137,19 +154,30 @@ def run_experiment(
     config["review_ids"] = list(dict.fromkeys(config["review_ids"] + [r.review_id for r in reviews]))
     write_json_atomic(config_path, config)
 
+    required = required_gold if required_gold is not None else settings.annotation_sample_size
     for name in strategies:
         store = ExtractionStore(run_dir / f"predictions_{name}.jsonl")
         extractor = ReviewExtractor(client, get_strategy(name), settings)
-        extractor.extract_many(reviews, store=store, progress=(lambda i, n, _o, name=name: progress(name, i, n)) if progress else None)
+        try:
+            # retry_failed=False: on resume, a stored OUTPUT failure is final (one attempt per review per strategy, as for
+            # every other strategy). Provider outages are never stored, so those reviews are still run on resume.
+            extractor.extract_many(reviews, store=store, progress=(lambda i, n, _o, name=name: progress(name, i, n)) if progress else None, retry_failed=False)
+        except ExtractionStopped as exc:
+            # Stop cleanly: successful predictions stay cached, metrics are marked "incomplete".
+            log_activity(settings.paths.activity_log, "prompt_experiment_stopped", client.is_mock, run_id=run_id, strategy=name, review_id=exc.review_id, error=str(exc)[:300])
+            evaluate_run(run_dir, gold, required)
+            raise ExperimentStopped(f"Run {run_id} stopped: {exc}. Saved predictions are kept; resume with run id {run_id}.", run_dir) from exc
 
     log_activity(settings.paths.activity_log, "prompt_experiment", client.is_mock, run_id=run_id, strategies=strategies, n_reviews=len(reviews))
-    evaluate_run(run_dir, gold, settings.annotation_sample_size)
+    evaluate_run(run_dir, gold, required)
     return run_dir
 
 
 def load_run_predictions(run_dir: Path, strategy: str) -> tuple[list[ReviewRecord], list[ExtractionFailure]]:
+    """Valid records and genuine output failures. Provider-error failures (outages) are excluded:
+    they say nothing about the model and count as missing predictions instead."""
     store = ExtractionStore(run_dir / f"predictions_{strategy}.jsonl")
-    return store.records, store.failures
+    return store.records, [f for f in store.failures if not is_provider_failure(f)]
 
 
 def evaluate_run(run_dir: Path, gold: list[Annotation], required: int) -> dict:
@@ -157,6 +185,8 @@ def evaluate_run(run_dir: Path, gold: list[Annotation], required: int) -> dict:
     config = read_json(run_dir / "config.json")
     run_ids = set(config["review_ids"])
     gold_in_run = [g for g in gold if g.review_id in run_ids]
+    loaded = {name: load_run_predictions(run_dir, name) for name in config["strategies"]}
+    missing = {name: len(run_ids - {o.review_id for o in recs + fails}) for name, (recs, fails) in loaded.items()}
     results: dict = {
         "run_id": config["run_id"],
         "is_mock": config["is_mock"],
@@ -164,15 +194,18 @@ def evaluate_run(run_dir: Path, gold: list[Annotation], required: int) -> dict:
         "provider": config["provider"],
         "evaluated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "n_gold_available": len(gold_in_run),
+        "reference_provenance": label_provenance(gold_in_run),
         "required_gold": required,
-        "status": evaluation_status(config["is_mock"], len(gold_in_run), required),
+        "status": evaluation_status(config["is_mock"], len(gold_in_run), required, sum(missing.values())),
+        "missing_predictions": missing,
         "strategies": {},
     }
     for name in config["strategies"]:
-        records, failures = load_run_predictions(run_dir, name)
+        records, failures = loaded[name]
         preds: dict[str, ReviewRecord | None] = {r.review_id: r for r in records}
         preds.update({f.review_id: None for f in failures})
-        entry = {"operational": operational_stats(records, failures)}
+        entry = {"operational": operational_stats(records, failures), "missing_predictions": missing[name],
+                 "coverage": round((len(records) + len(failures)) / len(run_ids), 4) if run_ids else 0.0}
         if gold_in_run:
             entry["classification"] = evaluate_predictions(gold_in_run, preds)
         results["strategies"][name] = entry
@@ -203,6 +236,8 @@ def comparison_table(metrics: dict) -> pd.DataFrame:
             {
                 "strategy": STRATEGIES[name].label if name in STRATEGIES else name,
                 "n_gold": cl.get("n_evaluated"),
+                "coverage": entry.get("coverage"),
+                "failed": op.get("failed"),
                 "sentiment_accuracy": sent.get("accuracy"),
                 "sentiment_macro_precision": sent.get("macro_precision"),
                 "sentiment_macro_recall": sent.get("macro_recall"),
@@ -242,8 +277,12 @@ def render_report(config: dict, metrics: dict) -> str:
         lines += [MOCK_BANNER, ""]
     lines += [
         f"**Evaluation status:** {STATUS_TEXT[metrics['status']]} "
-        f"({metrics['n_gold_available']} / {metrics['required_gold']} human-labelled reviews in this run).",
+        f"({metrics['n_gold_available']} / {metrics['required_gold']} labelled reviews in this run).",
         "",
+        f"**Reference labels:** {provenance_text(metrics.get('reference_provenance') or {})}. "
+        "AI-assisted labels are not manual annotations; scores measure agreement with these reference labels.",
+        "",
+        *([f"**Missing predictions (run interrupted):** {metrics['missing_predictions']}", ""] if any(metrics.get("missing_predictions", {}).values()) else []),
         "## Configuration",
         "",
         f"- Provider / model: `{config['provider']}` / `{config['model_name']}` (temperature {config['temperature']})",
@@ -254,7 +293,7 @@ def render_report(config: dict, metrics: dict) -> str:
     ]
     sentiment_cols = ["strategy", "n_gold", "sentiment_accuracy", "sentiment_macro_precision", "sentiment_macro_recall", "sentiment_macro_f1", "sentiment_weighted_f1"]
     other_cols = ["strategy", "complaint_micro_f1", "complaint_macro_f1", "complaint_hamming_loss", "aspect_detection_micro_f1", "aspect_sentiment_macro_f1", "aspect_joint_micro_f1"]
-    op_cols = ["strategy", "validity_rate", "first_attempt_valid_rate", "needed_llm_repair", "mean_latency_s", "mean_input_tokens", "mean_output_tokens"]
+    op_cols = ["strategy", "coverage", "failed", "validity_rate", "first_attempt_valid_rate", "needed_llm_repair", "mean_latency_s", "mean_input_tokens", "mean_output_tokens"]
     if metrics["n_gold_available"]:
         lines += ["## Overall sentiment (4 classes)", "", _md_table(table[sentiment_cols]), "",
                   "## Complaints (multi-label) and aspects", "", _md_table(table[other_cols]), ""]
@@ -263,19 +302,24 @@ def render_report(config: dict, metrics: dict) -> str:
             if not cl:
                 continue
             s = cl["overall_sentiment"]
+            if not s.get("n"):  # strategy not run yet (interrupted run): nothing to report per class
+                lines += [f"### {name}: no predictions yet", ""]
+                continue
             lines += [f"### {name}: per-class sentiment metrics", "", "| class | precision | recall | f1 | support |", "| --- | --- | --- | --- | --- |"]
             lines += [f"| {lab} | {v['precision']} | {v['recall']} | {v['f1-score']} | {v['support']} |" for lab, v in s["per_class"].items()]
-            lines += ["", f"Confusion matrix (rows = human label, columns = prediction, order {s['labels']}): `{s['confusion_matrix']}`", ""]
+            lines += ["", f"Confusion matrix (rows = reference label, columns = prediction, order {s['labels']}): `{s['confusion_matrix']}`", ""]
     else:
-        lines += ["## Classification metrics", "", "_Pending: no human annotations overlap with this run yet. Complete the annotation workflow, then re-evaluate._", ""]
+        lines += ["## Classification metrics", "", "_Pending: no reference annotations overlap with this run yet. Complete the annotation workflow, then re-evaluate._", ""]
     lines += ["## Reliability, latency and token usage", "", _md_table(table[op_cols]), ""]
     lines += [
         "## Methodology notes",
         "",
-        "- Ground truth = human annotations from the project's annotation workflow (never model output).",
+        "- Reference labels come from data/annotations/annotations.json (never from this run's model output); "
+        "their human / AI-assisted split is stated above. The star rating is never used as ground truth.",
+        "- The flagged (unreadable) review is excluded; coverage = share of run reviews with a stored prediction.",
         "- Failed extractions are kept: wrong sentiment, empty aspect/complaint sets.",
         "- Aspects are matched by aspect category; aspect sentiment is scored on categories found in both gold and prediction.",
-        "- Macro averages use the labels that occur in the human labels or the predictions (labels absent from both are excluded).",
+        "- Macro averages use the labels that occur in the reference labels or the predictions (labels absent from both are excluded).",
         "",
     ]
     return "\n".join(lines)

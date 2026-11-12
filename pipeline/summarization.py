@@ -113,6 +113,17 @@ class ChainResult:
     aggregates: dict[str, ProductAggregate]
     summaries: dict[str, ProductSummary] = field(default_factory=dict)
     summary_errors: dict[str, str] = field(default_factory=dict)
+    reused_summaries: int = 0
+
+
+def _reusable(prev: ProductSummary, client: LLMClient, aggregate: ProductAggregate) -> bool:
+    return (
+        prev.provider == client.provider
+        and prev.model_name == client.model_name
+        and prev.is_mock == client.is_mock
+        and prev.prompt_version == SUMMARY_PROMPT_VERSION
+        and prev.aggregate.model_dump(mode="json") == aggregate.model_dump(mode="json")
+    )
 
 
 def run_chain(
@@ -124,18 +135,35 @@ def run_chain(
     summarize: bool = True,
     min_reviews_for_summary: int = 3,
     progress: Callable[[str, int, int], None] | None = None,
+    retry_failed: bool = True,
+    reuse_summaries: bool = False,
 ) -> ChainResult:
-    """extract -> aggregate -> summarise for every product in ``reviews``."""
+    """extract -> aggregate -> summarise for every product in ``reviews``.
+
+    ``retry_failed=False`` keeps cached output failures as failures instead of calling the model again.
+    ``reuse_summaries=True`` (resume) reuses a stored summary instead of generating a new one, but only when it was
+    produced from the identical aggregate with the same extraction source, provider, model and prompt version.
+    """
     store = ExtractionStore.for_run(settings, client.is_mock, source, strategy, client.model_name)
     extractor = ReviewExtractor(client, get_strategy(strategy), settings)
-    extraction = extractor.extract_many(reviews, store=store, progress=(lambda i, n, _o: progress("extract", i, n)) if progress else None)
+    extraction = extractor.extract_many(
+        reviews, store=store, progress=(lambda i, n, _o: progress("extract", i, n)) if progress else None, retry_failed=retry_failed,
+    )
     aggregates = aggregate_all(extraction.records)
     result = ChainResult(extraction=extraction, aggregates=aggregates)
     if summarize:
         sstore = SummaryStore.for_mode(settings, client.is_mock)
         source_name = store.path.stem
         eligible = {pid: a for pid, a in aggregates.items() if a.total_reviews >= min_reviews_for_summary}
+        stored = sstore.latest() if reuse_summaries else {}
         for i, (pid, agg) in enumerate(eligible.items(), 1):
+            prev = stored.get((pid, source_name))
+            if prev is not None and _reusable(prev, client, agg):
+                result.summaries[pid] = prev
+                result.reused_summaries += 1
+                if progress:
+                    progress("summarise", i, len(eligible))
+                continue
             summary, sres = summarize_product(client, agg, settings, source_name)
             if summary:
                 sstore.add(summary)

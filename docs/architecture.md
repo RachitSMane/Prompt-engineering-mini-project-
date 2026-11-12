@@ -8,7 +8,7 @@
 ├──────────────────────────────────────────────────────────────────────────┤
 │ evaluation/   classification_metrics · prompt_comparison ·               │
 │               summary_evaluation (LLM-as-a-Judge) · visualizations       │
-│ annotation/   annotation_manager (human ground truth)                    │
+│ annotation/   annotation_manager (reference labels + provenance)         │
 ├──────────────────────────────────────────────────────────────────────────┤
 │ pipeline/     extraction ──► aggregation ──► summarization                │
 │               validation + repair (generic, used by all LLM stages)      │
@@ -16,8 +16,9 @@
 │ prompts/      zero_shot · few_shot · cot · repair · summarization · judge │
 │ schemas/      taxonomy (labels) · review_schema · evaluation_schema       │
 ├──────────────────────────────────────────────────────────────────────────┤
-│ llm/          LLMClient interface ─┬─ LangChainLLMClient (Gemini, OpenAI, │
-│                                    │   Anthropic, Groq, Ollama)          │
+│ llm/          LLMClient interface ─┬─ LangChainLLMClient (Ollama local =  │
+│                                    │   default; optional Gemini, OpenAI, │
+│                                    │   Anthropic, Groq)                  │
 │                                    └─ MockLLMClient (offline fixtures)   │
 ├──────────────────────────────────────────────────────────────────────────┤
 │ config.py (.env)   utils/ (data_loader, export, storage, logging)        │

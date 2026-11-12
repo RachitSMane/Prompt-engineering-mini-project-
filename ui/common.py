@@ -34,17 +34,51 @@ def mode_dir() -> Path:
     return get_settings().paths.mode_dir(use_mock())
 
 
+@st.cache_data(ttl=15, show_spinner=False)
+def _ollama_models(base_url: str) -> list[str] | None:
+    from llm.langchain_client import ollama_models
+
+    return ollama_models(base_url)  # lists installed models only; no inference
+
+
+def provider_status(s: Settings, provider: str, model: str) -> tuple[bool, str, str]:
+    """(ready, short label, explanation) for one provider/model pair. Lists models only; no inference."""
+    if not s.live_llm_available(provider):
+        label = "Ollama endpoint blocked" if provider == "ollama" else "No LLM key"
+        return False, label, s.live_unavailable_reason(provider)
+    if provider == "ollama":
+        from llm.langchain_client import model_installed
+
+        names = _ollama_models(s.ollama_base_url)
+        if names is None:
+            return False, "Ollama not running", f"No Ollama server answered at {s.ollama_base_url}."
+        if not model_installed(model, names):
+            return False, "Model not pulled", f"Ollama is running but '{model}' is not installed (ollama pull {model})."
+        return True, "Local LLM ready", ""
+    return True, "LLM connected", ""
+
+
+def live_status(s: Settings) -> tuple[bool, str, str]:
+    """Status of the configured extraction provider."""
+    return provider_status(s, s.llm_provider, s.llm_model)
+
+
+def judge_status(s: Settings) -> tuple[bool, str, str]:
+    """Status of the configured LLM-as-a-Judge (it can differ from the extraction model)."""
+    return provider_status(s, s.effective_judge_provider, s.effective_judge_model)
+
+
 def render_sidebar() -> None:
     """Compact connection + mode block shown under the navigation."""
     s = get_settings()
-    live = s.live_llm_available()
+    live, label, _ = live_status(s)
     if "use_mock" not in st.session_state:
         st.session_state["use_mock"] = s.is_mock or not live
     with st.sidebar:
         llm_row = (
-            f'<div class="riq-side-row"><span class="riq-dot on"></span>LLM connected<span class="riq-side-sub">{esc(s.llm_provider)} · {esc(s.llm_model)}</span></div>'
+            f'<div class="riq-side-row"><span class="riq-dot on"></span>{esc(label)}<span class="riq-side-sub">{esc(s.llm_provider)} · {esc(s.llm_model)}</span></div>'
             if live
-            else f'<div class="riq-side-row"><span class="riq-dot off"></span>No LLM key<span class="riq-side-sub">{esc(s.llm_provider)}</span></div>'
+            else f'<div class="riq-side-row"><span class="riq-dot off"></span>{esc(label)}<span class="riq-side-sub">{esc(s.llm_provider)}</span></div>'
         )
         md(f'<div class="riq-side-status"><div class="riq-side-label">Workspace</div>{llm_row}</div>')
         st.toggle(
@@ -62,7 +96,7 @@ def render_sidebar() -> None:
                 ])
             )
             if not live:
-                st.caption(s.live_unavailable_reason())
+                st.caption(live_status(s)[2])
 
 
 def mock_banner() -> None:
@@ -70,10 +104,18 @@ def mock_banner() -> None:
         callout(MOCK_BANNER, "warning", tag="Mock")
 
 
-KEY_MESSAGE = (
-    "Copy <code>.env.example</code> to <code>.env</code>, set <code>GOOGLE_API_KEY</code> (free key from Google AI Studio) and restart the app, "
-    "or switch on <b>Offline mock mode</b> in the sidebar to try the pipeline with fixtures (not real results)."
-)
+MOCK_HINT = "or switch on <b>Offline mock mode</b> in the sidebar to try the pipeline with fixtures (not real results)."
+
+
+def setup_message(s: Settings) -> tuple[str, str]:
+    """(how to enable the configured provider, callout tag)."""
+    if s.llm_provider == "ollama":
+        return (
+            f"Start Ollama (<code>ollama serve</code>), install the model (<code>ollama pull {esc(s.llm_model)}</code>) and reload the page, {MOCK_HINT}",
+            "Local LLM",
+        )
+    env = s.api_key_env() or "the provider's API key"
+    return f"Copy <code>.env.example</code> to <code>.env</code>, set <code>{esc(env)}</code> and restart the app, {MOCK_HINT}", "API key"
 
 
 def get_client(role: str = "extraction") -> LLMClient | None:
@@ -82,18 +124,21 @@ def get_client(role: str = "extraction") -> LLMClient | None:
     try:
         return get_llm_client(s, use_mock=use_mock(), role=role)
     except LLMUnavailableError as exc:
-        callout(f"<b>This action needs a live LLM.</b> {esc(exc)} {KEY_MESSAGE}", "accent", tag="API key")
+        msg, tag = setup_message(s)
+        callout(f"<b>This action needs a live LLM.</b> {esc(exc)} {msg}", "accent", tag=tag)
         return None
 
 
 def llm_ready() -> bool:
     s = get_settings()
-    return use_mock() or s.live_llm_available()
+    return use_mock() or live_status(s)[0]
 
 
 def require_llm_note() -> None:
     if not llm_ready():
-        callout(f"<b>Live LLM features are disabled: no API key configured.</b> {KEY_MESSAGE}", "accent", tag="API key")
+        s = get_settings()
+        msg, tag = setup_message(s)
+        callout(f"<b>Live LLM features are disabled.</b> {esc(live_status(s)[2])} {msg}", "accent", tag=tag)
 
 
 @st.cache_data(show_spinner=False)

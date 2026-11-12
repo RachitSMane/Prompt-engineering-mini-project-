@@ -39,7 +39,11 @@ with st.expander("Extract reviews for products (stage 1)", icon=":material/play_
             if client:
                 store = ExtractionStore.for_run(s, client.is_mock, "dataset", strategy, client.model_name)
                 bar = st.progress(0.0)
-                res = ReviewExtractor(client, get_strategy(strategy), s).extract_many(dataframe_to_inputs(sub), store=store, progress=lambda i, n, _o: bar.progress(i / n, text=f"Extracted {i}/{n}"))
+                try:
+                    res = ReviewExtractor(client, get_strategy(strategy), s).extract_many(dataframe_to_inputs(sub), store=store, progress=lambda i, n, _o: bar.progress(i / n, text=f"Extracted {i}/{n}"))
+                except Exception as exc:  # provider outage: earlier results are cached, re-run continues
+                    st.error(f"Extraction stopped: {exc}")
+                    st.stop()
                 log_activity(s.paths.activity_log, "product_extraction", client.is_mock, strategy=strategy, reviews=len(sub), ok=len(res.records), failed=len(res.failures))
                 st.success(f"{len(res.records)} valid records, {len(res.failures)} controlled failures ({res.from_cache} from cache).")
 

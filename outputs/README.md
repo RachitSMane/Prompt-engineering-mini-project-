@@ -4,7 +4,7 @@ Generated artefacts. This folder is git-ignored apart from this file.
 
 ```
 outputs/
-├── live/                  real LLM results (only created when an API key is configured)
+├── live/                  real LLM results (local Ollama by default; created by live runs)
 │   ├── extractions/       <source>__<strategy>__<model>__<prompt_version>.jsonl  (resumable cache)
 │   ├── experiments/       <run_id>/config.json, predictions_<strategy>.jsonl, metrics.json, report.md
 │   ├── summaries/         summaries.jsonl

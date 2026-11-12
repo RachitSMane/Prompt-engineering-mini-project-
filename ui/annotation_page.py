@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 from pydantic import ValidationError
 
-from annotation.annotation_manager import AnnotationStore, build_annotation_sample, load_sample, save_sample, write_template
+from annotation.annotation_manager import AnnotationStore, build_annotation_sample, label_provenance, load_sample, provenance_text, save_sample, write_template
 from config import PROJECT_ROOT
 from evaluation.visualizations import counts_bar
 from schemas.evaluation_schema import AnnotatedAspect, Annotation
@@ -44,6 +44,7 @@ store = AnnotationStore(s.paths.annotations_json)
 ids = sample["review_id"].tolist()
 prog = store.progress(ids)
 pct = 100 * prog["complete"] / max(1, prog["total"])
+prov = label_provenance([a for a in store.all() if a.review_id in set(ids)])
 
 # ---------------------------------------------------------------- progress
 kpi_row([
@@ -58,6 +59,13 @@ callout(
     "Every save is written immediately to <code>data/annotations/annotations.json</code>.",
     "accent",
     tag="Guideline",
+)
+if prov["ai_assisted"]:
+    callout(
+        f"<b>Label provenance:</b> {esc(provenance_text(prov))}. AI-assisted labels carry the note prefix "
+        "<code>AI-assisted label</code> and are described in <code>meta.annotation_method</code>; they are not manual annotations.",
+        "warning",
+        tag="Provenance",
 )
 with st.expander("Annotation guide", icon=":material/menu_book:"):
     st.markdown((PROJECT_ROOT / "annotation" / "annotation_guide.md").read_text(encoding="utf-8"))
@@ -89,6 +97,8 @@ with tab_label:
     rid = row["review_id"]
     existing = store.get(rid)
     status_badge = badge("labelled", "positive", dot=True) if existing and existing.status == "complete" else badge("flagged", "warning", dot=True) if existing else badge("not labelled", "neutral", dot=True)
+    if existing:  # provenance of this label (AI-assisted labels carry a notes marker)
+        status_badge += badge("AI-assisted label", "neutral") if label_provenance([existing])["ai_assisted"] else badge("human label", "accent")
 
     left, right = st.columns([5, 4], gap="large")
     with left:
@@ -221,10 +231,10 @@ with tab_data:
         d[2].download_button("Blank CSV template", tpl_path.read_bytes(), "annotation_template.csv", "text/csv", icon=":material/download:", width="stretch")
     if len(ann_df):
         a, b = st.columns(2, gap="medium")
-        with a, panel("Overall sentiment (human labels)"):
+        with a, panel("Overall sentiment (reference labels)"):
             chart(counts_bar(ann_df["overall_sentiment"].value_counts().to_dict(), color=COLORS["accent"]), key="an_sent")
-        with b, panel("Annotations by annotator"):
-            chart(counts_bar(ann_df["annotator"].value_counts().to_dict(), color="#38BDF8"), key="an_who")
+        with b, panel("Label source", "human vs AI-assisted (from the notes marker)"):
+            chart(counts_bar({"human": prov["human"], "AI-assisted": prov["ai_assisted"]}, color="#38BDF8"), key="an_who")
 
     with panel("Import labels from a filled CSV template"):
         up = st.file_uploader("Filled annotation CSV", type=["csv"], key="ann_import")

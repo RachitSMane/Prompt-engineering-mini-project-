@@ -142,3 +142,36 @@ def test_resumed_run_evaluates_added_reviews(settings):
     m = evaluate_run(run_dir, g, 300)
     assert m["n_gold_available"] == 3
     assert m["strategies"]["zero_shot"]["classification"]["n_evaluated"] == 3
+
+
+def test_interrupted_run_with_unstarted_strategy_evaluates_as_incomplete(settings):
+    """Regression: a strategy listed in config.json with no predictions crashed render_report (KeyError 'per_class')."""
+    import json
+
+    r = [ReviewInput(review_id=f"U{i}", product_id="P", review_text="Works great and very quiet.") for i in range(2)]
+    g = [Annotation(review_id=f"U{i}", product_id="P", overall_sentiment="positive", annotator="h") for i in range(2)]
+    run_dir = run_experiment(settings, MockLLMClient(malformed_rate=0), ["zero_shot"], r, g, required_gold=2)
+    cfg = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))
+    cfg["strategies"].append("cot")  # as if the run stopped before CoT started
+    (run_dir / "config.json").write_text(json.dumps(cfg), encoding="utf-8")
+    m = evaluate_run(run_dir, g, 2)
+    assert m["missing_predictions"]["cot"] == 2 and m["strategies"]["cot"]["coverage"] == 0.0
+    # mock runs are always labelled mock_demo; the live status logic is checked directly
+    assert evaluation_status(False, 2, 2, missing_predictions=2) == "incomplete"
+    assert "cot: no predictions yet" in (run_dir / "report.md").read_text(encoding="utf-8")
+    import pandas as pd
+    assert pd.isna(comparison_table(m).set_index("strategy").loc["Chain-of-Thought", "sentiment_macro_f1"])
+
+
+def test_resume_does_not_resample_stored_output_failures(settings):
+    """A stored output failure is final on resume: one attempt per review per strategy, as for the others."""
+    from tests.conftest import ScriptedLLM
+
+    r = [ReviewInput(review_id="Z0", product_id="P", review_text="Works great and very quiet.")]
+    scripted = ScriptedLLM(["not json"] * (settings.max_repair_attempts + 1))  # initial attempt + every repair invalid
+    run_dir = run_experiment(settings, scripted, ["zero_shot"], r, [], run_id="unit-failure-run", required_gold=1)
+    lines = (run_dir / "predictions_zero_shot.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(lines) == 1 and '"status": "failed"' in lines[0]
+
+    run_experiment(settings, ScriptedLLM([]), ["zero_shot"], r, [], run_id=run_dir.name, required_gold=1)  # raises if called
+    assert len((run_dir / "predictions_zero_shot.jsonl").read_text(encoding="utf-8").splitlines()) == 1

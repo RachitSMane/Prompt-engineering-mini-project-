@@ -19,7 +19,7 @@ from pipeline.repair import StructuredResult, generate_structured
 from prompts.common import render
 from prompts.judge import JUDGE_PROMPT_VERSION, TEMPLATE, judge_format_instructions
 from prompts.summarization import statistics_block
-from schemas.evaluation_schema import JudgeVerdict, ProductSummary, SummaryJudgement
+from schemas.evaluation_schema import JudgeVerdict, ProductSummary, SummaryJudgement, SummaryPoint
 from schemas.review_schema import ReviewRecord
 from utils.storage import append_jsonl, log_activity, read_jsonl
 
@@ -111,6 +111,36 @@ def judge_summary(client: LLMClient, summary: ProductSummary, records: list[Revi
     )
     log_activity(settings.paths.activity_log, "judge_summary", client.is_mock, product_id=summary.product_id, summary_id=summary.summary_id)
     return judgement, result
+
+
+CORRUPTION_FABRICATED_FEATURE = "Reviewers praise the built-in Wi-Fi app control and voice-assistant support."
+
+
+def corrupt_summary(summary: ProductSummary) -> ProductSummary:
+    """A deliberately unfaithful copy of ``summary`` used as a negative control for the judge.
+
+    Three known defects are injected: (1) the overall opinion is replaced by one with the OPPOSITE tone of the
+    aggregated statistics and a fabricated percentage, (2) an appreciated point about a feature no review
+    mentions is added (citing a real review id, so only a careful judge notices), (3) all complaints are dropped.
+    A judge that discriminates should score the copy lower than the original, above all on faithfulness,
+    consistency and hallucination.
+    """
+    pct = summary.aggregate.sentiment_percentages
+    mostly_positive = pct.get("positive", 0) >= max(pct.get("negative", 0), pct.get("mixed", 0))
+    opinion = (
+        "Customers are overwhelmingly dissatisfied: 92% of reviewers say the product failed within a week and would not buy it again."
+        if mostly_positive else
+        "Customers are overwhelmingly delighted: 98% of reviewers rate it as perfect and report no problems of any kind."
+    )
+    cite = (summary.aggregate.review_ids or ["unknown"])[:1]
+    content = summary.content.model_copy(
+        update={
+            "overall_opinion": opinion,
+            "appreciated": [SummaryPoint(point=CORRUPTION_FABRICATED_FEATURE, supporting_review_ids=cite)] + list(summary.content.appreciated[:5]),
+            "complaints": [],
+        }
+    )
+    return summary.model_copy(update={"summary_id": f"{summary.summary_id}-corrupted", "content": content})
 
 
 class JudgementStore:

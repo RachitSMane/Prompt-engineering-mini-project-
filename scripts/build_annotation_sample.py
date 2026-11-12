@@ -19,6 +19,8 @@ from utils.data_loader import load_reviews  # noqa: E402
 
 
 def main() -> None:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows consoles default to cp1252
     parser = argparse.ArgumentParser()
     parser.add_argument("--force", action="store_true", help="overwrite an existing sample")
     args = parser.parse_args()

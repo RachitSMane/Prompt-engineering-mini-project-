@@ -131,22 +131,22 @@ else:
 # ---------------------------------------------------------------- deliverables
 sample = load_sample(s.paths.annotation_sample_csv)
 ann = AnnotationStore(s.paths.annotations_json)
-prog = ann.progress(sample["review_id"].tolist()) if len(sample) else {"complete": 0, "total": s.annotation_sample_size}
+prog = ann.progress(sample["review_id"].tolist()) if len(sample) else {"complete": 0, "total": s.annotation_sample_size, "evaluable": s.annotation_sample_size}
 runs = list_runs(s, mock)
 n_sum = len(SummaryStore.for_mode(s, mock).all())
 n_judge = len(JudgementStore.for_mode(s, mock).all())
-d2_ready = prog["complete"] >= s.annotation_sample_size and runs and not mock
+d2_ready = prog["complete"] >= prog["evaluable"] and runs and not mock  # flagged reviews are excluded from evaluation
 d3_ready = n_sum and n_judge and not mock
 section("Project deliverables")
 md(
     '<div class="riq-kpi-grid">'
     + kpi("D1 · Structured extraction", "Implemented", "Pydantic schema · parsers · JSON/CSV export · repair")
-    + kpi("D2 · Prompt comparison", f"{prog['complete']} / {s.annotation_sample_size}", f"human labels · {len(runs)} {mode_word} run(s)")
+    + kpi("D2 · Prompt comparison", f"{prog['complete']} / {prog['evaluable']}", f"evaluable labels · {len(runs)} {mode_word} run(s)")
     + kpi("D3 · Summaries + judge", f"{n_sum} / {n_judge}", f"{mode_word} summaries / judgements")
     + "</div>"
     + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-4px">'
     + badge("D1 implemented", "positive", dot=True)
-    + badge("D2 ready for evaluation" if d2_ready else "D2 pending: 300 human labels + live run", "positive" if d2_ready else "warning", dot=True)
+    + badge("D2 ready for evaluation" if d2_ready else "D2 pending: complete reference labels + live run", "positive" if d2_ready else "warning", dot=True)
     + badge("D3 live results available" if d3_ready else "D3 pending live run", "positive" if d3_ready else "warning", dot=True)
     + "</div>"
 )

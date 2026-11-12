@@ -16,7 +16,10 @@ def build_chat_model(provider: str, model: str, settings: Settings):
     """Instantiate the LangChain chat model for ``provider``.
 
     Provider packages are imported lazily so only the one you use must be installed.
+    The requests-per-minute limiter protects cloud quotas; local Ollama calls bypass it.
     """
+    if provider == "ollama":
+        return _build_ollama(model, settings)
     rate_limiter = None
     if settings.llm_requests_per_minute > 0:
         rate_limiter = InMemoryRateLimiter(
@@ -48,16 +51,44 @@ def build_chat_model(provider: str, model: str, settings: Settings):
             from langchain_groq import ChatGroq
 
             return ChatGroq(model=model, max_tokens=settings.llm_max_output_tokens, timeout=settings.llm_timeout_seconds, max_retries=settings.llm_max_retries, **common)
-        if provider == "ollama":
-            import os
-
-            from langchain_ollama import ChatOllama
-
-            return ChatOllama(model=model, base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"), num_predict=settings.llm_max_output_tokens, **common)
     except ImportError as exc:
         pkg = {"gemini": "langchain-google-genai", "openai": "langchain-openai", "anthropic": "langchain-anthropic", "groq": "langchain-groq", "ollama": "langchain-ollama"}[provider]
         raise LLMUnavailableError(f"Provider '{provider}' needs the package '{pkg}'. Install it with: pip install {pkg}") from exc
     raise LLMUnavailableError(f"Unsupported provider '{provider}'")
+
+
+def _build_ollama(model: str, settings: Settings):
+    """Local Ollama chat model: no rate limiter, explicit context window and HTTP timeout."""
+    if not settings.ollama_endpoint_allowed:
+        raise LLMUnavailableError(settings.live_unavailable_reason("ollama"))
+    try:
+        from langchain_ollama import ChatOllama
+    except ImportError as exc:
+        raise LLMUnavailableError("Provider 'ollama' needs the package 'langchain-ollama'. Install it with: pip install langchain-ollama") from exc
+    return ChatOllama(
+        model=model,
+        base_url=settings.ollama_base_url,
+        temperature=settings.llm_temperature,
+        num_ctx=settings.ollama_num_ctx,  # Ollama's default window can be smaller than few-shot prompt + output
+        num_predict=settings.llm_max_output_tokens,
+        client_kwargs={"timeout": settings.llm_timeout_seconds},
+    )
+
+
+def ollama_models(base_url: str, timeout: float = 2.0) -> list[str] | None:
+    """Model names served by a local Ollama server, or None if it cannot be reached (no inference)."""
+    import httpx
+
+    try:
+        resp = httpx.get(f"{base_url.rstrip('/')}/api/tags", timeout=timeout)
+        resp.raise_for_status()
+        return [m.get("name", "") for m in resp.json().get("models", [])]
+    except Exception:
+        return None
+
+
+def model_installed(model: str, names: list[str]) -> bool:
+    return model in names or (":" not in model and f"{model}:latest" in names)
 
 
 def _to_lc(messages: list[ChatMessage]):
@@ -93,7 +124,8 @@ class LangChainLLMClient:
         try:
             result = self._model.invoke(_to_lc(messages))
         except Exception as exc:  # provider SDKs raise many different exception types
-            raise LLMError(f"{self.provider} call failed: {type(exc).__name__}: {exc}") from exc
+            hint = " Is the Ollama server running (ollama serve) and the model pulled?" if self.provider == "ollama" else ""
+            raise LLMError(f"{self.provider} call failed: {type(exc).__name__}: {exc}.{hint}") from exc
         latency = time.perf_counter() - start
         usage = getattr(result, "usage_metadata", None) or {}
         return LLMResponse(

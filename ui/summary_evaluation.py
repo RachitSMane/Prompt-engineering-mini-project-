@@ -11,11 +11,12 @@ from evaluation.summary_evaluation import JudgementStore, export_inspection_samp
 from evaluation.visualizations import judge_scores_bar, judge_scores_per_summary
 from pipeline.extraction import ExtractionStore
 from pipeline.summarization import SummaryStore
-from prompts.judge import RUBRIC
+from prompts.judge import JUDGE_PROMPT_VERSION, RUBRIC
 from schemas.evaluation_schema import ProductSummary
-from ui.common import get_client, get_settings, llm_ready, mock_banner, mode_dir, pretty, require_llm_note, use_mock
+from ui.common import get_client, get_settings, judge_status, mock_banner, mode_dir, pretty, use_mock
 from ui.components import badge, callout, chart, empty_state, esc, kv_html, md, page_header, panel, score_html, section
 from utils.export import dataframe_to_csv_bytes
+from utils.storage import append_jsonl, read_jsonl
 
 DIMENSIONS = [
     ("faithfulness", "Faithfulness", "claims supported by the source"),
@@ -42,6 +43,11 @@ if not summaries:
     empty_state("No summaries in this mode yet", "Generate them on the <b>Product Intelligence</b> page, then judge them here.", "summarize")
     st.stop()
 judged = jstore.latest_by_summary()
+# Judge calls whose output stayed invalid after the repair attempts. They are final (one judge attempt per summary) and are
+# shown as failures, never as "not judged yet", so they are not silently re-sampled.
+FAILURES_PATH = jstore.path.parent / "judge_failures.jsonl"
+failed = {r["summary_id"]: r for r in read_jsonl(FAILURES_PATH)} if FAILURES_PATH.exists() else {}
+failed = {k: v for k, v in failed.items() if k not in judged}
 
 
 def _of(found, expected) -> str:
@@ -70,23 +76,31 @@ def run_judge(targets: list[ProductSummary]) -> None:
         if j:
             jstore.add(j)
         else:
+            append_jsonl(FAILURES_PATH, [{"summary_id": summ.summary_id, "product_id": summ.product_id, "judge_provider": client.provider,
+                                          "judge_model": client.model_name, "is_mock": client.is_mock, "prompt_version": JUDGE_PROMPT_VERSION,
+                                          "error": res.error, "source": "app"}])
             st.error(f"Judge failed for {summ.product_id}: {res.error}")
         bar.progress(i / len(targets), text=f"Judged {i}/{len(targets)}")
     st.rerun()
 
 
 # ---------------------------------------------------------------- actions
-require_llm_note()
-unjudged = [x for sid, x in summaries.items() if sid not in judged]
+judge_ready, _, judge_reason = (True, "", "") if use_mock() else judge_status(s)
+if not judge_ready:
+    callout(f"<b>The judge model is not available.</b> {esc(judge_reason)} Judging is disabled; existing judgements are still shown.", "accent", tag="Judge")
+unjudged = [x for sid, x in summaries.items() if sid not in judged and sid not in failed]
+n_failed = sum(sid in failed for sid in summaries)
 c1, c2 = st.columns([3, 2], vertical_alignment="center")
 same_model = s.effective_judge_model == s.llm_model and not use_mock()
 c1.markdown(
     f'<div class="riq-panel-caption" style="margin:0">Judge model <b style="color:var(--riq-text)">{esc(s.effective_judge_provider)} / {esc(s.effective_judge_model)}</b>'
     + (" · same as the summariser; set JUDGE_PROVIDER / JUDGE_MODEL to reduce self-preference bias" if same_model else "")
-    + f" · {len(judged)} of {len(summaries)} summaries judged</div>",
+    + f" · {sum(sid in judged for sid in summaries)} of {len(summaries)} summaries judged"
+    + (f' · <b style="color:var(--riq-negative, #f87171)">{n_failed} judge call(s) failed</b> (invalid judge output after repairs; no score)' if n_failed else "")
+    + "</div>",
     unsafe_allow_html=True,
 )
-if c2.button(f"Judge all unjudged summaries ({len(unjudged)})", type="primary", icon=":material/gavel:", disabled=not unjudged or not llm_ready(), width="stretch"):
+if c2.button(f"Judge all unjudged summaries ({len(unjudged)})", type="primary", icon=":material/gavel:", disabled=not unjudged or not judge_ready, width="stretch"):
     run_judge(unjudged)
 with st.expander("Judge rubric", icon=":material/rule:"):
     st.code(RUBRIC, language="text")
@@ -134,7 +148,7 @@ else:
 
 # ---------------------------------------------------------------- detailed view
 section("Detailed evaluation", "Generated summary, its sources and the judge's assessment")
-sid = st.selectbox("Summary", list(summaries), format_func=lambda i: f"{(summaries[i].product_title or summaries[i].product_id)[:70]} · {'judged' if i in judged else 'not judged'}")
+sid = st.selectbox("Summary", list(summaries), format_func=lambda i: f"{(summaries[i].product_title or summaries[i].product_id)[:70]} · {'judged' if i in judged else ('judge failed' if i in failed else 'not judged')}")
 summ = summaries[sid]
 j = judged.get(sid)
 c = summ.content
@@ -173,9 +187,13 @@ with left:
         ))
 with right:
     with panel("Judge assessment"):
-        if not j:
+        if not j and sid in failed:
+            callout("<b>Judge failed.</b> The judge model's output was still invalid after the repair attempts, so this summary has no score. "
+                    "The failure is kept as the result (one judge attempt per summary) and is not re-run automatically.", "warning", tag="Failed")
+            md(f'<div class="riq-panel-caption">{esc(failed[sid].get("judge_model", ""))} · {esc((failed[sid].get("error") or "")[:400])}</div>')
+        elif not j:
             md('<div class="riq-panel-caption">Not judged yet.</div>')
-            if st.button("Judge this summary", icon=":material/gavel:", disabled=not llm_ready()):
+            if st.button("Judge this summary", icon=":material/gavel:", disabled=not judge_ready):
                 run_judge([summ])
         else:
             if j.is_mock:
@@ -199,5 +217,5 @@ with right:
                 ("Cited IDs belong to product", "yes" if dc.get("cited_ids_all_in_product") else "no"),
             ]))
         md(f'<div class="riq-panel-caption">{esc(j.judge_provider)}/{esc(j.judge_model)} · prompt {esc(j.prompt_version)} · repairs {j.repair_attempts} · {esc(j.created_at)}</div>')
-        if st.button("Re-judge", icon=":material/refresh:", disabled=not llm_ready()):
+        if st.button("Re-judge", icon=":material/refresh:", disabled=not judge_ready):
             run_judge([summ])

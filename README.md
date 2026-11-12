@@ -1,375 +1,338 @@
-# Aspect-Based Customer Review Analytics with Structured Outputs
+# ReviewIQ — Aspect-Based Customer Review Analytics with Structured Outputs
 
-An LLM pipeline that converts unstructured e-commerce product reviews into **validated structured records**
-(overall sentiment, product aspects with aspect-level sentiment and evidence, complaint categories). It compares
-**zero-shot, few-shot and Chain-of-Thought** prompting against human labels, and generates **per-product
-summaries** through an *extract → aggregate → summarise* prompt chain that an **LLM-as-a-Judge** evaluates.
+ReviewIQ turns unstructured e-commerce product reviews into **validated structured records** (overall sentiment,
+product aspects with aspect-level sentiment and verbatim evidence, complaint categories). It compares
+**zero-shot, few-shot and Chain-of-Thought** prompting on a 300-review evaluation sample, and produces
+**per-product summaries** through an *extract → aggregate → summarise* prompt chain that a separate
+**LLM-as-a-Judge** evaluates. All inference runs **locally with Ollama**: no API key, no cloud service, and no
+review text leaves the machine.
 
-> Mini-project — *Jackfruit Problem, Problem Statement 2*.
+> **PES University · Prompt Engineering Mini Project · 5th Semester AIML**
+> Team: Rachit S Mane (PES1UG24AM214) · P. Chinni Krishna Reddy (PES1UG24AM209) · Pranav V. Menon (PES1UG24AM198) · Akash R. (PES1UG24AM212)
+> Problem statement: *Jackfruit Problem, Problem Statement 2* — see [`docs/ReviewIQ_Problem_Statement_and_Solution.pdf`](docs/ReviewIQ_Problem_Statement_and_Solution.pdf).
 
-> ⚠️ **Current status:** the full pipeline is implemented and tested offline. **No live LLM experiment
-> has been run yet** because no API key is configured, and the **300 manual annotations are pending**.
-> This repository therefore reports **no model performance numbers**. Everything you can run without a
-> key uses a clearly labelled *offline mock* that is not a language model. See [§19](#19-sample-outputs) and [§20](#20-limitations-and-future-improvements).
+<!-- RESULTS-STATUS -->
 
 ---
 
 ## Contents
-1. [Introduction](#1-introduction) · 2. [Problem statement](#2-problem-statement) · 3. [Objectives](#3-objectives) ·
-4. [Technologies](#4-technologies-used) · 5. [Architecture](#5-system-architecture) · 6. [Folder structure](#6-project-folder-structure) ·
-7. [Dataset](#7-dataset-and-data-preparation) · 8. [JSON schema](#8-structured-json-schema) · 9. [Prompting strategies](#9-prompt-engineering-strategies) ·
-10. [Extraction pipeline](#10-extraction-pipeline) · 11. [Malformed output repair](#11-malformed-output-repair) · 12. [Aggregation & summarisation](#12-aggregation-and-summarisation) ·
-13. [Evaluation methodology](#13-evaluation-methodology) · 14. [LLM-as-a-Judge](#14-llm-as-a-judge) · 15. [Installation](#15-installation) ·
-16. [Configuration](#16-environment-configuration) · 17. [Running the app](#17-running-the-application) · 18. [Tests](#18-running-tests) ·
-19. [Sample outputs](#19-sample-outputs) · 20. [Limitations & future work](#20-limitations-and-future-improvements)
+1. [Overview](#1-overview) · 2. [Problem statement](#2-problem-statement) · 3. [Objectives](#3-objectives) · 4. [Features](#4-features) ·
+5. [Technology stack](#5-technology-stack) · 6. [Architecture](#6-architecture) · 7. [Dataset](#7-dataset) · 8. [Annotation methodology](#8-annotation-methodology) ·
+9. [Structured extraction pipeline](#9-structured-extraction-pipeline) · 10. [Pydantic schema](#10-pydantic-schema) · 11. [Prompting strategies](#11-prompting-strategies) ·
+12. [Evaluation methodology](#12-evaluation-methodology) · 13. [Experimental results](#13-experimental-results) · 14. [Prompt chain](#14-prompt-chain-extract--aggregate--summarise) ·
+15. [Aggregation](#15-aggregation-methodology) · 16. [LLM-as-a-Judge](#16-llm-as-a-judge-methodology) · 17. [Installation](#17-installation) · 18. [Ollama setup](#18-ollama-setup) ·
+19. [Running the application](#19-running-the-application) · 20. [Running experiments](#20-running-experiments) · 21. [Reproducing the results](#21-reproducing-the-results) ·
+22. [Limitations](#22-limitations) · 23. [Future improvements](#23-future-improvements) · 24. [Team and academic information](#24-team-and-academic-information)
 
 ---
 
-## 1. Introduction
-Online stores collect thousands of free-text reviews. Star ratings say *how much* customers liked a product,
-but not *why*. Aspect-based sentiment analysis finds **what** customers talk about (noise, installation, fit,
-durability…) and **how they feel** about each aspect. This project uses a large language model for that
-analysis. It treats the LLM as an unreliable component: every output is validated against a schema, checked
-against the review text, and repaired or rejected.
+## 1. Overview
+Online stores collect thousands of free-text reviews. Star ratings say *how much* customers liked a product, but not
+*why*. Aspect-based sentiment analysis finds **what** customers talk about (fit, installation, noise, durability, price…)
+and **how they feel** about each aspect. ReviewIQ uses a local large language model for this analysis and treats it as an
+unreliable component: every output is parsed, validated against a Pydantic schema, checked against the review text, and
+repaired or rejected. A Streamlit dashboard with six pages exposes the whole pipeline.
 
 ## 2. Problem statement
-> *"Develop an LLM pipeline that converts unstructured product reviews into validated structured records
-> containing sentiment, product aspects and complaint categories, and generates per-product summaries. The
-> pipeline shall use public e-commerce review data and compare prompting techniques for sentiment analysis
-> and multi-label classification."*
+> *"Develop an LLM pipeline that converts unstructured product reviews into validated structured records containing
+> sentiment, product aspects and complaint categories, and generates per-product summaries. The pipeline shall use
+> public e-commerce review data and compare prompting techniques for sentiment analysis and multi-label classification."*
 
-| Deliverable | Requirement | Where |
+| Deliverable | Requirement | Implementation |
 |---|---|---|
-| **D1** | JSON schema + extraction pipeline (LangChain parsers / Pydantic), JSON & CSV export, automatic repair of malformed outputs | `schemas/`, `pipeline/extraction.py`, `pipeline/validation.py`, `pipeline/repair.py`, `utils/export.py` |
-| **D2** | Compare zero-shot, few-shot and CoT prompts on 300 manually labelled reviews; report macro-F1 | `prompts/`, `annotation/`, `evaluation/classification_metrics.py`, `evaluation/prompt_comparison.py` |
-| **D3** | Prompt chain extract → aggregate → summarise; per-product summaries; faithfulness via LLM-as-a-Judge | `pipeline/aggregation.py`, `pipeline/summarization.py`, `evaluation/summary_evaluation.py` |
+| **D1** | JSON schema + extraction pipeline (LangChain / Pydantic), JSON & CSV export, automatic repair of malformed outputs | `schemas/`, `pipeline/extraction.py`, `pipeline/validation.py`, `pipeline/repair.py`, `utils/export.py`, `scripts/export_d1.py` |
+| **D2** | Compare zero-shot, few-shot and CoT prompts on the 300-review labelled sample; report macro-F1 | `prompts/`, `annotation/`, `evaluation/classification_metrics.py`, `evaluation/prompt_comparison.py`, `scripts/run_experiment.py` |
+| **D3** | Prompt chain extract → aggregate → summarise; per-product summaries; faithfulness via LLM-as-a-Judge | `pipeline/aggregation.py`, `pipeline/summarization.py`, `evaluation/summary_evaluation.py`, `scripts/run_chain.py`, `scripts/export_d3.py` |
 
 ## 3. Objectives
 1. Define a strict, documented schema and taxonomy for review analysis.
 2. Extract structured records reliably, with grounded evidence and automatic repair.
-3. Compare three prompting techniques fairly (same model, data, schema, definitions).
-4. Evaluate against human ground truth with standard single- and multi-label metrics.
+3. Compare three prompting techniques fairly (same model, data, schema, definitions and decoding).
+4. Evaluate against reference labels with standard single- and multi-label metrics, reporting coverage and failures.
 5. Produce product summaries grounded in computed statistics and cited reviews.
-6. Evaluate the summaries with a rubric-based LLM judge plus deterministic checks.
-7. Provide an interactive dashboard and a reproducible, testable codebase.
+6. Evaluate the summaries with a rubric-based LLM judge plus deterministic checks, and state the judge's limits.
+7. Run entirely on local hardware, with a reproducible, tested codebase and an interactive dashboard.
 
-## 4. Technologies used
+## 4. Features
+* **Validated extraction** with Pydantic v2: enums, field limits, `extra="forbid"`, and evidence that must be a near-verbatim quote of the review.
+* **Automatic repair**: JSON extraction from prose/fences, deterministic local fixes, then up to two LLM repair calls with the exact validation errors; every attempt is logged.
+* **Failure safety**: a malformed output becomes a controlled failure (never a crash); a provider outage stops the batch cleanly, keeps every completed result cached, and marks the experiment **Incomplete** until resumed.
+* **Three prompting strategies** behind one interface, compared on identical inputs.
+* **Metrics**: macro-F1 (primary), accuracy, per-class precision/recall/F1, confusion matrices, multi-label complaint metrics, aspect detection/sentiment metrics, validity, repair, coverage, latency and token usage.
+* **Prompt chain** with pandas aggregation, citation-validated summaries and an LLM-as-a-Judge with deterministic cross-checks.
+* **Local-only inference** through Ollama (`127.0.0.1`), with non-local endpoints rejected by default; optional cloud providers remain available but are never selected by default.
+* **Six-page Streamlit dashboard** with live/mock separation, exports and an annotation tool.
+
+## 5. Technology stack
 | Purpose | Technology |
 |---|---|
 | Language | Python 3.11 |
+| Local LLM runtime | Ollama 0.40 — `qwen2.5:3b` (extraction, summaries), `llama3.2` (judge), `qwen2.5:7b` (model comparison) |
+| LLM integration, prompts, parsers | LangChain (`langchain-core`, `langchain-ollama==1.1.0`) |
 | Structured output / validation | Pydantic v2 |
-| Prompt templates, output parsers, model integration | LangChain (`langchain-core`, `langchain-google-genai`) |
-| Default LLM provider | Google Gemini (`gemini-2.5-flash`, configurable). OpenAI, Anthropic, Groq and Ollama are supported |
-| Data processing | pandas, NumPy |
-| Metrics | scikit-learn |
-| Frontend / charts | Streamlit, Plotly |
-| Configuration | python-dotenv |
+| Data processing / metrics | pandas, NumPy, scikit-learn |
+| Dashboard / charts | Streamlit, Plotly |
+| Configuration | python-dotenv (`.env`, git-ignored) |
 | Testing | pytest, `streamlit.testing.AppTest` |
 
-## 5. System architecture
+## 6. Architecture
 ```
- reviews ─► [EXTRACT] prompt strategy ─► LLM ─► parse ─► validate (+grounding) ─► repair loop ─► ReviewRecord / controlled failure
-                                                                                                  │
-            [AGGREGATE] pandas: sentiment %, aspect stats, complaints, trends, evidence quotes ◄────┘
-                                                                                                  │
-            [SUMMARISE] LLM: grounded summary, every point cites review IDs (validated) ◄──────────┘
-                                                                                                  │
-            [JUDGE]     LLM-as-a-Judge (rubric 1–5) + deterministic checks ◄───────────────────────┘
+ reviews ─► [EXTRACT] prompt strategy ─► local LLM (Ollama) ─► parse ─► validate (+grounding) ─► repair loop ─► ReviewRecord / controlled failure
+                                                                                                       │
+            [AGGREGATE] pandas: sentiment %, aspect stats, complaints, trends, evidence quotes ◄─────────┘
+                                                                                                       │
+            [SUMMARISE] local LLM: grounded summary; every point cites review ids (validated) ◄─────────┘
+                                                                                                       │
+            [JUDGE]     separate local LLM: rubric 1–5 + deterministic checks ◄─────────────────────────┘
 ```
-* **Provider-independent LLM layer:** the pipeline talks only to an `LLMClient` interface (`llm/base.py`).
-  `llm/factory.py` builds a LangChain chat model for the configured provider, or the offline `MockLLMClient`.
-* **Live and mock are physically separated:** `outputs/live/` vs `outputs/mock/`, with an `is_mock` flag on every record.
-  Live calls never silently fall back to mock.
+* **Provider-independent LLM layer:** the pipeline talks only to the `LLMClient` interface (`llm/base.py`); `llm/factory.py`
+  builds a LangChain chat model for the configured provider or the offline `MockLLMClient`. The Ollama model gets its own
+  context window (`OLLAMA_NUM_CTX`), timeout and output limit, and bypasses the cloud rate limiter.
+* **Live and mock are physically separated:** `outputs/live/` vs `outputs/mock/`, with an `is_mock` flag on every record;
+  live calls never fall back to mock.
+* **Resumable everywhere:** extraction results are cached in JSONL keyed by review id + text hash; experiments resume by run id.
 
 Details: [`docs/architecture.md`](docs/architecture.md).
 
-## 6. Project folder structure
 ```
-├── app.py                      Streamlit entry point (st.navigation)
-├── config.py                   all settings from .env (no secrets in code)
-├── requirements.txt · .env.example · .gitignore
-├── schemas/
-│   ├── taxonomy.py             single source of truth for all labels + definitions
-│   ├── review_schema.py        Aspect, LLMExtraction, ReviewRecord, metadata, grounding check
-│   └── evaluation_schema.py    Annotation, ProductAggregate, ProductSummary, JudgeVerdict
-├── llm/
-│   ├── base.py                 LLMClient protocol, LLMResponse, errors
-│   ├── factory.py              returns live or mock client
-│   ├── langchain_client.py     Gemini / OpenAI / Anthropic / Groq / Ollama via LangChain
-│   └── mock.py                 OFFLINE deterministic fixtures (development only)
-├── prompts/
-│   ├── common.py               shared rules, taxonomy block, PydanticOutputParser instructions
-│   ├── zero_shot.py · few_shot.py · cot.py · strategies.py (common interface)
-│   └── repair.py · summarization.py · judge.py
-├── pipeline/
-│   ├── validation.py           JSON extraction, local fixes, normalisation, error formatting
-│   ├── repair.py               generic generate → validate → repair loop
-│   ├── extraction.py           Stage 1 + resumable JSONL cache
-│   ├── aggregation.py          Stage 2 (pandas)
-│   └── summarization.py        Stage 3 + full chain runner
-├── evaluation/
-│   ├── classification_metrics.py   single-label, multi-label, aspect metrics
-│   ├── prompt_comparison.py        experiment runner, reports
-│   ├── summary_evaluation.py       LLM-as-a-Judge + deterministic checks
-│   └── visualizations.py           Plotly figures
-├── annotation/
-│   ├── annotation_manager.py   sample, persistence, CSV import/export
-│   └── annotation_guide.md
-├── ui/                         the six dashboard pages + shared helpers
-├── scripts/                    prepare_dataset · build_annotation_sample · run_experiment · run_chain
-├── utils/                      data_loader · export · storage · logging_config
-├── tests/                      97 tests (no network)
-├── data/                       raw/ · processed/ · annotations/  (see data/README.md)
+├── app.py                      Streamlit entry point (st.navigation, six pages)
+├── config.py                   settings from .env (local-first defaults, no secrets in code)
+├── schemas/                    taxonomy · review_schema (ReviewRecord, grounding) · evaluation_schema
+├── llm/                        base · factory · langchain_client (Ollama + optional cloud) · mock (offline fixtures)
+├── prompts/                    common · zero_shot · few_shot · cot · strategies · repair · summarization · judge
+├── pipeline/                   validation · repair · extraction · aggregation · summarization
+├── evaluation/                 classification_metrics · prompt_comparison · summary_evaluation · visualizations
+├── annotation/                 annotation_manager (sample, persistence, provenance) · annotation_guide.md
+├── ui/                         the six dashboard pages + shared helpers and theme
+├── scripts/                    prepare_dataset · build_annotation_sample · run_experiment · run_chain · export_d1 · export_d3 · build_reports
+├── tests/                      offline test suite (no network, no LLM)
+├── data/                       raw/ · processed/ (regenerated, git-ignored) · annotations/ (committed)
 ├── outputs/                    generated artefacts (git-ignored; live/ and mock/)
-├── reports/                    curated final results (pending)
-└── docs/                       architecture.md · experiment_methodology.md
+├── reports/                    curated final results, final report, presentation, screenshots
+└── docs/                       architecture · experiment methodology · problem statement PDF
 ```
 
-## 7. Dataset and data preparation
-* **Source:** [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UCSD), **Appliances** category,
-  2.13 M raw reviews. It was chosen for concrete, comparable aspects (fit/compatibility, installation, noise, durability, price).
-* **Pipeline** (`scripts/prepare_dataset.py`, deterministic with seed 42):
-  1. clean the text (HTML removed, whitespace collapsed);
-  2. keep reviews of 5–400 words;
-  3. keep products with 200–5,000 valid reviews and a title;
-  4. randomly pick 15 products;
-  5. de-duplicate per user+product and per identical text;
-  6. sample 100 reviews per product.
+## 7. Dataset
+* **Source:** [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UCSD), **Appliances** category
+  (2,128,605 raw reviews). Citation and licence notes: [`data/README.md`](data/README.md).
+* **Preparation** (`scripts/prepare_dataset.py`, deterministic, seed 42): clean text; keep reviews of 5–400 words; keep products
+  with 200–5,000 valid reviews and a title (1,373 candidates); randomly pick 15 products; de-duplicate per user+product and per text;
+  sample 100 reviews per product.
+* **Verified result (regenerated for this submission):** **1,500 reviews, 15 products × 100, 1,500 unique review ids**; ratings
+  1★ 150 · 2★ 55 · 3★ 64 · 4★ 145 · 5★ 1,086; review length 5–391 words (median 22); one empty review title, no other missing values.
+* The star rating is used only for sampling and display and is **never shown to the LLM or used as ground truth**.
+* **Evaluation sample:** 300 reviews stratified by rating (≈60 per rating), covering all 15 products; all 300 ids and texts match the dataset exactly.
 
-  Result: **1,500 reviews / 15 products**.
-* `parent_asin` is kept as `product_id` for aggregation. The star rating is never shown to the LLM.
-* **Annotation sample:** 300 reviews, stratified by rating (62/55/60/60/63 for 1★–5★), covering all 15 products.
+## 8. Annotation methodology
+The reference labels are in `data/annotations/annotations.json` (300 records, schema `Annotation`), following
+[`annotation/annotation_guide.md`](annotation/annotation_guide.md): overall sentiment (4 classes), aspect categories with
+sentiment, and complaint categories, labelled from the review text without the star rating.
 
-Source, licence notes, fields and statistics: [`data/README.md`](data/README.md).
+**Provenance (stated honestly everywhere the labels are used):**
 
-## 8. Structured JSON schema
-Each record (`ReviewRecord`) contains:
+| | Records |
+|---|---|
+| Human label (annotator Akash) | **1** (`R3314d62a5df6`) |
+| AI-assisted labels — generated by an AI model (Claude) from the review text only, with the project mentor's approval; 77 marked `DEBATABLE` | **299** |
+| Flagged as unreadable and excluded from evaluation | 1 (`R5cfb12ef75b4`) |
+| **Evaluable reference labels** | **299** (1 human + 298 AI-assisted) |
 
+The split is recorded in `meta.annotation_method` and in each AI-assisted record's `notes` (prefix `AI-assisted label`).
+The dashboard and every report show it next to the metrics. Because most labels are AI-assisted, **D2 scores measure agreement
+with these reference labels, not with independent manual annotation.** No output of the evaluated models is ever written into the
+label file. Re-labelling a review on the *Human Annotation* page replaces it with a human label.
+
+## 9. Structured extraction pipeline
+`ReviewExtractor` (`pipeline/extraction.py`) builds the strategy's messages, calls `generate_structured(...)` and returns a
+`ReviewRecord` or a controlled `ExtractionFailure`. `extract_many` processes batches with a JSONL cache:
+* **resumable** — an interrupted run continues where it stopped; successful reviews are never called again;
+* **failed outputs are retried** on the next run;
+* **provider errors stop the batch** (`ExtractionStopped`) instead of being stored as model failures, so an outage never looks like a wrong answer and completed results are kept.
+
+**Repair loop** (`pipeline/repair.py`): capture the raw response → extract the JSON object (fences/prose stripped, truncation
+detected) → deterministic local fixes (trailing commas, smart quotes; each logged) → normalise formatting only (`"Positive"` →
+`"positive"`) → validate with Pydantic including evidence grounding → if invalid, send a repair prompt with the original output,
+the schema, the review and the exact errors → retry up to `MAX_REPAIR_ATTEMPTS` (2) → otherwise a controlled failure.
+Every attempt (raw output, errors, local fixes, tokens, latency) is stored in `extraction_metadata.attempts`.
+
+**Exports** (`utils/export.py`, `scripts/export_d1.py`): records JSON (re-parsed and re-validated with evidence grounding after
+writing), records CSV with a fixed column list, a long-format aspects CSV, a failures CSV, and a validation/repair/runtime report.
+
+## 10. Pydantic schema
 | Field | Type / constraint |
 |---|---|
 | `review_id`, `product_id`, `review_text` | identifiers and source text |
 | `overall_sentiment` | `positive` · `negative` · `neutral` · `mixed` |
-| `aspects[]` | list (may be empty) of **Aspect** |
-| `complaint_categories[]` | multi-label from the complaint taxonomy (empty if none) |
+| `aspects[]` | list (may be empty) of **Aspect**: `aspect_name`, `aspect_category` (13), `sentiment` (positive/negative/neutral), `evidence` (near-verbatim quote, ≤300 chars), `confidence` 0–1 |
+| `complaint_categories[]` | multi-label from 14 complaint categories (empty if none) |
 | `confidence` | float 0–1 |
-| `rationale` | optional, ≤400 characters, a concise justification (no reasoning trace) |
-| `extraction_metadata` | strategy, provider, model, prompt version, `is_mock`, validation success, repair attempts, local fixes, latency, tokens, **every attempt's raw output and errors** |
-
-**Aspect:** `aspect_name` (normalised), `aspect_category` (13 categories), `sentiment` (`positive`/`negative`/`neutral`),
-`evidence` (**must be a near-verbatim quote from the review**, otherwise validation fails), `confidence` 0–1.
+| `rationale` | optional, ≤400 characters — a concise justification, never a reasoning trace |
+| `extraction_metadata` | strategy, provider, model, prompt version, `is_mock`, validation success, repair attempts, local fixes, latency, tokens, all attempts |
 
 **Aspect categories:** performance, quality_durability, design_build, ease_of_use, installation_setup, noise, size_capacity,
 compatibility, price_value, customer_service, shipping_packaging, safety, other.
-
 **Complaint categories:** product_defect, poor_durability, performance_issue, noise_issue, installation_difficulty, usability_issue,
 compatibility_fit_issue, poor_value, shipping_damage, missing_parts, not_as_described, customer_service_issue, safety_concern, other.
+Every label has a written definition in `schemas/taxonomy.py`; a test keeps enums and definitions in sync.
 
-Every label has a written definition in `schemas/taxonomy.py`. To extend the taxonomy, add an enum member and its definition;
-a test checks that the two stay in sync. Extra fields are forbidden (`extra="forbid"`), and duplicate aspects and complaints are removed.
-
-## 9. Prompt engineering strategies
-All three strategies share the system role, the 9 extraction rules, the taxonomy definitions and the
-LangChain `PydanticOutputParser` format instructions (`prompts/common.py`). They differ **only** in technique:
+## 11. Prompting strategies
+All three share the system role, the extraction rules, the taxonomy definitions and LangChain `PydanticOutputParser` format
+instructions (`prompts/common.py`), and return the **same schema**. Only the technique differs:
 
 | Strategy | What is added |
 |---|---|
 | **Zero-shot** | nothing: instructions + definitions + review |
-| **Few-shot** | 5 fixed **synthetic** labelled examples written by the author (positive multi-aspect, negative multi-complaint, mixed, compatibility issue, neutral/no aspects). Not taken from the dataset, so they cannot leak into the test set |
-| **Chain-of-Thought** | a 7-step analysis procedure (split statements → identify aspects → map categories → decide sentiment with negation → check complaints → weigh overall → verify evidence). The model performs it *silently* and returns only the JSON + concise rationale |
+| **Few-shot** | 5 fixed **synthetic** demonstrations written by the authors (positive multi-aspect, negative multi-complaint, mixed, compatibility issue, neutral/no aspects). Not taken from the dataset, so they cannot leak into the evaluation set |
+| **Chain-of-Thought** | a 7-step analysis procedure (split statements → identify aspects → map categories → decide sentiment incl. negation → check complaints → weigh overall → verify evidence), performed **silently**; only the JSON and a short rationale are returned and stored |
 
-`prompts/strategies.py` exposes a common `PromptStrategy.build_messages(review_text)` interface, so the pipeline can switch strategies without code changes.
+## 12. Evaluation methodology
+* **Evaluation set:** the 299 evaluable reviews of the sample (one flagged review excluded and reported). The same review ids,
+  order, model, temperature (0), output limit and repair limit are used for all three strategies; `config.json` records them.
+* **Overall sentiment (primary task):** accuracy, **macro precision/recall/F1 (primary metric)**, weighted F1, per-class report,
+  confusion matrix. Macro averages use every class present in the reference labels or the predictions — all four classes occur in
+  the reference labels, so a class the model never predicts still counts with F1 = 0.
+* **Complaints (multi-label):** micro/macro/weighted/sample F1, Hamming loss, subset accuracy. **Aspects:** category-level detection
+  F1, aspect-sentiment macro-F1 on matched categories, strict joint (category:sentiment) F1.
+* **Failures are not dropped:** a review without a valid output stays in the denominator and counts as wrong; coverage, validity,
+  repair rate and failed-review counts are reported per strategy, plus latency and tokens.
+* **Status labels:** `complete` only when every strategy predicted every review against all evaluable labels; `incomplete` after a
+  stopped run; `provisional` with too few labels; `mock_demo` for offline fixtures.
 
-## 10. Extraction pipeline
-`ReviewExtractor` (`pipeline/extraction.py`) builds the messages, calls `generate_structured(...)`, and returns either a
-`ReviewRecord` or a controlled `ExtractionFailure`. `extract_many` processes batches with a progress callback and an
-`ExtractionStore` (JSONL) cache keyed by review ID + text hash:
-* **resumable:** an interrupted run continues where it stopped;
-* **no repeated API calls:** successful reviews are skipped;
-* **failed reviews are retried** on the next run.
+Full details: [`docs/experiment_methodology.md`](docs/experiment_methodology.md).
 
-Exports (`utils/export.py`): JSON (validated by re-parsing), records CSV with a **fixed column list**, a long-format
-aspects CSV and a failures CSV.
+## 13. Experimental results
+<!-- RESULTS -->
+_Results are added here from `reports/` once the local runs finish._
+<!-- /RESULTS -->
 
-## 11. Malformed output repair
-LLMs can return invalid JSON, prose around the JSON, wrong enum values, wrong types, missing fields, incomplete aspects
-or invented evidence. `pipeline/repair.py` handles all of these:
+## 14. Prompt chain (extract → aggregate → summarise)
+1. **Extract** structured records for each product's reviews (cached, same pipeline as D1).
+2. **Aggregate** with pandas (no LLM) — see §15.
+3. **Summarise:** the LLM receives only the statistics and evidence quotes and returns `ProductSummaryContent` (overall opinion,
+   appreciated points, complaints, frequent aspects, improvement areas, recommendations). Every appreciated/complaint point must cite
+   review ids from the evidence; unknown ids fail validation and trigger repair. The prompt forbids calculating or inventing numbers.
+4. **Judge** each summary with a separate local model — see §16.
 
-1. **Capture** the raw response.
-2. **Extract** the JSON object: strip fences and prose with a string-aware brace scanner, and detect truncation.
-3. **Local fixes** that need no LLM call (trailing commas, smart quotes). Each fix is logged.
-4. **Normalise** formatting only (`"Positive"` → `"positive"`, unwrap `{"result": {...}}`). Invalid meanings such as
-   `"very good"` are *not* guessed.
-5. **Validate** with Pydantic, including evidence grounding against the review text.
-6. If invalid, send a **repair prompt** containing the original output, the schema, the source text and the exact errors.
-7. **Retry** up to `MAX_REPAIR_ATTEMPTS` (default 2).
-8. **Log** every attempt (raw output, errors, local fixes, tokens, latency) in `extraction_metadata.attempts`.
-9. If all attempts fail, return a **controlled failure**. Invalid data is never stored as a record.
+Summaries keep the full aggregate (statistics, evidence quotes, review ids) so every claim can be traced back to reviews.
+Generated summaries are **model output**, clearly separated from the reference labels and never treated as ground truth.
 
-The same loop validates summaries (cited review IDs must exist) and judge verdicts (scores 1–5). Tests cover every
-failure type listed above (`tests/test_validation_and_repair.py`).
+## 15. Aggregation methodology
+`pipeline/aggregation.py` computes, per product: totals; positive/negative/neutral/mixed counts and percentages; per aspect category
+the mentions, positive/negative/neutral counts, net sentiment ((pos − neg) / mentions) and the most frequent aspect names; complaint
+counts and percentages and the number of reviews with complaints; a yearly aspect-sentiment trend; and diverse positive and negative
+evidence quotes with their review ids. All numbers are computed here, never by the LLM.
 
-## 12. Aggregation and summarisation
-**Aggregate** (`pipeline/aggregation.py`, pure pandas, no LLM): totals; positive/negative/neutral/mixed counts and
-percentages; per aspect category its mentions, positive/negative/neutral counts, net sentiment and top aspect names;
-complaint counts and percentages; yearly aspect-sentiment trend; and diverse evidence quotes with review IDs.
+## 16. LLM-as-a-Judge methodology
+The judge (`llama3.2`, a different model family from the `qwen2.5` summariser, to reduce self-preference) receives the original reviews
+(80 words each), the per-review extractions, the aggregated statistics and the summary. It applies an anchored 1–5 rubric for
+**faithfulness, coverage, consistency and hallucination** (5 = no unsupported claims) and returns a validated `JudgeVerdict` with
+justifications and a verbatim list of unsupported claims. Deterministic checks run alongside: percentages absent from the statistics,
+coverage of the top aspects and complaints, validity of cited ids, and (in `scripts/export_d3.py`) a **citation-polarity check** —
+reviews cited for a praised point should contain a positive aspect, reviews cited for a complaint a negative one.
 
-**Summarise** (`pipeline/summarization.py`): the LLM receives only the statistics and the evidence quotes. It returns
-`ProductSummaryContent`:
-* overall opinion;
-* what customers appreciate;
-* common complaints;
-* frequent aspects;
-* improvement areas;
-* recommendations.
+> Judge scores are an automated model assessment, **not objective truth**. A 3B judge can be lenient, miss unsupported claims and
+> misread statistics; its scores are reported next to the deterministic checks so they can be audited.
 
-Each appreciated or complaint point **must cite review IDs from the evidence**, and unknown IDs fail validation and
-trigger repair. The prompt forbids calculating or inventing numbers, and a deterministic check later flags any
-percentage that does not appear in the statistics.
-
-## 13. Evaluation methodology
-Ground truth = **300 human-labelled reviews** (`annotation/`, Data Annotation page). Metrics (`evaluation/classification_metrics.py`):
-
-| Task | Metrics |
-|---|---|
-| Overall sentiment (4 classes) | accuracy, **macro P/R/F1**, weighted F1, per-class report, confusion matrix |
-| Complaints (multi-label) | micro/macro/weighted/samples F1, Hamming loss, subset accuracy, per-label report |
-| Aspects | category-level **detection** F1 · **aspect sentiment** macro-F1 on matched categories · strict **joint** (category:sentiment) F1 |
-| Operational | validity rate, first-attempt validity, LLM repairs, latency, input/output tokens |
-
-Failed extractions stay in the denominator and count as wrong. Each run is labelled **awaiting annotations**,
-**provisional** (<300 labels), **complete** or **mock demo**. Full details, including why the sample is
-rating-stratified: [`docs/experiment_methodology.md`](docs/experiment_methodology.md).
-
-## 14. LLM-as-a-Judge
-`evaluation/summary_evaluation.py` sends the judge four inputs:
-* the original reviews;
-* the per-review structured extractions;
-* the aggregated statistics;
-* the generated summary.
-
-The judge applies an anchored 1–5 rubric for **faithfulness, coverage, consistency and hallucination**
-(5 = no hallucination) and returns a Pydantic `JudgeVerdict` with justifications and a verbatim list of
-unsupported claims. Each judgement stores its model, prompt version and repair count, plus
-**deterministic checks**: invented percentages, coverage of the top aspects and complaints, and cited-ID validity.
-An exportable **manual inspection sample** shows the evidence, statistics, summary and scores side by side with a
-"human agrees?" column.
-
-> Judge scores are model-based assessments, **not objective human evaluation**. To reduce self-preference bias,
-> set `JUDGE_PROVIDER`/`JUDGE_MODEL` to a different model.
-
-## 15. Installation
+## 17. Installation
 ```bash
 git clone https://github.com/RachitSMane/Prompt-engineering-mini-project-.git
 cd Prompt-engineering-mini-project-
-python -m venv .venv
+python -m venv .venv                      # Python 3.11 recommended
 # Windows:  .venv\Scripts\activate      macOS/Linux:  source .venv/bin/activate
 pip install -r requirements.txt
-python scripts/prepare_dataset.py          # downloads ~340 MB once, builds data/processed/reviews.csv
-python scripts/build_annotation_sample.py  # keeps the committed 300-review sample
+python scripts/prepare_dataset.py         # downloads ~340 MB once, builds data/processed/reviews.csv
+copy .env.example .env                    # macOS/Linux: cp .env.example .env  (no API key needed)
 ```
+Cloud providers (Gemini, OpenAI, Anthropic, Groq) are optional: install the matching LangChain package listed in
+`requirements.txt` and set its key in `.env`. They are never used by default.
 
-## 16. Environment configuration
-```bash
-cp .env.example .env      # Windows: copy .env.example .env
-```
+## 18. Ollama setup
+1. Install Ollama from <https://ollama.com> and start it (the desktop app, or `ollama serve`).
+2. Pull the models (once):
+   ```bash
+   ollama pull qwen2.5:3b     # extraction and summaries (~1.9 GB)
+   ollama pull llama3.2       # LLM-as-a-Judge (~2.0 GB)
+   ollama pull qwen2.5:7b     # optional, model comparison (~4.7 GB)
+   ```
+3. Check: `ollama list` and `curl http://127.0.0.1:11434/api/version`.
+
 | Variable | Default | Meaning |
 |---|---|---|
-| `LLM_PROVIDER` | `gemini` | `gemini` · `openai` · `anthropic` · `groq` · `ollama` · `mock` |
-| `LLM_MODEL` | `gemini-2.5-flash` | model name for the provider |
-| `GOOGLE_API_KEY` | – | free key from https://aistudio.google.com/apikey |
-| `LLM_TEMPERATURE` | `0` | deterministic decoding for experiments |
-| `LLM_REQUESTS_PER_MINUTE` | `10` | client-side rate limit (free tier) |
-| `JUDGE_PROVIDER` / `JUDGE_MODEL` | same as extraction | optional separate judge model |
-| `MAX_REPAIR_ATTEMPTS` | `2` | LLM repair retries |
-| `STRICT_EVIDENCE_GROUNDING` | `true` | require verbatim evidence |
-| `MOCK_MALFORMED_RATE` | `15` | % of mock outputs deliberately corrupted |
+| `LLM_PROVIDER` / `LLM_MODEL` | `ollama` / `qwen2.5:3b` | extraction and summary model (also the default when no `.env` exists) |
+| `JUDGE_PROVIDER` / `JUDGE_MODEL` | `ollama` / `llama3.2` | separate judge model |
+| `OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | local endpoint; non-local addresses are rejected unless `OLLAMA_ALLOW_REMOTE=true` |
+| `OLLAMA_NUM_CTX` | `8192` | context window (fits the few-shot prompt plus output) |
+| `LLM_TIMEOUT_SECONDS` | `300` | per call; local CPU/GPU inference is slow |
+| `LLM_MAX_OUTPUT_TOKENS` | `1024` in `.env.example` | output cap; stops runaway generation (see §22) |
+| `LLM_TEMPERATURE` | `0` | deterministic decoding |
+| `MAX_REPAIR_ATTEMPTS` / `STRICT_EVIDENCE_GROUNDING` | `2` / `true` | repair loop and evidence check |
 
-For other providers, `pip install langchain-openai` (or `-anthropic`, `-groq`, `-ollama`) and set the matching key.
-**Never commit `.env`**; it is git-ignored.
+If Ollama is not running or a model is missing, the sidebar shows **Ollama not running** / **Model not pulled**, live buttons are
+disabled with instructions, and the app never switches to a cloud provider. *Offline mock mode* (sidebar toggle) runs the pipeline on
+deterministic fixtures, stored separately and always labelled as **not results**.
 
-**Without an API key**, the app starts in *Offline MOCK mode* and shows a clear message wherever a live LLM is needed.
-Mock outputs come from a keyword fixture, are saved under `outputs/mock/`, and carry banners. They are **never results**.
-
-## 17. Running the application
+## 19. Running the application
 ```bash
-streamlit run app.py
+streamlit run app.py          # http://localhost:8501
 ```
-| Page | What you can do |
+| Page | What it shows |
 |---|---|
-| 🏠 Home / Dashboard | deliverable status, dataset statistics, processed reviews, sentiment & aspect charts, recent activity |
-| 🔎 Review Analysis | use the dataset or upload a CSV (column mapping), run extraction with any strategy, inspect JSON + repair logs, download JSON/CSV |
-| ⚖️ Prompt Comparison | run/resume experiments, macro-F1 and other metrics, confusion matrices, latency & tokens, download report |
-| 📦 Product Insights | extract per product, aggregated statistics, positive/negative aspects, complaints, trends, generate grounded summaries |
-| 🧑‍⚖️ Summary Evaluation | run the judge, scores per dimension, justifications, deterministic checks, inspection export |
-| ✍️ Data Annotation | label the 300 reviews (guide, progress, navigation), import/export CSV & JSON |
+| **Overview** | dataset size, deliverable status, processed reviews, sentiment and aspect charts, recent activity |
+| **Review Analysis** | run extraction on the dataset or an uploaded CSV with any strategy; JSON + repair logs; JSON/CSV download |
+| **Prompt Experiments** | run/resume experiments; macro-F1 and all metrics, confusion matrices, per-class scores, latency, tokens; label provenance |
+| **Product Intelligence** | per-product statistics, aspects, complaints, trends, evidence and generated summaries |
+| **Summary Evaluation** | judge scores per dimension and per product, justifications, deterministic checks, inspection export |
+| **Human Annotation** | browse/edit the 300 reference labels with provenance badges; import/export CSV and JSON |
 
-Long runs are more robust from the command line:
+## 20. Running experiments
 ```bash
-python scripts/run_experiment.py --limit 20          # pilot
-python scripts/run_experiment.py                     # all strategies × 300 reviews (~900 calls)
-python scripts/run_experiment.py --resume <run_id>   # continue after interruption
-python scripts/run_experiment.py --reevaluate <id>   # recompute metrics after more annotations (no LLM calls)
-python scripts/run_chain.py --per-product 30 --judge # extract → aggregate → summarise → judge
-# add --mock to any of these for an offline pipeline demo (not a result)
+python scripts/run_experiment.py --only-annotated            # D2: 3 strategies × 299 evaluable reviews
+python scripts/run_experiment.py --resume <run_id> --only-annotated   # continue after an interruption
+python scripts/run_experiment.py --reevaluate <run_id>       # recompute metrics from saved predictions (no LLM calls)
+python scripts/export_d1.py --run <run_id>                   # D1: JSON/CSV exports + validation report
+python scripts/run_chain.py --per-product 20 --extract-only  # D3 stage 1 (cached)
+python scripts/run_chain.py --per-product 20 --judge         # D3 summaries + judge (re-uses cached extractions)
+python scripts/export_d3.py --source dataset__<strategy>__qwen2.5-3b__v1
+python scripts/build_reports.py --d2-run <run_id> --d3-source <source>   # curate into reports/ (+ recomputation check)
 ```
+Add `--mock` to the run scripts for an offline pipeline demo (never a result).
 
-## 18. Running tests
+## 21. Reproducing the results
+The exact commands, settings, timings and decisions of the reported runs are in
+[`reports/execution_log.md`](reports/execution_log.md). Every experiment directory stores `config.json` (settings snapshot, prompt
+version, review ids, git commit) and per-strategy predictions with raw outputs and repair logs, so all metrics can be recomputed
+without the LLM (`--reevaluate`, `scripts/build_reports.py` — see `reports/verification.md`). Decoding is deterministic
+(temperature 0); re-running the same model on the same hardware reproduced the earlier smoke-test output exactly.
+
 ```bash
-python -m pytest -q
+python -m pytest -q          # offline test suite (no network, no LLM)
 ```
-97 tests run offline (scripted fake LLM + mock client; no API calls). They cover:
-* schema validation, enums, missing and extra fields, multiple aspects, mixed sentiment, no-aspect reviews and evidence grounding;
-* JSON parsing and every malformed-output type, the repair loop, controlled failures and provider errors;
-* caching and resume, CSV/JSON export columns;
-* aggregation numbers and metric calculations checked against hand-computed values;
-* summary citation validation, the judge, and annotation persistence, import and export;
-* headless tests of all six Streamlit pages: rendering, navigation, CSV upload, extraction, annotation save + restart, summary generation, judging and experiment runs (mock mode).
 
-## 19. Sample outputs
-> The examples below were produced in **MOCK mode** to show the *format* and the *repair mechanism*.
-> They are not LLM outputs and not experimental results.
+## 22. Limitations
+* **Reference labels are mostly AI-assisted** (298 of 299 evaluable); scores measure agreement with them, and there is no inter-annotator agreement.
+* **Small local models:** `qwen2.5:3b` runs fully on a 4 GB GPU but produces shallow extractions (missed aspects/complaints); `qwen2.5:7b`
+  is more accurate on spot checks but only partly fits in VRAM and is ~3–4× slower, so it was evaluated on a subset only.
+* **Runaway generation:** the 3B model occasionally loops (repeating list items). The 1,024-token output cap truncates such outputs, which then
+  go through the repair loop; some still fail validation and are counted as failures.
+* Aspect matching is at category level; the rating-stratified sample does not reflect the natural (72% 5★) distribution, so accuracy describes the balanced set and macro-F1 is the headline metric.
+* Evidence grounding uses fuzzy string matching; paraphrased evidence is rejected.
+* LLM-as-a-Judge scores are model opinions from a 3B judge, not calibrated against human ratings.
+* Product summaries use 20 reviews per product (runtime budget on local hardware), not all 100.
 
-**Repair in action:** a deliberately corrupted first response, rejected by validation and fixed by the repair step:
-```text
-review:   "Fit our dishwasher perfectly as indicated by the model numbers. Great product."
-attempt 0 (initial)  → {"overall_sentiment": "very good", "aspects": [...], ...}
-          errors     → overall_sentiment: Input should be 'positive', 'negative', 'neutral' or 'mixed' (got 'very_good')
-attempt 1 (llm_repair) → valid ✅   (record stores both attempts in extraction_metadata.attempts)
-```
-On a 600-review mock run with 15% injected corruption: 46 records needed an LLM repair, 32 were fixed by local
-deterministic fixes, and 0 failed. This shows the mechanism works; it says nothing about a real model's error rate.
+## 23. Future improvements
+Human re-annotation of the reference labels (at least a double-annotated subset with Cohen's kappa); constrained JSON decoding
+(Ollama structured outputs) to remove syntax failures; a larger local model or GPU for the full 7B comparison; aspect-name matching with
+embeddings; dynamic few-shot example selection from a separate development pool; confidence calibration; human calibration of the judge.
 
-**Structured record (abridged):**
-```json
-{
-  "review_id": "Rd77288b05bc2", "product_id": "B001DHKBXU",
-  "review_text": "Easy to install and works great!",
-  "overall_sentiment": "positive",
-  "aspects": [
-    {"aspect_name": "install", "aspect_category": "installation_setup", "sentiment": "positive",
-     "evidence": "Easy to install and works great!", "confidence": 0.6}
-  ],
-  "complaint_categories": [], "confidence": 0.5,
-  "extraction_metadata": {"strategy": "few_shot", "provider": "mock", "model_name": "mock-offline-v1",
-    "is_mock": true, "validation_success": true, "repair_attempts": 0, "attempts": ["..."]}
-}
-```
-Real results will be added to `reports/` after the live runs (see the checklist below).
+## 24. Team and academic information
+**PES University — Prompt Engineering Mini Project, 5th Semester, AIML**
 
-## 20. Limitations and future improvements
-**Pending work (required for D2/D3 results):**
-- [ ] Add a Gemini API key to `.env`.
-- [ ] Complete the 300 manual annotations (Data Annotation page, roughly 2–3 hours).
-- [ ] Run `scripts/run_experiment.py` (all strategies, 300 reviews) and copy `report.md` to `reports/`.
-- [ ] Run `scripts/run_chain.py --judge` and fill in the human-agreement column of the inspection sample.
+| # | Name | SRN |
+|---|---|---|
+| 1 | Rachit S Mane | PES1UG24AM214 |
+| 2 | P. Chinni Krishna Reddy | PES1UG24AM209 |
+| 3 | Pranav V. Menon | PES1UG24AM198 |
+| 4 | Akash R. | PES1UG24AM212 |
 
-**Limitations:**
-- One annotator → no inter-annotator agreement yet (the guide describes an optional 50-review kappa check).
-- Aspect matching is at category level; aspect-name matching (e.g. with embeddings) is future work.
-- The rating-stratified evaluation set does not reflect the natural (72% 5★) distribution; macro-F1 is the headline metric for that reason.
-- Evidence grounding uses fuzzy string matching (85% similarity). Paraphrased evidence is rejected, which can raise repair counts.
-- LLM-as-a-Judge shares the biases of LLMs; a different judge model and human spot-checks are recommended.
-- Free-tier rate limits make the full experiment take roughly 1.5 hours; the runs are resumable.
-
-**Future improvements:** confidence calibration analysis, dynamic few-shot example selection (outside the test set),
-a second annotator, multilingual reviews, async batch calls for paid tiers.
+Problem statement and proposed solution: [`docs/ReviewIQ_Problem_Statement_and_Solution.pdf`](docs/ReviewIQ_Problem_Statement_and_Solution.pdf).
+Dataset: Hou et al. (2024), *Bridging Language and Items for Retrieval and Recommendation*, arXiv:2403.03952 (Amazon Reviews 2023).

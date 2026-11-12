@@ -89,7 +89,10 @@ def generate_structured(
     source_text: str | None = None,
     max_repairs: int = 2,
     normalizer: Normalizer = identity_normalizer,
+    raise_provider_errors: bool = False,
 ) -> StructuredResult[T]:
+    """Call the LLM, validate, repair. ``raise_provider_errors``: re-raise a failed provider call
+    (outage, timeout, quota) instead of returning it as an output failure, so batch callers can stop."""
     result: StructuredResult[T] = StructuredResult(value=None)
     current_messages, current_task = messages, task
     current_payload: dict[str, Any] = payload or {}
@@ -99,6 +102,8 @@ def generate_structured(
         try:
             response = client.invoke(current_messages, task=current_task, payload=current_payload)
         except LLMError as exc:
+            if raise_provider_errors:
+                raise
             logger.warning("LLM call failed on attempt %d (%s): %s", attempt, task, exc)
             result.attempts.append(AttemptLog(attempt=attempt, kind="provider_error", raw_output="", success=False, errors=[str(exc)]))
             result.error = f"LLM provider error: {exc}"

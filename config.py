@@ -26,15 +26,32 @@ PROVIDER_KEY_ENV: dict[str, str | None] = {
 }
 
 DEFAULT_MODELS: dict[str, str] = {
-    "gemini": "gemini-2.5-flash",
+    "gemini": "gemini-3.5-flash",
     "openai": "gpt-4o-mini",
     "anthropic": "claude-haiku-4-5",
-    "groq": "llama-3.3-70b-versatile",
-    "ollama": "llama3.1",
+    "groq": "openai/gpt-oss-120b",  # llama-3.3-70b-versatile has been retired
+    "ollama": "qwen2.5:3b",
     "mock": "mock-offline-v1",
 }
 
 MOCK_MODEL_NAME = DEFAULT_MODELS["mock"]
+
+# Local-first defaults: with no .env at all, ReviewIQ uses the local Ollama server (no API key).
+DEFAULT_PROVIDER = "ollama"
+# Separate local judge (different model family, so the extractor does not grade its own summaries).
+DEFAULT_LOCAL_JUDGE = ("ollama", "llama3.2")
+# Local models on a laptop CPU/GPU are slow; cloud providers keep the shorter timeout.
+DEFAULT_TIMEOUT_SECONDS = {"ollama": 300}
+CLOUD_TIMEOUT_SECONDS = 60
+
+# Ollama must run on this machine unless OLLAMA_ALLOW_REMOTE=true (keeps "local LLM" claims true).
+LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
+
+
+def is_local_url(url: str) -> bool:
+    from urllib.parse import urlparse
+
+    return (urlparse(url).hostname or "").lower() in LOCAL_HOSTS
 
 
 def _env_str(name: str, default: str = "") -> str:
@@ -92,15 +109,18 @@ class Paths:
 
 @dataclass(frozen=True)
 class Settings:
-    llm_provider: str = "gemini"
-    llm_model: str = DEFAULT_MODELS["gemini"]
+    llm_provider: str = DEFAULT_PROVIDER
+    llm_model: str = DEFAULT_MODELS[DEFAULT_PROVIDER]
     llm_temperature: float = 0.0
     llm_max_output_tokens: int = 8192
-    llm_timeout_seconds: int = 60
+    llm_timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS[DEFAULT_PROVIDER]
     llm_max_retries: int = 3
     llm_requests_per_minute: int = 10
     judge_provider: str = ""
     judge_model: str = ""
+    ollama_base_url: str = "http://127.0.0.1:11434"
+    ollama_num_ctx: int = 8192
+    ollama_allow_remote: bool = False
     max_repair_attempts: int = 2
     strict_evidence_grounding: bool = True
     mock_malformed_rate: int = 15
@@ -126,7 +146,13 @@ class Settings:
     def live_llm_available(self, provider: str | None = None) -> bool:
         """True when a real (non-mock) LLM can be called with current config."""
         provider = provider or self.llm_provider
+        if provider == "ollama" and not self.ollama_endpoint_allowed:
+            return False
         return provider != "mock" and provider in PROVIDER_KEY_ENV and self.has_api_key(provider)
+
+    @property
+    def ollama_endpoint_allowed(self) -> bool:
+        return self.ollama_allow_remote or is_local_url(self.ollama_base_url)
 
     def live_unavailable_reason(self, provider: str | None = None) -> str:
         provider = provider or self.llm_provider
@@ -134,6 +160,11 @@ class Settings:
             return "LLM_PROVIDER is set to 'mock' (offline development mode)."
         if provider not in PROVIDER_KEY_ENV:
             return f"Unknown provider '{provider}'. Use one of {sorted(PROVIDER_KEY_ENV)}."
+        if provider == "ollama" and not self.ollama_endpoint_allowed:
+            return (
+                f"OLLAMA_BASE_URL={self.ollama_base_url} is not a local address. ReviewIQ only uses a local Ollama "
+                "server by default; use http://127.0.0.1:11434 or set OLLAMA_ALLOW_REMOTE=true deliberately."
+            )
         env_name = self.api_key_env(provider)
         return (
             f"No API key found for provider '{provider}'. "
@@ -160,17 +191,23 @@ class Settings:
 
 
 def load_settings(**overrides) -> Settings:
-    provider = _env_str("LLM_PROVIDER", "gemini").lower()
+    provider = _env_str("LLM_PROVIDER", DEFAULT_PROVIDER).lower()
+    # Unset JUDGE_PROVIDER: a local extractor gets the separate local judge; cloud providers judge with themselves (as before).
+    judge_provider = _env_str("JUDGE_PROVIDER").lower() or (DEFAULT_LOCAL_JUDGE[0] if provider == "ollama" else "")
+    judge_default_model = DEFAULT_LOCAL_JUDGE[1] if judge_provider == "ollama" and provider == "ollama" else ""
     settings = Settings(
         llm_provider=provider,
         llm_model=_env_str("LLM_MODEL", DEFAULT_MODELS.get(provider, "")),
         llm_temperature=_env_float("LLM_TEMPERATURE", 0.0),
         llm_max_output_tokens=_env_int("LLM_MAX_OUTPUT_TOKENS", 8192),
-        llm_timeout_seconds=_env_int("LLM_TIMEOUT_SECONDS", 60),
+        llm_timeout_seconds=_env_int("LLM_TIMEOUT_SECONDS", DEFAULT_TIMEOUT_SECONDS.get(provider, CLOUD_TIMEOUT_SECONDS)),
         llm_max_retries=_env_int("LLM_MAX_RETRIES", 3),
         llm_requests_per_minute=_env_int("LLM_REQUESTS_PER_MINUTE", 10),
-        judge_provider=_env_str("JUDGE_PROVIDER").lower(),
-        judge_model=_env_str("JUDGE_MODEL"),
+        judge_provider=judge_provider,
+        judge_model=_env_str("JUDGE_MODEL", judge_default_model),
+        ollama_base_url=_env_str("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/"),
+        ollama_num_ctx=_env_int("OLLAMA_NUM_CTX", 8192),
+        ollama_allow_remote=_env_bool("OLLAMA_ALLOW_REMOTE", False),
         max_repair_attempts=_env_int("MAX_REPAIR_ATTEMPTS", 2),
         strict_evidence_grounding=_env_bool("STRICT_EVIDENCE_GROUNDING", True),
         mock_malformed_rate=_env_int("MOCK_MALFORMED_RATE", 15),

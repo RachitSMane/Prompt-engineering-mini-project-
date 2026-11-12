@@ -19,6 +19,8 @@ from utils.logging_config import setup_logging  # noqa: E402
 
 
 def main() -> None:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows consoles default to cp1252
     parser = argparse.ArgumentParser(description="Download (~340 MB, once) and prepare the review subset. Settings come from .env (DATASET_*, RANDOM_SEED).")
     parser.add_argument("--no-download", action="store_true", help="fail instead of downloading if raw files are missing")
     args = parser.parse_args()

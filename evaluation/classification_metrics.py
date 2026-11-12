@@ -1,4 +1,4 @@
-"""Classification metrics for comparing predictions with human annotations.
+"""Classification metrics for comparing predictions with reference annotations.
 
 Three evaluation tasks
 ----------------------

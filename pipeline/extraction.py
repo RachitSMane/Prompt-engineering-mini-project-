@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Callable, Iterable
 
 from config import Settings
-from llm.base import LLMClient
+from llm.base import LLMClient, LLMError
 from pipeline.repair import generate_structured
 from pipeline.validation import normalize_extraction
 from prompts.common import PROMPT_VERSION, extraction_format_instructions
@@ -31,6 +31,22 @@ EXTRACTION_TASK_DESCRIPTION = (
 )
 
 ExtractionOutcome = ReviewRecord | ExtractionFailure
+
+# Prefix of failures recorded by older versions when the provider call itself failed.
+PROVIDER_ERROR_PREFIX = "LLM provider error"
+
+
+def is_provider_failure(outcome: ExtractionOutcome) -> bool:
+    """True for a stored failure caused by an outage/quota error, not by the model's output."""
+    return isinstance(outcome, ExtractionFailure) and outcome.error.startswith(PROVIDER_ERROR_PREFIX)
+
+
+class ExtractionStopped(LLMError):
+    """A provider call failed mid-batch. Earlier results are cached; the failed review is not."""
+
+    def __init__(self, message: str, *, review_id: str, completed: int, total: int):
+        super().__init__(message)
+        self.review_id, self.completed, self.total = review_id, completed, total
 
 
 def cache_key(review: ReviewInput) -> str:
@@ -70,6 +86,27 @@ class ExtractionStore:
             self._failed.pop(key, None)
         else:
             self._failed[key] = outcome  # type: ignore[assignment]
+
+    def seed_from(self, source: Path, review_ids: set[str] | None = None) -> dict[str, int]:
+        """Copy outcomes from another store file (e.g. an experiment run's predictions) into this cache.
+
+        Only keys not already present are copied; a key matches only if the review text is identical
+        (the cache key contains a text hash). Used so the prompt chain reuses predictions that were
+        produced with the same model / prompt / settings instead of repeating the inference.
+        """
+        src = ExtractionStore(source)
+        added = {"ok": 0, "failed": 0, "skipped_existing": 0}
+        rows = [("ok", r) for r in src._ok.items()] + [("failed", r) for r in src._failed.items()]
+        for status, (key, outcome) in rows:
+            if review_ids is not None and outcome.review_id not in review_ids:
+                continue
+            if key in self._ok or key in self._failed:
+                added["skipped_existing"] += 1
+                continue
+            append_jsonl(self.path, [{"cache_key": key, "status": status, "record": outcome.model_dump(mode="json"), "seeded_from": str(source)}])
+            (self._ok if status == "ok" else self._failed)[key] = outcome  # type: ignore[index]
+            added[status] += 1
+        return added
 
     @property
     def records(self) -> list[ReviewRecord]:
@@ -112,6 +149,7 @@ class ReviewExtractor:
             source_text=review.review_text,
             max_repairs=self.settings.max_repair_attempts,
             normalizer=normalize_extraction,
+            raise_provider_errors=True,  # an outage is not a model error: never cache it as a failure
         )
         metadata = ExtractionMetadata(
             strategy=self.strategy.name,
@@ -152,7 +190,14 @@ class ReviewExtractor:
                 outcome = cached
                 run.from_cache += 1
             else:
-                outcome = self.extract(review)
+                try:
+                    outcome = self.extract(review)
+                except LLMError as exc:
+                    logger.error("Extraction (%s) stopped at review %s (%d/%d): %s", self.strategy.name, review.review_id, i, len(reviews), exc)
+                    raise ExtractionStopped(
+                        f"Provider error at review {review.review_id} ({i}/{len(reviews)}, strategy {self.strategy.name}): {exc}",
+                        review_id=review.review_id, completed=i - 1, total=len(reviews),
+                    ) from exc
                 run.new_calls += 1
                 if store:
                     store.put(review, outcome)

@@ -14,7 +14,7 @@
 * **Licence / terms:** the dataset is released by the McAuley Lab for research use. It is used here for
   non-commercial academic work. Raw and processed review files are **not** committed to git (see
   `.gitignore`); anyone can regenerate them deterministically with the script. The 300-review annotation
-  sample in `data/annotations/` is committed so that the human labels can be read alongside the text.
+  sample in `data/annotations/` is committed so that the reference labels can be read alongside the text.
   Check the dataset website for current terms before redistributing.
 
 ## Fields used
@@ -48,7 +48,7 @@ Final rating distribution: 1★ 150 · 2★ 55 · 3★ 64 · 4★ 145 · 5★ 1,
 |---|---|---|
 | `raw/` | Downloaded `.jsonl.gz` files | no |
 | `processed/` | `reviews.csv`, `dataset_card.json` | no (regenerate) |
-| `annotations/` | `annotation_sample.csv` (300 reviews), `annotation_template.csv`, `annotations.json` (human labels) | yes |
+| `annotations/` | `annotation_sample.csv` (300 reviews), `annotation_template.csv`, `annotations.json` (reference labels: 1 human, 299 AI-assisted; see `meta.annotation_method`) | yes |
 
 Regenerate everything with:
 

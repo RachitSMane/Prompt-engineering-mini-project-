@@ -145,3 +145,79 @@ def test_full_chain_with_mock(settings):
     assert (settings.paths.outputs / "mock" / "extractions").exists() and not (settings.paths.outputs / "live").exists()
     j, _ = judge_summary(MockLLMClient(), next(iter(res.summaries.values())), res.extraction.records, settings)
     assert j.is_mock and "MOCK" in j.verdict.overall_comment
+
+
+def test_corrupted_summary_is_a_distinct_unfaithful_copy(settings, records):
+    from evaluation.summary_evaluation import CORRUPTION_FABRICATED_FEATURE, corrupt_summary
+
+    agg = aggregate_product([r for r in records if r.product_id == "P1"])
+    ids = sorted({q.review_id for q in agg.positive_evidence + agg.negative_evidence})
+    summary, _ = summarize_product(ScriptedLLM([_summary_json(ids)]), agg, settings, "src")
+    bad = corrupt_summary(summary)
+    assert bad.summary_id == f"{summary.summary_id}-corrupted" and summary.content.complaints  # original untouched
+    assert bad.content.complaints == []
+    assert bad.content.appreciated[0].point == CORRUPTION_FABRICATED_FEATURE
+    assert bad.content.appreciated[0].supporting_review_ids[0] in agg.review_ids
+    assert "%" in bad.content.overall_opinion and bad.content.overall_opinion != summary.content.overall_opinion
+    assert deterministic_checks(bad)["percentages_not_in_statistics"]  # the fabricated number is caught deterministically too
+
+
+def test_chain_reuses_seeded_predictions_without_llm_calls(settings, tmp_path):
+    from pipeline.extraction import ExtractionStore
+
+    texts = ["Works great, very quiet.", "Too loud and broke after a month.", "Fits perfectly and the price was good."]
+    reviews = [ReviewInput(review_id=f"S{i}", product_id="P0", review_text=t) for i, t in enumerate(texts)]
+    first = run_chain(MockLLMClient(malformed_rate=0), reviews, settings, strategy="zero_shot", source="seedsrc", summarize=False)
+    assert first.extraction.new_calls == 3
+    src = ExtractionStore.for_run(settings, True, "seedsrc", "zero_shot", MockLLMClient().model_name).path
+    target = ExtractionStore.for_run(settings, True, "seeded", "zero_shot", MockLLMClient().model_name)
+    added = target.seed_from(src, review_ids={"S0", "S1"})
+    assert added == {"ok": 2, "failed": 0, "skipped_existing": 0}
+    assert target.seed_from(src, review_ids={"S0"})["skipped_existing"] == 1  # idempotent
+
+    class NoCalls(MockLLMClient):
+        def invoke(self, *a, **k):
+            raise AssertionError("seeded reviews must not be sent to the model")
+
+    second = run_chain(NoCalls(), reviews[:2], settings, strategy="zero_shot", source="seeded", summarize=False)
+    assert second.extraction.from_cache == 2 and second.extraction.new_calls == 0
+
+
+def test_chain_can_keep_cached_failures(settings):
+    from pipeline.extraction import ExtractionStore
+    from schemas.review_schema import ExtractionFailure
+
+    review = ReviewInput(review_id="F1", product_id="P0", review_text="Totally broke on day one, awful.")
+    store = ExtractionStore.for_run(settings, True, "failsrc", "zero_shot", MockLLMClient().model_name)
+    store.put(review, ExtractionFailure(review_id="F1", product_id="P0", review_text=review.review_text, error="invalid", extraction_metadata=_meta()))
+
+    class NoCalls(MockLLMClient):
+        def invoke(self, *a, **k):
+            raise AssertionError("cached failure must not be retried")
+
+    res = run_chain(NoCalls(), [review], settings, strategy="zero_shot", source="failsrc", summarize=False, retry_failed=False)
+    assert len(res.extraction.failures) == 1 and res.extraction.new_calls == 0
+
+
+def test_chain_resume_reuses_matching_summaries_without_llm_calls(settings):
+    texts = ["Works great, very quiet.", "Too loud and broke after a month.", "Fits perfectly and the price was good.", "Installation was easy but it leaks."]
+    reviews = [ReviewInput(review_id=f"U{i}", product_id=f"P{i % 2}", review_text=t) for i, t in enumerate(texts * 2)]
+    first = run_chain(MockLLMClient(malformed_rate=0), reviews, settings, strategy="zero_shot", source="resume", min_reviews_for_summary=1)
+    assert len(first.summaries) == 2 and first.reused_summaries == 0
+
+    class NoCalls(MockLLMClient):
+        def invoke(self, *a, **k):
+            raise AssertionError("stored summaries must be reused on resume")
+
+    again = run_chain(NoCalls(), reviews, settings, strategy="zero_shot", source="resume", min_reviews_for_summary=1, reuse_summaries=True)
+    assert again.reused_summaries == 2 and again.summary_errors == {}
+    assert {p: s.summary_id for p, s in again.summaries.items()} == {p: s.summary_id for p, s in first.summaries.items()}
+    assert len(SummaryStore.for_mode(settings, True).all()) == 2  # no duplicate rows written
+
+
+def test_chain_resume_regenerates_when_aggregate_changed(settings):
+    texts = ["Works great, very quiet.", "Too loud and broke after a month.", "Fits perfectly and the price was good."]
+    reviews = [ReviewInput(review_id=f"V{i}", product_id="P0", review_text=t) for i, t in enumerate(texts)]
+    run_chain(MockLLMClient(malformed_rate=0), reviews[:2], settings, strategy="zero_shot", source="changed", min_reviews_for_summary=1)
+    res = run_chain(MockLLMClient(malformed_rate=0), reviews, settings, strategy="zero_shot", source="changed", min_reviews_for_summary=1, reuse_summaries=True)
+    assert res.reused_summaries == 0 and len(res.summaries) == 1  # different input -> a new summary, not a stale one
