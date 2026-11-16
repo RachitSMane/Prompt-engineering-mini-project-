@@ -10,6 +10,7 @@ import pandas as pd
 
 from schemas.review_schema import ExtractionFailure, ReviewRecord
 from schemas.taxonomy import AspectCategory
+from utils.readonly import ensure_writable
 
 # Fixed column order => every CSV export has identical columns, even when empty.
 RECORD_CSV_COLUMNS = [
@@ -21,7 +22,12 @@ RECORD_CSV_COLUMNS = [
     "latency_s", "input_tokens", "output_tokens", "extracted_at",
 ]
 ASPECT_CSV_COLUMNS = ["review_id", "product_id", "aspect_name", "aspect_category", "sentiment", "evidence", "confidence", "strategy", "model_name", "is_mock"]
-FAILURE_CSV_COLUMNS = ["review_id", "product_id", "review_text", "error", "strategy", "model_name", "is_mock", "repair_attempts"]
+FAILURE_CSV_COLUMNS = [
+    "review_id", "product_id", "review_text", "error", "strategy", "model_name", "is_mock", "repair_attempts",
+    # diagnostics (appended so older column positions are unchanged)
+    "failure_type", "attempts", "attempt_kinds", "first_attempt_errors", "last_attempt_errors", "local_fixes",
+    "last_raw_output_chars", "last_raw_output_excerpt", "latency_s", "prompt_version", "extracted_at",
+]
 
 
 def _aspects_by(record: ReviewRecord, sentiment: str) -> str:
@@ -94,21 +100,50 @@ def aspects_to_dataframe(records: Iterable[ReviewRecord]) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=ASPECT_CSV_COLUMNS)
 
 
+def failure_type(f: ExtractionFailure) -> str:
+    """'provider_error' (outage/timeout, says nothing about the model) or 'invalid_output' (no schema-valid output)."""
+    kinds = [a.kind for a in f.extraction_metadata.attempts]
+    return "provider_error" if "provider_error" in kinds or f.error.startswith("LLM provider error") else "invalid_output"
+
+
 def failures_to_dataframe(failures: Iterable[ExtractionFailure]) -> pd.DataFrame:
-    rows = [
-        {
-            "review_id": f.review_id,
-            "product_id": f.product_id,
-            "review_text": f.review_text,
-            "error": f.error,
-            "strategy": f.extraction_metadata.strategy,
-            "model_name": f.extraction_metadata.model_name,
-            "is_mock": f.extraction_metadata.is_mock,
-            "repair_attempts": f.extraction_metadata.repair_attempts,
-        }
-        for f in failures
-    ]
+    """One row per controlled failure, with enough diagnostics to see *why* it failed without opening the JSONL."""
+    rows = []
+    for f in failures:
+        m = f.extraction_metadata
+        attempts = m.attempts
+        last = attempts[-1] if attempts else None
+        rows.append(
+            {
+                "review_id": f.review_id,
+                "product_id": f.product_id,
+                "review_text": f.review_text,
+                "error": f.error,
+                "strategy": m.strategy,
+                "model_name": m.model_name,
+                "is_mock": m.is_mock,
+                "repair_attempts": m.repair_attempts,
+                "failure_type": failure_type(f),
+                "attempts": len(attempts),
+                "attempt_kinds": "; ".join(a.kind for a in attempts),
+                "first_attempt_errors": " | ".join(attempts[0].errors) if attempts else "",
+                "last_attempt_errors": " | ".join(last.errors) if last else "",
+                "local_fixes": "; ".join(dict.fromkeys(x for a in attempts for x in a.local_fixes)),
+                "last_raw_output_chars": len(last.raw_output) if last else 0,
+                "last_raw_output_excerpt": (last.raw_output[:300] if last else ""),
+                "latency_s": m.total_latency_s,
+                "prompt_version": m.prompt_version,
+                "extracted_at": m.extracted_at,
+            }
+        )
     return pd.DataFrame(rows, columns=FAILURE_CSV_COLUMNS)
+
+
+def failures_to_json(failures: Iterable[ExtractionFailure]) -> str:
+    """Full failure records including every attempt's raw output and validation errors."""
+    text = json.dumps([f.model_dump(mode="json") for f in failures], ensure_ascii=False, indent=2)
+    json.loads(text)
+    return text
 
 
 def dataframe_to_csv_bytes(df: pd.DataFrame) -> bytes:
@@ -116,6 +151,7 @@ def dataframe_to_csv_bytes(df: pd.DataFrame) -> bytes:
 
 
 def export_records(records: list[ReviewRecord], out_dir: Path, stem: str) -> dict[str, Path]:
+    ensure_writable(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     paths = {
         "json": out_dir / f"{stem}.json",

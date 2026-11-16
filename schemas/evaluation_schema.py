@@ -139,8 +139,23 @@ class DimensionScore(BaseModel):
     justification: str = Field(..., min_length=5, max_length=800)
 
 
+class UnsupportedClaim(BaseModel):
+    """One claim from the summary that the judge could not find support for in the sources."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    claim: str = Field(..., min_length=3, max_length=400, description="The unsupported statement, quoted from the summary.")
+    reason: str = Field("", max_length=400, description="Why it is unsupported (what the sources say instead).")
+    evidence_review_ids: list[str] = Field(default_factory=list, description="Review ids the judge checked for this claim, if any.")
+
+
 class JudgeVerdict(BaseModel):
-    """Structured LLM-as-a-Judge output (rubric in prompts/judge.py)."""
+    """Structured LLM-as-a-Judge verdict as stored (rubric in prompts/judge.py).
+
+    v1 judgements were produced directly in this nested shape. v2 judgements are produced in the flat
+    ``JudgeOutputV2`` shape (easier for small local models) and converted with ``from_v2``; they also
+    carry ``unsupported_claim_details``. The field defaults keep every stored v1 judgement loadable.
+    """
 
     model_config = ConfigDict(extra="forbid")
 
@@ -150,10 +165,71 @@ class JudgeVerdict(BaseModel):
     hallucination: DimensionScore = Field(..., description="5 = no unsupported claims, 1 = many/severe unsupported claims")
     unsupported_claims: list[str] = Field(default_factory=list)
     overall_comment: str = Field(..., min_length=5, max_length=800)
+    unsupported_claim_details: list[UnsupportedClaim] = Field(default_factory=list)
+
+    @classmethod
+    def from_v2(cls, out: "JudgeOutputV2") -> "JudgeVerdict":
+        return cls(
+            faithfulness=DimensionScore(score=out.faithfulness_score, justification=out.faithfulness_justification),
+            coverage=DimensionScore(score=out.coverage_score, justification=out.coverage_justification),
+            consistency=DimensionScore(score=out.consistency_score, justification=out.consistency_justification),
+            hallucination=DimensionScore(score=out.hallucination_score, justification=out.hallucination_justification),
+            unsupported_claims=[c.claim for c in out.unsupported_claims],
+            unsupported_claim_details=list(out.unsupported_claims),
+            overall_comment=out.overall_comment,
+        )
 
     @property
     def mean_score(self) -> float:
         return round((self.faithfulness.score + self.coverage.score + self.consistency.score + self.hallucination.score) / 4, 2)
+
+
+_SCORE = dict(ge=1, le=5, description="Integer 1-5")
+_JUST = dict(min_length=5, max_length=800)
+
+
+class JudgeOutputV2(BaseModel):
+    """What the v2 judge LLM must return: one flat object, one score + justification per dimension.
+
+    Root cause of the v1 failures: the nested v1 schema (dimension -> {score, justification}) led llama3.2 to copy
+    ``unsupported_claims`` into every dimension object or to return bare integers, which ``extra="forbid"`` rejected.
+    A flat object has no nesting to get wrong. The cross-field rule below makes the verdict internally consistent:
+    a hallucination score below 5 must name the unsupported claims, and named claims rule out a perfect score.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    faithfulness_score: int = Field(..., **_SCORE)
+    faithfulness_justification: str = Field(..., **_JUST)
+    coverage_score: int = Field(..., **_SCORE)
+    coverage_justification: str = Field(..., **_JUST)
+    consistency_score: int = Field(..., **_SCORE)
+    consistency_justification: str = Field(..., **_JUST)
+    hallucination_score: int = Field(..., ge=1, le=5, description="5 = no unsupported claims, 1 = fabricated statistics/features")
+    hallucination_justification: str = Field(..., **_JUST)
+    unsupported_claims: list[UnsupportedClaim] = Field(default_factory=list, max_length=15)
+    overall_comment: str = Field(..., min_length=5, max_length=800)
+
+    @field_validator("faithfulness_score", "coverage_score", "consistency_score", "hallucination_score", mode="before")
+    @classmethod
+    def _integer_scores_only(cls, v):
+        # Reject 3.5 / "4/5" / True instead of letting them be coerced or truncated; accept 4, 4.0 and "4".
+        if isinstance(v, bool):
+            raise ValueError("score must be an integer 1-5, not a boolean")
+        if isinstance(v, float) and not v.is_integer():
+            raise ValueError(f"score must be a whole number 1-5 (got {v})")
+        return v
+
+    @model_validator(mode="after")
+    def _hallucination_consistent_with_claims(self) -> "JudgeOutputV2":
+        if self.hallucination_score < 5 and not self.unsupported_claims:
+            raise ValueError(
+                f"hallucination_score is {self.hallucination_score} but unsupported_claims is empty: list the unsupported claims, "
+                "or use hallucination_score 5 if there are none"
+            )
+        if self.hallucination_score == 5 and self.unsupported_claims:
+            raise ValueError("hallucination_score 5 means no unsupported claims, but unsupported_claims is not empty")
+        return self
 
 
 class SummaryJudgement(BaseModel):

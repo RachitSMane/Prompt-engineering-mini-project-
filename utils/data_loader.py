@@ -23,6 +23,7 @@ import pandas as pd
 
 from config import Settings
 from schemas.review_schema import ReviewInput
+from utils.readonly import ensure_writable
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +159,7 @@ def prepare_dataset(settings: Settings, download_if_missing: bool = True) -> dic
         rows.extend(rng_p.sample(items, min(settings.dataset_reviews_per_product, len(items))))
 
     df = pd.DataFrame(rows, columns=REVIEW_COLUMNS).drop_duplicates("review_id")
+    ensure_writable(paths.reviews_csv)
     paths.data_processed.mkdir(parents=True, exist_ok=True)
     df.to_csv(paths.reviews_csv, index=False, encoding="utf-8")
 

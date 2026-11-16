@@ -7,6 +7,11 @@ from datetime import datetime, timezone
 import streamlit as st
 
 from annotation.annotation_manager import AnnotationStore, load_sample
+from annotation.human_annotation import REQUIRED_HUMAN_LABELS, HumanAnnotationStore
+from annotation.reference_adjudication import REQUIRED_REFERENCE_LABELS, ReferenceAdjudicationStore
+from utils.storage import read_json
+from evaluation.d2_human_eval import OUT_DIR as D2H_DIR, PRIMARY_RUN_ID as D2_RUN, stored_inputs_match as d2h_current
+from evaluation.d3_status import badge_text as d3_badge_text, compute as d3_compute
 from evaluation.prompt_comparison import list_runs
 from evaluation.summary_evaluation import JudgementStore
 from evaluation.visualizations import aspect_sentiment_bar, distribution_bar, histogram, sentiment_pie
@@ -134,19 +139,50 @@ ann = AnnotationStore(s.paths.annotations_json)
 prog = ann.progress(sample["review_id"].tolist()) if len(sample) else {"complete": 0, "total": s.annotation_sample_size, "evaluable": s.annotation_sample_size}
 runs = list_runs(s, mock)
 n_sum = len(SummaryStore.for_mode(s, mock).all())
-n_judge = len(JudgementStore.for_mode(s, mock).all())
-d2_ready = prog["complete"] >= prog["evaluable"] and runs and not mock  # flagged reviews are excluded from evaluation
-d3_ready = n_sum and n_judge and not mock
+# D3 status is recomputed from the stored judge v4 claim-level evaluations (re-validated on load) and the completion
+# criteria in evaluation/d3_status.py; the badge turns green only when every mandatory criterion passes.
+try:
+    d3 = None if mock else d3_compute(s.paths.mode_dir(False), n_summaries=n_sum)
+except Exception as _e:  # never hide a broken artefact behind a green badge
+    d3 = {"complete": False, "n_original_evaluations": 0, "passed": 0, "mandatory": 0, "criteria": [], "remaining": [str(_e)], "gold": None}
+n_judge = d3["n_original_evaluations"] if d3 else len(JudgementStore.for_mode(s, mock).all())
+hstore = HumanAnnotationStore.default(s)
+hprog = hstore.progress(hstore.queue(sample["review_id"].tolist())) if len(sample) else {"labelled": 0, "queue": 0, "completed": 0}
+try:
+    rprog = ReferenceAdjudicationStore.default(s).progress()
+except Exception:
+    rprog = {"accepted": 0, "required": REQUIRED_REFERENCE_LABELS, "ready": False}
+# D2 is complete when the approved reference dataset is ready AND the latest run's evaluation against it passed.
+ref_eval = read_json(runs[0]["path"] / "approved_reference" / "metrics.json") if runs and not mock else None
+d2_done = bool(rprog["ready"] and ref_eval and ref_eval.get("status") == "complete" and ref_eval.get("independent_check_passed")
+               and ref_eval.get("reference_progress", {}).get("accepted") == rprog["accepted"])
+# Primary D2 (2026-11-16): stored predictions re-scored against the 300 blind human-created labels. Complete only when the
+# saved evaluation is complete, cross-checked and based on exactly the current label store / sample / prediction files.
+d2h_dir = s.paths.mode_dir(False) / "experiments" / D2_RUN
+d2h = None if mock else read_json(d2h_dir / D2H_DIR / "metrics.json")
+d2h_cur = d2h_current(d2h_dir, s.paths.annotations / "human_annotations.json", s.paths.annotation_sample_csv) if d2h else {"current": False}
+d2h_done = bool(d2h and d2h.get("status") == "complete" and d2h.get("independent_check_passed") and d2h_cur["current"])
 section("Project deliverables")
 md(
     '<div class="riq-kpi-grid">'
     + kpi("D1 · Structured extraction", "Implemented", "Pydantic schema · parsers · JSON/CSV export · repair")
-    + kpi("D2 · Prompt comparison", f"{prog['complete']} / {prog['evaluable']}", f"evaluable labels · {len(runs)} {mode_word} run(s)")
-    + kpi("D3 · Summaries + judge", f"{n_sum} / {n_judge}", f"{mode_word} summaries / judgements")
+    + (kpi("D2 · Human-labelled evaluation", f"{d2h['n_evaluated']} / {REQUIRED_HUMAN_LABELS}",
+           "best macro F1 " + max(((n, e["classification"]["overall_sentiment"]["macro_f1"]) for n, e in d2h["strategies"].items()), key=lambda x: x[1])[0]
+           + f" {max(e['classification']['overall_sentiment']['macro_f1'] for e in d2h['strategies'].values()):.3f} · blind human labels, stored predictions")
+       if d2h else
+       kpi("D2 · Approved reference labels", f"{rprog['accepted']} / {rprog['required']}",
+           f"{len(runs)} {mode_word} run(s) · independent human annotations completed: {hprog['labelled']} / {hprog['queue'] or REQUIRED_HUMAN_LABELS}"))
+    + kpi("D3 · Summaries + judge v4", f"{n_sum} / {n_judge}",
+          f"{mode_word} summaries / judge v4 claim-level evaluations" + (f" · mean faithfulness {d3['mean_faithfulness']}/100" if d3 and d3.get("mean_faithfulness") is not None else ""))
     + "</div>"
     + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-4px">'
     + badge("D1 implemented", "positive", dot=True)
-    + badge("D2 ready for evaluation" if d2_ready else "D2 pending: complete reference labels + live run", "positive" if d2_ready else "warning", dot=True)
-    + badge("D3 live results available" if d3_ready else "D3 pending live run", "positive" if d3_ready else "warning", dot=True)
+    + (badge("D2 complete · primary: 300 blind human-created labels (stored predictions re-scored) · historical: AI-assisted reference runs",
+             "positive", dot=True) if d2h_done else
+       badge("D2 human-labelled evaluation out of date · re-run scripts/d2_human_eval.py evaluate", "warning", dot=True) if d2h else
+       badge("D2 human-labelled evaluation pending · run scripts/d2_human_eval.py evaluate" if hprog.get("labelled") else
+             f"D2 pending: human labels {hprog.get('labelled', 0)}/{REQUIRED_HUMAN_LABELS}", "warning", dot=True))
+    + (badge(d3_badge_text(d3), "positive" if d3["complete"] else "warning", dot=True) if (d3 and n_sum and n_judge)
+       else badge("D3 pending live run", "warning", dot=True))
     + "</div>"
 )

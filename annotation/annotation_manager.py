@@ -22,6 +22,7 @@ import pandas as pd
 from pydantic import ValidationError
 
 from schemas.evaluation_schema import AnnotatedAspect, Annotation
+from utils.readonly import ensure_writable
 from utils.storage import read_json, write_json_atomic
 
 SAMPLE_COLUMNS = ["sample_order", "review_id", "product_id", "product_title", "rating", "review_text"]
@@ -82,6 +83,7 @@ def build_annotation_sample(reviews: pd.DataFrame, n: int, seed: int) -> pd.Data
 def save_sample(sample: pd.DataFrame, path: Path, force: bool = False) -> bool:
     if path.exists() and not force:
         return False
+    ensure_writable(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     sample.to_csv(path, index=False, encoding="utf-8")
     return True
@@ -100,6 +102,7 @@ def write_template(sample: pd.DataFrame, path: Path) -> None:
     tpl["product_id"] = sample["product_id"].values
     tpl["review_text"] = sample["review_text"].values
     tpl["status"] = ""
+    ensure_writable(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     tpl.to_csv(path, index=False, encoding="utf-8")
 
@@ -133,7 +136,15 @@ class AnnotationStore:
     def get(self, review_id: str) -> Annotation | None:
         return self._items.get(review_id)
 
-    def save(self, annotation: Annotation) -> None:
+    def save(self, annotation: Annotation, *, allow_replacing_ai_label: bool = False) -> None:
+        """Save a reference label. Replacing an AI-assisted label with one that lacks the AI marker would silently
+        turn it into a 'human' label (e.g. after opening a pre-filled form and pressing Save), so it is refused unless
+        explicitly allowed. Genuine human labels belong in ``annotation.human_annotation.HumanAnnotationStore``."""
+        prev = self._items.get(annotation.review_id)
+        if (prev is not None and (prev.notes or "").startswith(AI_ASSISTED_MARKER)
+                and not (annotation.notes or "").startswith(AI_ASSISTED_MARKER) and not allow_replacing_ai_label):
+            raise ValueError(f"{annotation.review_id} has an AI-assisted label; it cannot be re-saved as a human label here. "
+                             "Use the blind human annotation workflow instead.")
         self._items[annotation.review_id] = annotation
         self._flush()
 
@@ -214,6 +225,9 @@ class AnnotationStore:
                     notes=str(row.get("notes", "")),
                     status=str(row.get("status", "")).strip().lower() or "complete",
                 )
+                prev = self._items.get(ann.review_id)
+                if prev is not None and (prev.notes or "").startswith(AI_ASSISTED_MARKER) and not (ann.notes or "").startswith(AI_ASSISTED_MARKER):
+                    raise ValueError("replaces an AI-assisted label with an unmarked label; use the blind human annotation workflow")
                 self._items[ann.review_id] = ann
                 imported += 1
             except (ValidationError, ValueError, KeyError) as exc:

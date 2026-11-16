@@ -10,12 +10,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from utils.readonly import ensure_writable
+
 
 def slug(text: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", text).strip("-").lower() or "x"
 
 
 def append_jsonl(path: Path, rows: Iterable[dict]) -> None:
+    ensure_writable(path)  # read-only demo mode blocks every result/log append
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as fh:
         for row in rows:
@@ -40,6 +43,7 @@ def read_jsonl(path: Path) -> list[dict]:
 
 def write_json_atomic(path: Path, data: Any) -> None:
     """Write via a temp file + rename so a crash never leaves a half-written file."""
+    ensure_writable(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
     try:

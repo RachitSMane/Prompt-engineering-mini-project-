@@ -90,17 +90,19 @@ def test_review_analysis_runs_mock_extraction(isolated):
 
 
 def test_annotation_save_persists(isolated):
+    """A blind save writes a human_created / completed / blind label to the HUMAN store (never annotations.json)."""
     at = _page("annotation_page").run()
-    at.text_input(key="annotator").set_value("tester")
+    at.text_input(key="h_annotator").set_value("tester")
     at.radio[0].set_value("positive")
-    next(b for b in at.button if "Save" in b.label).click()
-    at.run()
+    at = _click(at, "Save & next")
     assert not at.exception, [e.value for e in at.exception]
     from annotation.annotation_manager import AnnotationStore
+    from annotation.human_annotation import HumanAnnotationStore
 
-    saved = AnnotationStore(isolated.paths.annotations_json).all()
+    saved = HumanAnnotationStore.default(isolated).all()
     assert len(saved) == 1 and saved[0].annotator == "tester" and saved[0].overall_sentiment.value == "positive"
-
+    assert (saved[0].provenance, saved[0].status, saved[0].blind) == ("human_created", "completed", True)
+    assert AnnotationStore(isolated.paths.annotations_json).all() == []  # legacy reference file untouched
 
 def test_live_mode_without_key_shows_message(isolated, monkeypatch):
     import ui.common as common
@@ -171,15 +173,14 @@ def test_full_offline_ui_workflow(isolated):
 
 def test_annotation_progress_survives_restart(isolated):
     at = _page("annotation_page").run()
-    at.text_input(key="annotator").set_value("tester")
+    at.text_input(key="h_annotator").set_value("tester")
     at.radio[0].set_value("mixed")
     at = _click(at, "Save & next")
     assert any("Review 2 / 300" in m.value for m in at.markdown)  # "Save & next" advanced
     at = _page("annotation_page").run()  # brand-new session = app restart
     assert not at.exception
-    assert any("1 complete" in (p.proto.text or "") for p in at.get("progress"))
-    assert any("Review 2 / 300" in m.value for m in at.markdown)  # resumes at the first unlabelled review
-
+    assert any("1 completed" in (p.proto.text or "") for p in at.get("progress"))
+    assert any("Review 2 / 300" in m.value for m in at.markdown)  # resumes at the first pending review
 
 def test_navigation_between_pages(isolated):
     at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
@@ -228,29 +229,35 @@ def test_review_analysis_filters(isolated):
     assert 0 < shown <= total
 
 
-def test_annotation_unsaved_changes_guard(isolated):
-    """Navigating away with unsaved labels asks for confirmation instead of silently discarding them."""
-    from annotation.annotation_manager import AnnotationStore
+def test_blind_tab_never_prefills_ai_assisted_label(isolated):
+    """The first review has an AI-assisted label in annotations.json; the blind form must start EMPTY and saving
+    must not touch (or convert) the AI-assisted label."""
+    from annotation.annotation_manager import AI_ASSISTED_MARKER, AnnotationStore, load_sample
+    from annotation.human_annotation import HumanAnnotationStore
+    from schemas.evaluation_schema import Annotation
 
+    first = load_sample(isolated.paths.annotation_sample_csv).iloc[0]
+    legacy = AnnotationStore(isolated.paths.annotations_json)
+    legacy.save(Annotation(review_id=first.review_id, product_id=first.product_id, overall_sentiment="negative",
+                           complaint_categories=["noise_issue"], annotator="ai", notes=f"{AI_ASSISTED_MARKER} (test)"))
     at = _page("annotation_page").run()
-    at.radio[0].set_value("negative").run()
-    assert _shows(at, "Unsaved changes")
-    at = _click(at, "Next unlabelled")
     assert not at.exception, [e.value for e in at.exception]
-    assert any("Review 1 / 300" in m.value for m in at.markdown)  # did not move
-    assert _shows(at, "You have unsaved changes on review 1")
-    at = _click(at, "Discard and continue")
-    assert any("Review 2 / 300" in m.value for m in at.markdown)
-    assert AnnotationStore(isolated.paths.annotations_json).all() == []  # nothing was written
-
+    assert at.radio[0].value is None  # not pre-filled with the AI label ("negative")
+    assert next(m for m in at.multiselect if m.label == "Complaint categories").value == []
+    at.text_input(key="h_annotator").set_value("tester")
+    at.radio[0].set_value("positive")
+    at = _click(at, "Save & next")
+    lab = HumanAnnotationStore.default(isolated).get(first.review_id)
+    assert lab.provenance == "human_created" and lab.overall_sentiment.value == "positive"
+    still = AnnotationStore(isolated.paths.annotations_json).get(first.review_id)
+    assert still.notes.startswith(AI_ASSISTED_MARKER) and still.overall_sentiment.value == "negative"
 
 def test_annotation_validation_errors_are_shown(isolated):
     at = _page("annotation_page").run()
     at.radio[0].set_value("positive")
     at = _click(at, "Save & next")  # no annotator name
-    assert any("annotator name" in e.value for e in at.error)
+    assert any("Enter your name" in e.value for e in at.error)
     assert any("Review 1 / 300" in m.value for m in at.markdown)
-
 
 def test_prompt_experiments_with_human_labels(isolated):
     """With some human labels the metric cards, charts and tabs render real (here: mock-fixture) numbers."""
@@ -310,3 +317,34 @@ def test_summary_evaluation_shows_stored_judge_failure(isolated):
     assert not at.exception, [e.value for e in at.exception]
     assert _shows(at, "1 judge call(s) failed") and _shows(at, "Judge failed.")
     assert any(b.label.startswith("Judge all unjudged summaries (0)") for b in at.button)
+
+
+def test_reference_bulk_approval_from_the_page(isolated):
+    """The approval button records the reviewer, approves the valid complete records once, never edits annotations.json,
+    keeps provenance and leaves the flagged record for an individual decision."""
+    import shutil
+
+    from annotation.reference_adjudication import ReferenceAdjudicationStore
+    from config import load_settings
+
+    shutil.copy(load_settings().paths.annotations_json, isolated.paths.annotations_json)
+    before = isolated.paths.annotations_json.read_bytes()
+    at = _page("annotation_page").run()
+    assert not at.exception, [e.value for e in at.exception]
+    k = _kpis(at)
+    assert k["Reference annotations available"] == ["300 / 300"] and k["Reviewed / approved"] == ["0 / 300"]
+    assert k["D2 reference dataset"] == ["Not ready"]
+    at.text_input(key="ref_reviewer").set_value("Test Reviewer")
+    at.checkbox(key="ref_confirm").check()
+    at = _click(at, "Approve Existing Reference Annotations")
+    assert not at.exception, [e.value for e in at.exception]
+    prog = ReferenceAdjudicationStore.default(isolated).progress()
+    assert prog["approved"] == 299 and prog["awaiting_review"] == 1 and prog["reviewers"] == ["Test Reviewer"]
+    assert prog["accepted_by_original_provenance"] == {"human_created": 1, "ai_assisted": 298}
+    assert isolated.paths.annotations_json.read_bytes() == before
+    at = _page("annotation_page").run()
+    assert _kpis(at)["Reviewed / approved"] == ["299 / 300"] and _kpis(at)["Awaiting review"] == ["1"]
+    at.text_input(key="ref_reviewer").set_value("Test Reviewer")
+    at.checkbox(key="ref_confirm").check()
+    at = _click(at, "Approve Existing Reference Annotations")  # idempotent
+    assert ReferenceAdjudicationStore.default(isolated).progress()["approved"] == 299

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from ui.common import render_sidebar
+from ui.common import demo_banner, render_sidebar
 from ui.components import inject_css
 from utils.logging_config import setup_logging
 
@@ -17,6 +17,7 @@ setup_logging()
 inject_css()
 st.logo(str(ASSETS / "logo.svg"), size="large", icon_image=str(ASSETS / "logo_mark.svg"))
 render_sidebar()
+demo_banner()
 
 pages = [
     st.Page("ui/home.py", title="Overview", icon=":material/space_dashboard:", default=True),

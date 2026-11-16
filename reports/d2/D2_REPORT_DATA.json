@@ -1,0 +1,2631 @@
+{
+ "generated_at": "2026-11-14T17:26:24+00:00",
+ "run": {
+  "run_id": "20261111-030912_qwen2.5-3b",
+  "created_at": "2026-11-11T03:09:12+00:00",
+  "provider": "ollama",
+  "model_name": "qwen2.5:3b",
+  "temperature": 0.0,
+  "prompt_version": "v1",
+  "strategies": [
+   "zero_shot",
+   "few_shot",
+   "cot"
+  ],
+  "max_repair_attempts": 2,
+  "strict_evidence_grounding": true,
+  "git_commit": "045f16b"
+ },
+ "settings": {
+  "llm_max_output_tokens": 1024,
+  "ollama_num_ctx": 8192,
+  "llm_timeout_seconds": 300,
+  "random_seed": 42,
+  "annotation_sample_size": 300,
+  "dataset_category": "Appliances",
+  "dataset_num_products": 15
+ },
+ "sample": {
+  "size": 300,
+  "unique": 300,
+  "rating_distribution": {
+   "1.0": 62,
+   "2.0": 55,
+   "3.0": 60,
+   "4.0": 60,
+   "5.0": 63
+  },
+  "products": 15
+ },
+ "run_ids": {
+  "n": 299,
+  "unique": 299,
+  "in_sample": 299,
+  "sample_not_in_run": [
+   "R5cfb12ef75b4"
+  ]
+ },
+ "reference": {
+  "evaluable": 299,
+  "human": 1,
+  "ai_assisted": 298,
+  "excluded": [
+   {
+    "review_id": "R5cfb12ef75b4",
+    "status": "flagged",
+    "note": "AI-assisted label (Claude, mentor-approved; not human-annotated). Confidence 0.30. DEBATABLE - human review recommended. Text is garbled and partly unreadable ("
+   }
+  ],
+  "class_counts": {
+   "positive": 111,
+   "negative": 141,
+   "neutral": 5,
+   "mixed": 42
+  },
+  "debatable": 76,
+  "approved_by": "project mentor (as reported by the team)",
+  "ai_model": "Claude (Anthropic); labels written by the coding assistant from the review text only"
+ },
+ "strategies": {
+  "zero_shot": {
+   "classification": {
+    "n": 299,
+    "correct": 183,
+    "accuracy": 0.6120401337792643,
+    "macro_precision": 0.6611441044363846,
+    "macro_recall": 0.46591226484843506,
+    "macro_f1": 0.4379745744996932,
+    "weighted_f1": 0.6796922340006171,
+    "per_class": {
+     "positive": {
+      "precision": 0.9516129032258065,
+      "recall": 0.5315315315315315,
+      "f1": 0.6820809248554913,
+      "support": 111,
+      "predicted": 62,
+      "invalid": 6
+     },
+     "negative": {
+      "precision": 0.8676470588235294,
+      "recall": 0.8368794326241135,
+      "f1": 0.8519855595667869,
+      "support": 141,
+      "predicted": 136,
+      "invalid": 6
+     },
+     "neutral": {
+      "precision": 0.02531645569620253,
+      "recall": 0.4,
+      "f1": 0.047619047619047616,
+      "support": 5,
+      "predicted": 79,
+      "invalid": 0
+     },
+     "mixed": {
+      "precision": 0.8,
+      "recall": 0.09523809523809523,
+      "f1": 0.1702127659574468,
+      "support": 42,
+      "predicted": 5,
+      "invalid": 5
+     }
+    },
+    "confusion_matrix": [
+     [
+      59,
+      2,
+      44,
+      0
+     ],
+     [
+      0,
+      118,
+      16,
+      1
+     ],
+     [
+      0,
+      3,
+      2,
+      0
+     ],
+     [
+      3,
+      13,
+      17,
+      4
+     ]
+    ],
+    "invalid": 17,
+    "macro_classes": [
+     "positive",
+     "negative",
+     "neutral",
+     "mixed"
+    ]
+   },
+   "operational": {
+    "rows_in_file": 299,
+    "final_outcomes": 299,
+    "missing": 0,
+    "valid": 282,
+    "failed": 17,
+    "validity_rate": 0.9431438127090301,
+    "first_attempt_valid_rate": 0.9130434782608695,
+    "needed_llm_repair": 26,
+    "repaired_successfully": 9,
+    "local_fixes": 28,
+    "records_with_local_fix": 12,
+    "mean_repair_attempts": 0.1505016722408027,
+    "mean_latency_s": 41.18559531772576,
+    "median_latency_s": 25.455,
+    "mean_latency_valid_s": 32.30674822695036,
+    "mean_latency_failed_s": 188.46999999999997,
+    "total_latency_h": 3.420692500000001,
+    "mean_input_tokens": 2057.3879598662206,
+    "mean_output_tokens": 214.46822742474916,
+    "total_input_tokens": 615159,
+    "total_output_tokens": 64126,
+    "model_names": [
+     "qwen2.5:3b"
+    ],
+    "prompt_versions": [
+     "v1"
+    ],
+    "failure_categories": {
+     "evidence not verbatim": 6,
+     "label outside the taxonomy": 5,
+     "evidence longer than 300 characters": 4,
+     "schema (missing / extra field)": 2
+    },
+    "failures_by_reference_class": {
+     "positive": 6,
+     "negative": 6,
+     "neutral": 0,
+     "mixed": 5
+    }
+   }
+  },
+  "few_shot": {
+   "classification": {
+    "n": 299,
+    "correct": 243,
+    "accuracy": 0.8127090301003345,
+    "macro_precision": 0.6917154740684153,
+    "macro_recall": 0.5822879870752211,
+    "macro_f1": 0.6024573797130188,
+    "weighted_f1": 0.8169534885027631,
+    "per_class": {
+     "positive": {
+      "precision": 0.9272727272727272,
+      "recall": 0.918918918918919,
+      "f1": 0.9230769230769231,
+      "support": 111,
+      "predicted": 110,
+      "invalid": 3
+     },
+     "negative": {
+      "precision": 0.8300653594771242,
+      "recall": 0.900709219858156,
+      "f1": 0.8639455782312925,
+      "support": 141,
+      "predicted": 153,
+      "invalid": 9
+     },
+     "neutral": {
+      "precision": 0.14285714285714285,
+      "recall": 0.2,
+      "f1": 0.16666666666666666,
+      "support": 5,
+      "predicted": 7,
+      "invalid": 0
+     },
+     "mixed": {
+      "precision": 0.8666666666666667,
+      "recall": 0.30952380952380953,
+      "f1": 0.45614035087719296,
+      "support": 42,
+      "predicted": 15,
+      "invalid": 2
+     }
+    },
+    "confusion_matrix": [
+     [
+      102,
+      3,
+      2,
+      1
+     ],
+     [
+      1,
+      127,
+      3,
+      1
+     ],
+     [
+      0,
+      4,
+      1,
+      0
+     ],
+     [
+      7,
+      19,
+      1,
+      13
+     ]
+    ],
+    "invalid": 14,
+    "macro_classes": [
+     "positive",
+     "negative",
+     "neutral",
+     "mixed"
+    ]
+   },
+   "operational": {
+    "rows_in_file": 299,
+    "final_outcomes": 299,
+    "missing": 0,
+    "valid": 285,
+    "failed": 14,
+    "validity_rate": 0.9531772575250836,
+    "first_attempt_valid_rate": 0.9431438127090301,
+    "needed_llm_repair": 17,
+    "repaired_successfully": 3,
+    "local_fixes": 110,
+    "records_with_local_fix": 85,
+    "mean_repair_attempts": 0.10367892976588629,
+    "mean_latency_s": 53.76857190635452,
+    "median_latency_s": 35.813,
+    "mean_latency_valid_s": 42.27311228070178,
+    "mean_latency_failed_s": 287.7832857142857,
+    "total_latency_h": 4.465778611111111,
+    "mean_input_tokens": 2884.4682274247493,
+    "mean_output_tokens": 227.91304347826087,
+    "total_input_tokens": 862456,
+    "total_output_tokens": 68146,
+    "model_names": [
+     "qwen2.5:3b"
+    ],
+    "prompt_versions": [
+     "v1"
+    ],
+    "failure_categories": {
+     "label outside the taxonomy": 5,
+     "evidence not verbatim": 5,
+     "invalid JSON": 3,
+     "evidence longer than 300 characters": 1
+    },
+    "failures_by_reference_class": {
+     "positive": 3,
+     "negative": 9,
+     "neutral": 0,
+     "mixed": 2
+    }
+   }
+  },
+  "cot": {
+   "classification": {
+    "n": 299,
+    "correct": 172,
+    "accuracy": 0.5752508361204013,
+    "macro_precision": 0.7201121084515366,
+    "macro_recall": 0.5830766176510859,
+    "macro_f1": 0.42316848785250266,
+    "weighted_f1": 0.6461009995517834,
+    "per_class": {
+     "positive": {
+      "precision": 0.9444444444444444,
+      "recall": 0.4594594594594595,
+      "f1": 0.6181818181818182,
+      "support": 111,
+      "predicted": 54,
+      "invalid": 8
+     },
+     "negative": {
+      "precision": 0.8828125,
+      "recall": 0.8014184397163121,
+      "f1": 0.8401486988847583,
+      "support": 141,
+      "predicted": 128,
+      "invalid": 8
+     },
+     "neutral": {
+      "precision": 0.05319148936170213,
+      "recall": 1.0,
+      "f1": 0.10101010101010102,
+      "support": 5,
+      "predicted": 94,
+      "invalid": 0
+     },
+     "mixed": {
+      "precision": 1.0,
+      "recall": 0.07142857142857142,
+      "f1": 0.13333333333333333,
+      "support": 42,
+      "predicted": 3,
+      "invalid": 4
+     }
+    },
+    "confusion_matrix": [
+     [
+      51,
+      1,
+      51,
+      0
+     ],
+     [
+      0,
+      113,
+      20,
+      0
+     ],
+     [
+      0,
+      0,
+      5,
+      0
+     ],
+     [
+      3,
+      14,
+      18,
+      3
+     ]
+    ],
+    "invalid": 20,
+    "macro_classes": [
+     "positive",
+     "negative",
+     "neutral",
+     "mixed"
+    ]
+   },
+   "operational": {
+    "rows_in_file": 299,
+    "final_outcomes": 299,
+    "missing": 0,
+    "valid": 279,
+    "failed": 20,
+    "validity_rate": 0.9331103678929766,
+    "first_attempt_valid_rate": 0.9163879598662207,
+    "needed_llm_repair": 25,
+    "repaired_successfully": 5,
+    "local_fixes": 25,
+    "records_with_local_fix": 9,
+    "mean_repair_attempts": 0.15719063545150502,
+    "mean_latency_s": 47.52725083612037,
+    "median_latency_s": 33.74,
+    "mean_latency_valid_s": 36.2494623655914,
+    "mean_latency_failed_s": 204.8524,
+    "total_latency_h": 3.94740222222222,
+    "mean_input_tokens": 2297.5585284280937,
+    "mean_output_tokens": 223.1371237458194,
+    "total_input_tokens": 686970,
+    "total_output_tokens": 66718,
+    "model_names": [
+     "qwen2.5:3b"
+    ],
+    "prompt_versions": [
+     "v1"
+    ],
+    "failure_categories": {
+     "evidence not verbatim": 8,
+     "label outside the taxonomy": 6,
+     "rationale too long": 3,
+     "invalid JSON": 2,
+     "evidence longer than 300 characters": 1
+    },
+    "failures_by_reference_class": {
+     "positive": 8,
+     "negative": 8,
+     "neutral": 0,
+     "mixed": 4
+    }
+   }
+  }
+ },
+ "same_review_set": true,
+ "verification": {
+  "compared": 96,
+  "identical": 96,
+  "rows": [
+   {
+    "strategy": "zero_shot",
+    "value": "accuracy",
+    "recomputed": 0.612,
+    "metrics_json": 0.612,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "macro_precision",
+    "recomputed": 0.6611,
+    "metrics_json": 0.6611,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "macro_recall",
+    "recomputed": 0.4659,
+    "metrics_json": 0.4659,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "macro_f1",
+    "recomputed": 0.438,
+    "metrics_json": 0.438,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "weighted_f1",
+    "recomputed": 0.6797,
+    "metrics_json": 0.6797,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive precision",
+    "recomputed": 0.9516,
+    "metrics_json": 0.9516,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive recall",
+    "recomputed": 0.5315,
+    "metrics_json": 0.5315,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive f1",
+    "recomputed": 0.6821,
+    "metrics_json": 0.6821,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive support",
+    "recomputed": 111,
+    "metrics_json": 111,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative precision",
+    "recomputed": 0.8676,
+    "metrics_json": 0.8676,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative recall",
+    "recomputed": 0.8369,
+    "metrics_json": 0.8369,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative f1",
+    "recomputed": 0.852,
+    "metrics_json": 0.852,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative support",
+    "recomputed": 141,
+    "metrics_json": 141,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral precision",
+    "recomputed": 0.0253,
+    "metrics_json": 0.0253,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral recall",
+    "recomputed": 0.4,
+    "metrics_json": 0.4,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral f1",
+    "recomputed": 0.0476,
+    "metrics_json": 0.0476,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral support",
+    "recomputed": 5,
+    "metrics_json": 5,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed precision",
+    "recomputed": 0.8,
+    "metrics_json": 0.8,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed recall",
+    "recomputed": 0.0952,
+    "metrics_json": 0.0952,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed f1",
+    "recomputed": 0.1702,
+    "metrics_json": 0.1702,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed support",
+    "recomputed": 42,
+    "metrics_json": 42,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "confusion matrix",
+    "recomputed": [
+     [
+      59,
+      2,
+      44,
+      0
+     ],
+     [
+      0,
+      118,
+      16,
+      1
+     ],
+     [
+      0,
+      3,
+      2,
+      0
+     ],
+     [
+      3,
+      13,
+      17,
+      4
+     ]
+    ],
+    "metrics_json": [
+     [
+      59,
+      2,
+      44,
+      0
+     ],
+     [
+      0,
+      118,
+      16,
+      1
+     ],
+     [
+      0,
+      3,
+      2,
+      0
+     ],
+     [
+      3,
+      13,
+      17,
+      4
+     ]
+    ],
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "invalid predictions",
+    "recomputed": 17,
+    "metrics_json": 17,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "valid",
+    "recomputed": 282,
+    "metrics_json": 282,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "failed",
+    "recomputed": 17,
+    "metrics_json": 17,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "validity_rate",
+    "recomputed": 0.9431,
+    "metrics_json": 0.9431,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "first_attempt_valid_rate",
+    "recomputed": 0.913,
+    "metrics_json": 0.913,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "needed_llm_repair",
+    "recomputed": 26,
+    "metrics_json": 26,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "local_fixes",
+    "recomputed": 28,
+    "metrics_json": 28,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mean_latency_s",
+    "recomputed": 41.1856,
+    "metrics_json": 41.1856,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mean_input_tokens",
+    "recomputed": 2057.4,
+    "metrics_json": 2057.4,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mean_output_tokens",
+    "recomputed": 214.5,
+    "metrics_json": 214.5,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "accuracy",
+    "recomputed": 0.8127,
+    "metrics_json": 0.8127,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "macro_precision",
+    "recomputed": 0.6917,
+    "metrics_json": 0.6917,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "macro_recall",
+    "recomputed": 0.5823,
+    "metrics_json": 0.5823,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "macro_f1",
+    "recomputed": 0.6025,
+    "metrics_json": 0.6025,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "weighted_f1",
+    "recomputed": 0.817,
+    "metrics_json": 0.817,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive precision",
+    "recomputed": 0.9273,
+    "metrics_json": 0.9273,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive recall",
+    "recomputed": 0.9189,
+    "metrics_json": 0.9189,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive f1",
+    "recomputed": 0.9231,
+    "metrics_json": 0.9231,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive support",
+    "recomputed": 111,
+    "metrics_json": 111,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative precision",
+    "recomputed": 0.8301,
+    "metrics_json": 0.8301,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative recall",
+    "recomputed": 0.9007,
+    "metrics_json": 0.9007,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative f1",
+    "recomputed": 0.8639,
+    "metrics_json": 0.8639,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative support",
+    "recomputed": 141,
+    "metrics_json": 141,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral precision",
+    "recomputed": 0.1429,
+    "metrics_json": 0.1429,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral recall",
+    "recomputed": 0.2,
+    "metrics_json": 0.2,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral f1",
+    "recomputed": 0.1667,
+    "metrics_json": 0.1667,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral support",
+    "recomputed": 5,
+    "metrics_json": 5,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed precision",
+    "recomputed": 0.8667,
+    "metrics_json": 0.8667,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed recall",
+    "recomputed": 0.3095,
+    "metrics_json": 0.3095,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed f1",
+    "recomputed": 0.4561,
+    "metrics_json": 0.4561,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed support",
+    "recomputed": 42,
+    "metrics_json": 42,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "confusion matrix",
+    "recomputed": [
+     [
+      102,
+      3,
+      2,
+      1
+     ],
+     [
+      1,
+      127,
+      3,
+      1
+     ],
+     [
+      0,
+      4,
+      1,
+      0
+     ],
+     [
+      7,
+      19,
+      1,
+      13
+     ]
+    ],
+    "metrics_json": [
+     [
+      102,
+      3,
+      2,
+      1
+     ],
+     [
+      1,
+      127,
+      3,
+      1
+     ],
+     [
+      0,
+      4,
+      1,
+      0
+     ],
+     [
+      7,
+      19,
+      1,
+      13
+     ]
+    ],
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "invalid predictions",
+    "recomputed": 14,
+    "metrics_json": 14,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "valid",
+    "recomputed": 285,
+    "metrics_json": 285,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "failed",
+    "recomputed": 14,
+    "metrics_json": 14,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "validity_rate",
+    "recomputed": 0.9532,
+    "metrics_json": 0.9532,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "first_attempt_valid_rate",
+    "recomputed": 0.9431,
+    "metrics_json": 0.9431,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "needed_llm_repair",
+    "recomputed": 17,
+    "metrics_json": 17,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "local_fixes",
+    "recomputed": 110,
+    "metrics_json": 110,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mean_latency_s",
+    "recomputed": 53.7686,
+    "metrics_json": 53.7686,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mean_input_tokens",
+    "recomputed": 2884.5,
+    "metrics_json": 2884.5,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mean_output_tokens",
+    "recomputed": 227.9,
+    "metrics_json": 227.9,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "accuracy",
+    "recomputed": 0.5753,
+    "metrics_json": 0.5753,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "macro_precision",
+    "recomputed": 0.7201,
+    "metrics_json": 0.7201,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "macro_recall",
+    "recomputed": 0.5831,
+    "metrics_json": 0.5831,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "macro_f1",
+    "recomputed": 0.4232,
+    "metrics_json": 0.4232,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "weighted_f1",
+    "recomputed": 0.6461,
+    "metrics_json": 0.6461,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive precision",
+    "recomputed": 0.9444,
+    "metrics_json": 0.9444,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive recall",
+    "recomputed": 0.4595,
+    "metrics_json": 0.4595,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive f1",
+    "recomputed": 0.6182,
+    "metrics_json": 0.6182,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive support",
+    "recomputed": 111,
+    "metrics_json": 111,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative precision",
+    "recomputed": 0.8828,
+    "metrics_json": 0.8828,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative recall",
+    "recomputed": 0.8014,
+    "metrics_json": 0.8014,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative f1",
+    "recomputed": 0.8401,
+    "metrics_json": 0.8401,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative support",
+    "recomputed": 141,
+    "metrics_json": 141,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral precision",
+    "recomputed": 0.0532,
+    "metrics_json": 0.0532,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral recall",
+    "recomputed": 1.0,
+    "metrics_json": 1.0,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral f1",
+    "recomputed": 0.101,
+    "metrics_json": 0.101,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral support",
+    "recomputed": 5,
+    "metrics_json": 5,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed precision",
+    "recomputed": 1.0,
+    "metrics_json": 1.0,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed recall",
+    "recomputed": 0.0714,
+    "metrics_json": 0.0714,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed f1",
+    "recomputed": 0.1333,
+    "metrics_json": 0.1333,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed support",
+    "recomputed": 42,
+    "metrics_json": 42,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "confusion matrix",
+    "recomputed": [
+     [
+      51,
+      1,
+      51,
+      0
+     ],
+     [
+      0,
+      113,
+      20,
+      0
+     ],
+     [
+      0,
+      0,
+      5,
+      0
+     ],
+     [
+      3,
+      14,
+      18,
+      3
+     ]
+    ],
+    "metrics_json": [
+     [
+      51,
+      1,
+      51,
+      0
+     ],
+     [
+      0,
+      113,
+      20,
+      0
+     ],
+     [
+      0,
+      0,
+      5,
+      0
+     ],
+     [
+      3,
+      14,
+      18,
+      3
+     ]
+    ],
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "invalid predictions",
+    "recomputed": 20,
+    "metrics_json": 20,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "valid",
+    "recomputed": 279,
+    "metrics_json": 279,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "failed",
+    "recomputed": 20,
+    "metrics_json": 20,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "validity_rate",
+    "recomputed": 0.9331,
+    "metrics_json": 0.9331,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "first_attempt_valid_rate",
+    "recomputed": 0.9164,
+    "metrics_json": 0.9164,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "needed_llm_repair",
+    "recomputed": 25,
+    "metrics_json": 25,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "local_fixes",
+    "recomputed": 25,
+    "metrics_json": 25,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mean_latency_s",
+    "recomputed": 47.5273,
+    "metrics_json": 47.5273,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mean_input_tokens",
+    "recomputed": 2297.6,
+    "metrics_json": 2297.6,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mean_output_tokens",
+    "recomputed": 223.1,
+    "metrics_json": 223.1,
+    "match": true
+   }
+  ]
+ },
+ "transcription_check": [
+  {
+   "strategy": "zero_shot",
+   "value": "accuracy",
+   "transcribed": 0.6127,
+   "verified": 0.612,
+   "match": false
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "macro_precision",
+   "transcribed": 0.6611,
+   "verified": 0.6611,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "macro_recall",
+   "transcribed": 0.4659,
+   "verified": 0.4659,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "macro_f1",
+   "transcribed": 0.438,
+   "verified": 0.438,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "weighted_f1",
+   "transcribed": 0.6797,
+   "verified": 0.6797,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "f1_positive",
+   "transcribed": 0.6821,
+   "verified": 0.6821,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "f1_negative",
+   "transcribed": 0.852,
+   "verified": 0.852,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "f1_neutral",
+   "transcribed": 0.0476,
+   "verified": 0.0476,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "f1_mixed",
+   "transcribed": 0.1702,
+   "verified": 0.1702,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "mean_latency_s",
+   "transcribed": 41.19,
+   "verified": 41.19,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "mean_input_tokens",
+   "transcribed": 2057.4,
+   "verified": 2057.4,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "mean_output_tokens",
+   "transcribed": 214.5,
+   "verified": 214.5,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "validity_pct",
+   "transcribed": 94.3,
+   "verified": 94.3,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "first_attempt_pct",
+   "transcribed": 91.3,
+   "verified": 91.3,
+   "match": true
+  },
+  {
+   "strategy": "zero_shot",
+   "value": "llm_repairs",
+   "transcribed": 26,
+   "verified": 26,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "accuracy",
+   "transcribed": 0.8127,
+   "verified": 0.8127,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "macro_precision",
+   "transcribed": 0.6917,
+   "verified": 0.6917,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "macro_recall",
+   "transcribed": 0.5823,
+   "verified": 0.5823,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "macro_f1",
+   "transcribed": 0.6025,
+   "verified": 0.6025,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "weighted_f1",
+   "transcribed": 0.817,
+   "verified": 0.817,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "f1_positive",
+   "transcribed": 0.9231,
+   "verified": 0.9231,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "f1_negative",
+   "transcribed": 0.8639,
+   "verified": 0.8639,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "f1_neutral",
+   "transcribed": 0.1667,
+   "verified": 0.1667,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "f1_mixed",
+   "transcribed": 0.4561,
+   "verified": 0.4561,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "mean_latency_s",
+   "transcribed": 53.77,
+   "verified": 53.77,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "mean_input_tokens",
+   "transcribed": 2884.5,
+   "verified": 2884.5,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "mean_output_tokens",
+   "transcribed": 227.9,
+   "verified": 227.9,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "validity_pct",
+   "transcribed": 95.3,
+   "verified": 95.3,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "first_attempt_pct",
+   "transcribed": 94.3,
+   "verified": 94.3,
+   "match": true
+  },
+  {
+   "strategy": "few_shot",
+   "value": "llm_repairs",
+   "transcribed": 17,
+   "verified": 17,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "accuracy",
+   "transcribed": 0.5753,
+   "verified": 0.5753,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "macro_precision",
+   "transcribed": 0.7201,
+   "verified": 0.7201,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "macro_recall",
+   "transcribed": 0.5831,
+   "verified": 0.5831,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "macro_f1",
+   "transcribed": 0.4232,
+   "verified": 0.4232,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "weighted_f1",
+   "transcribed": 0.6461,
+   "verified": 0.6461,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "f1_positive",
+   "transcribed": 0.6182,
+   "verified": 0.6182,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "f1_negative",
+   "transcribed": 0.8401,
+   "verified": 0.8401,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "f1_neutral",
+   "transcribed": 0.101,
+   "verified": 0.101,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "f1_mixed",
+   "transcribed": 0.1333,
+   "verified": 0.1333,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "mean_latency_s",
+   "transcribed": 47.53,
+   "verified": 47.53,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "mean_input_tokens",
+   "transcribed": 2297.6,
+   "verified": 2297.6,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "mean_output_tokens",
+   "transcribed": 223.1,
+   "verified": 223.1,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "validity_pct",
+   "transcribed": 93.3,
+   "verified": 93.3,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "first_attempt_pct",
+   "transcribed": 91.6,
+   "verified": 91.6,
+   "match": true
+  },
+  {
+   "strategy": "cot",
+   "value": "llm_repairs",
+   "transcribed": 25,
+   "verified": 25,
+   "match": true
+  },
+  {
+   "strategy": "run",
+   "value": "git_commit",
+   "transcribed": "045f16b",
+   "verified": "045f16b",
+   "match": true
+  },
+  {
+   "strategy": "run",
+   "value": "temperature",
+   "transcribed": 0.0,
+   "verified": 0.0,
+   "match": true
+  },
+  {
+   "strategy": "run",
+   "value": "prompt_version",
+   "transcribed": "v1",
+   "verified": "v1",
+   "match": true
+  },
+  {
+   "strategy": "run",
+   "value": "reviews",
+   "transcribed": 299,
+   "verified": 299,
+   "match": true
+  },
+  {
+   "strategy": "run",
+   "value": "seed",
+   "transcribed": 42,
+   "verified": 42,
+   "match": true
+  }
+ ],
+ "sensitivity_300": {
+  "stored": {
+   "evaluated_at": "2026-11-14T16:55:03+00:00",
+   "status": "complete",
+   "n_reference": 300,
+   "n_evaluated_common": 300,
+   "reference_provenance": {
+    "human_created": 1,
+    "ai_assisted": 299
+   },
+   "reference_progress": {
+    "available": 300,
+    "accepted": 300,
+    "approved": 300,
+    "modified": 0,
+    "excluded": 0,
+    "awaiting_review": 0,
+    "required": 300,
+    "ready": true,
+    "reviewers": [
+     "Rachit"
+    ]
+   },
+   "independent_check_passed": true
+  },
+  "n": 300,
+  "unique": 300,
+  "extra_review_ids": [
+   "R5cfb12ef75b4"
+  ],
+  "extra_reviews": [
+   {
+    "review_id": "R5cfb12ef75b4",
+    "label": "neutral",
+    "original_status": "flagged",
+    "note": "AI-assisted label (Claude, mentor-approved; not human-annotated). Confidence 0.30. DEBATABLE - human review recommended. Text is garbled and partly unreadable (\"hard to li CV k in the lid...\").",
+    "decision": "approved",
+    "method": "individual",
+    "reviewer": "Rachit",
+    "decided_at": "2026-11-14T16:53:32+00:00",
+    "original_provenance": "ai_assisted"
+   }
+  ],
+  "corrections_applied": 0,
+  "decisions": {
+   "approved": 300
+  },
+  "strategies": {
+   "zero_shot": {
+    "classification": {
+     "n": 300,
+     "correct": 184,
+     "accuracy": 0.6133333333333333,
+     "macro_precision": 0.6641899905123341,
+     "macro_recall": 0.4909122648484351,
+     "macro_f1": 0.4435116730600475,
+     "weighted_f1": 0.6780282912641735,
+     "per_class": {
+      "positive": {
+       "precision": 0.9516129032258065,
+       "recall": 0.5315315315315315,
+       "f1": 0.6820809248554913,
+       "support": 111,
+       "predicted": 62,
+       "invalid": 6
+      },
+      "negative": {
+       "precision": 0.8676470588235294,
+       "recall": 0.8368794326241135,
+       "f1": 0.8519855595667869,
+       "support": 141,
+       "predicted": 136,
+       "invalid": 6
+      },
+      "neutral": {
+       "precision": 0.0375,
+       "recall": 0.5,
+       "f1": 0.06976744186046512,
+       "support": 6,
+       "predicted": 80,
+       "invalid": 0
+      },
+      "mixed": {
+       "precision": 0.8,
+       "recall": 0.09523809523809523,
+       "f1": 0.1702127659574468,
+       "support": 42,
+       "predicted": 5,
+       "invalid": 5
+      }
+     },
+     "confusion_matrix": [
+      [
+       59,
+       2,
+       44,
+       0
+      ],
+      [
+       0,
+       118,
+       16,
+       1
+      ],
+      [
+       0,
+       3,
+       3,
+       0
+      ],
+      [
+       3,
+       13,
+       17,
+       4
+      ]
+     ],
+     "invalid": 17,
+     "macro_classes": [
+      "positive",
+      "negative",
+      "neutral",
+      "mixed"
+     ]
+    },
+    "valid": 283,
+    "invalid": 17,
+    "extra_predictions": {
+     "R5cfb12ef75b4": {
+      "prediction": "neutral",
+      "model": "qwen2.5:3b",
+      "prompt_version": "v1",
+      "extracted_at": "2026-11-14T16:18:08+00:00"
+     }
+    }
+   },
+   "few_shot": {
+    "classification": {
+     "n": 300,
+     "correct": 244,
+     "accuracy": 0.8133333333333334,
+     "macro_precision": 0.7185011883541296,
+     "macro_recall": 0.6156213204085546,
+     "macro_f1": 0.6322192844749236,
+     "weighted_f1": 0.8171668181442618,
+     "per_class": {
+      "positive": {
+       "precision": 0.9272727272727272,
+       "recall": 0.918918918918919,
+       "f1": 0.9230769230769231,
+       "support": 111,
+       "predicted": 110,
+       "invalid": 3
+      },
+      "negative": {
+       "precision": 0.8300653594771242,
+       "recall": 0.900709219858156,
+       "f1": 0.8639455782312925,
+       "support": 141,
+       "predicted": 153,
+       "invalid": 9
+      },
+      "neutral": {
+       "precision": 0.25,
+       "recall": 0.3333333333333333,
+       "f1": 0.28571428571428575,
+       "support": 6,
+       "predicted": 8,
+       "invalid": 0
+      },
+      "mixed": {
+       "precision": 0.8666666666666667,
+       "recall": 0.30952380952380953,
+       "f1": 0.45614035087719296,
+       "support": 42,
+       "predicted": 15,
+       "invalid": 2
+      }
+     },
+     "confusion_matrix": [
+      [
+       102,
+       3,
+       2,
+       1
+      ],
+      [
+       1,
+       127,
+       3,
+       1
+      ],
+      [
+       0,
+       4,
+       2,
+       0
+      ],
+      [
+       7,
+       19,
+       1,
+       13
+      ]
+     ],
+     "invalid": 14,
+     "macro_classes": [
+      "positive",
+      "negative",
+      "neutral",
+      "mixed"
+     ]
+    },
+    "valid": 286,
+    "invalid": 14,
+    "extra_predictions": {
+     "R5cfb12ef75b4": {
+      "prediction": "neutral",
+      "model": "qwen2.5:3b",
+      "prompt_version": "v1",
+      "extracted_at": "2026-11-14T16:19:15+00:00"
+     }
+    }
+   },
+   "cot": {
+    "classification": {
+     "n": 300,
+     "correct": 173,
+     "accuracy": 0.5766666666666667,
+     "macro_precision": 0.7226037097953216,
+     "macro_recall": 0.5830766176510859,
+     "macro_f1": 0.42761893289700714,
+     "weighted_f1": 0.644640065493538,
+     "per_class": {
+      "positive": {
+       "precision": 0.9444444444444444,
+       "recall": 0.4594594594594595,
+       "f1": 0.6181818181818182,
+       "support": 111,
+       "predicted": 54,
+       "invalid": 8
+      },
+      "negative": {
+       "precision": 0.8828125,
+       "recall": 0.8014184397163121,
+       "f1": 0.8401486988847583,
+       "support": 141,
+       "predicted": 128,
+       "invalid": 8
+      },
+      "neutral": {
+       "precision": 0.06315789473684211,
+       "recall": 1.0,
+       "f1": 0.11881188118811882,
+       "support": 6,
+       "predicted": 95,
+       "invalid": 0
+      },
+      "mixed": {
+       "precision": 1.0,
+       "recall": 0.07142857142857142,
+       "f1": 0.13333333333333333,
+       "support": 42,
+       "predicted": 3,
+       "invalid": 4
+      }
+     },
+     "confusion_matrix": [
+      [
+       51,
+       1,
+       51,
+       0
+      ],
+      [
+       0,
+       113,
+       20,
+       0
+      ],
+      [
+       0,
+       0,
+       6,
+       0
+      ],
+      [
+       3,
+       14,
+       18,
+       3
+      ]
+     ],
+     "invalid": 20,
+     "macro_classes": [
+      "positive",
+      "negative",
+      "neutral",
+      "mixed"
+     ]
+    },
+    "valid": 280,
+    "invalid": 20,
+    "extra_predictions": {
+     "R5cfb12ef75b4": {
+      "prediction": "neutral",
+      "model": "qwen2.5:3b",
+      "prompt_version": "v1",
+      "extracted_at": "2026-11-14T16:19:58+00:00"
+     }
+    }
+   }
+  },
+  "verification": [
+   {
+    "strategy": "zero_shot",
+    "value": "accuracy",
+    "recomputed": 0.6133,
+    "approved_reference_json": 0.6133,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "macro_precision",
+    "recomputed": 0.6642,
+    "approved_reference_json": 0.6642,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "macro_recall",
+    "recomputed": 0.4909,
+    "approved_reference_json": 0.4909,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "macro_f1",
+    "recomputed": 0.4435,
+    "approved_reference_json": 0.4435,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "weighted_f1",
+    "recomputed": 0.678,
+    "approved_reference_json": 0.678,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive precision",
+    "recomputed": 0.9516,
+    "approved_reference_json": 0.9516,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive recall",
+    "recomputed": 0.5315,
+    "approved_reference_json": 0.5315,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive f1",
+    "recomputed": 0.6821,
+    "approved_reference_json": 0.6821,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "positive support",
+    "recomputed": 111,
+    "approved_reference_json": 111,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative precision",
+    "recomputed": 0.8676,
+    "approved_reference_json": 0.8676,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative recall",
+    "recomputed": 0.8369,
+    "approved_reference_json": 0.8369,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative f1",
+    "recomputed": 0.852,
+    "approved_reference_json": 0.852,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "negative support",
+    "recomputed": 141,
+    "approved_reference_json": 141,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral precision",
+    "recomputed": 0.0375,
+    "approved_reference_json": 0.0375,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral recall",
+    "recomputed": 0.5,
+    "approved_reference_json": 0.5,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral f1",
+    "recomputed": 0.0698,
+    "approved_reference_json": 0.0698,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "neutral support",
+    "recomputed": 6,
+    "approved_reference_json": 6,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed precision",
+    "recomputed": 0.8,
+    "approved_reference_json": 0.8,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed recall",
+    "recomputed": 0.0952,
+    "approved_reference_json": 0.0952,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed f1",
+    "recomputed": 0.1702,
+    "approved_reference_json": 0.1702,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "mixed support",
+    "recomputed": 42,
+    "approved_reference_json": 42,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "valid predictions",
+    "recomputed": 283,
+    "approved_reference_json": 283,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "invalid predictions",
+    "recomputed": 17,
+    "approved_reference_json": 17,
+    "match": true
+   },
+   {
+    "strategy": "zero_shot",
+    "value": "confusion matrix",
+    "recomputed": [
+     [
+      59,
+      2,
+      44,
+      0
+     ],
+     [
+      0,
+      118,
+      16,
+      1
+     ],
+     [
+      0,
+      3,
+      3,
+      0
+     ],
+     [
+      3,
+      13,
+      17,
+      4
+     ]
+    ],
+    "approved_reference_json": [
+     [
+      59,
+      2,
+      44,
+      0
+     ],
+     [
+      0,
+      118,
+      16,
+      1
+     ],
+     [
+      0,
+      3,
+      3,
+      0
+     ],
+     [
+      3,
+      13,
+      17,
+      4
+     ]
+    ],
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "accuracy",
+    "recomputed": 0.8133,
+    "approved_reference_json": 0.8133,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "macro_precision",
+    "recomputed": 0.7185,
+    "approved_reference_json": 0.7185,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "macro_recall",
+    "recomputed": 0.6156,
+    "approved_reference_json": 0.6156,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "macro_f1",
+    "recomputed": 0.6322,
+    "approved_reference_json": 0.6322,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "weighted_f1",
+    "recomputed": 0.8172,
+    "approved_reference_json": 0.8172,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive precision",
+    "recomputed": 0.9273,
+    "approved_reference_json": 0.9273,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive recall",
+    "recomputed": 0.9189,
+    "approved_reference_json": 0.9189,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive f1",
+    "recomputed": 0.9231,
+    "approved_reference_json": 0.9231,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "positive support",
+    "recomputed": 111,
+    "approved_reference_json": 111,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative precision",
+    "recomputed": 0.8301,
+    "approved_reference_json": 0.8301,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative recall",
+    "recomputed": 0.9007,
+    "approved_reference_json": 0.9007,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative f1",
+    "recomputed": 0.8639,
+    "approved_reference_json": 0.8639,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "negative support",
+    "recomputed": 141,
+    "approved_reference_json": 141,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral precision",
+    "recomputed": 0.25,
+    "approved_reference_json": 0.25,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral recall",
+    "recomputed": 0.3333,
+    "approved_reference_json": 0.3333,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral f1",
+    "recomputed": 0.2857,
+    "approved_reference_json": 0.2857,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "neutral support",
+    "recomputed": 6,
+    "approved_reference_json": 6,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed precision",
+    "recomputed": 0.8667,
+    "approved_reference_json": 0.8667,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed recall",
+    "recomputed": 0.3095,
+    "approved_reference_json": 0.3095,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed f1",
+    "recomputed": 0.4561,
+    "approved_reference_json": 0.4561,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "mixed support",
+    "recomputed": 42,
+    "approved_reference_json": 42,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "valid predictions",
+    "recomputed": 286,
+    "approved_reference_json": 286,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "invalid predictions",
+    "recomputed": 14,
+    "approved_reference_json": 14,
+    "match": true
+   },
+   {
+    "strategy": "few_shot",
+    "value": "confusion matrix",
+    "recomputed": [
+     [
+      102,
+      3,
+      2,
+      1
+     ],
+     [
+      1,
+      127,
+      3,
+      1
+     ],
+     [
+      0,
+      4,
+      2,
+      0
+     ],
+     [
+      7,
+      19,
+      1,
+      13
+     ]
+    ],
+    "approved_reference_json": [
+     [
+      102,
+      3,
+      2,
+      1
+     ],
+     [
+      1,
+      127,
+      3,
+      1
+     ],
+     [
+      0,
+      4,
+      2,
+      0
+     ],
+     [
+      7,
+      19,
+      1,
+      13
+     ]
+    ],
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "accuracy",
+    "recomputed": 0.5767,
+    "approved_reference_json": 0.5767,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "macro_precision",
+    "recomputed": 0.7226,
+    "approved_reference_json": 0.7226,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "macro_recall",
+    "recomputed": 0.5831,
+    "approved_reference_json": 0.5831,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "macro_f1",
+    "recomputed": 0.4276,
+    "approved_reference_json": 0.4276,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "weighted_f1",
+    "recomputed": 0.6446,
+    "approved_reference_json": 0.6446,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive precision",
+    "recomputed": 0.9444,
+    "approved_reference_json": 0.9444,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive recall",
+    "recomputed": 0.4595,
+    "approved_reference_json": 0.4595,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive f1",
+    "recomputed": 0.6182,
+    "approved_reference_json": 0.6182,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "positive support",
+    "recomputed": 111,
+    "approved_reference_json": 111,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative precision",
+    "recomputed": 0.8828,
+    "approved_reference_json": 0.8828,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative recall",
+    "recomputed": 0.8014,
+    "approved_reference_json": 0.8014,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative f1",
+    "recomputed": 0.8401,
+    "approved_reference_json": 0.8401,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "negative support",
+    "recomputed": 141,
+    "approved_reference_json": 141,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral precision",
+    "recomputed": 0.0632,
+    "approved_reference_json": 0.0632,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral recall",
+    "recomputed": 1.0,
+    "approved_reference_json": 1.0,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral f1",
+    "recomputed": 0.1188,
+    "approved_reference_json": 0.1188,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "neutral support",
+    "recomputed": 6,
+    "approved_reference_json": 6,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed precision",
+    "recomputed": 1.0,
+    "approved_reference_json": 1.0,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed recall",
+    "recomputed": 0.0714,
+    "approved_reference_json": 0.0714,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed f1",
+    "recomputed": 0.1333,
+    "approved_reference_json": 0.1333,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "mixed support",
+    "recomputed": 42,
+    "approved_reference_json": 42,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "valid predictions",
+    "recomputed": 280,
+    "approved_reference_json": 280,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "invalid predictions",
+    "recomputed": 20,
+    "approved_reference_json": 20,
+    "match": true
+   },
+   {
+    "strategy": "cot",
+    "value": "confusion matrix",
+    "recomputed": [
+     [
+      51,
+      1,
+      51,
+      0
+     ],
+     [
+      0,
+      113,
+      20,
+      0
+     ],
+     [
+      0,
+      0,
+      6,
+      0
+     ],
+     [
+      3,
+      14,
+      18,
+      3
+     ]
+    ],
+    "approved_reference_json": [
+     [
+      51,
+      1,
+      51,
+      0
+     ],
+     [
+      0,
+      113,
+      20,
+      0
+     ],
+     [
+      0,
+      0,
+      6,
+      0
+     ],
+     [
+      3,
+      14,
+      18,
+      3
+     ]
+    ],
+    "match": true
+   }
+  ],
+  "same_review_set": true
+ },
+ "chart_check": [
+  {
+   "chart": "overall",
+   "labels_checked": 15,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "perclass",
+   "labels_checked": 12,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "efficiency",
+   "labels_checked": 9,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "validity",
+   "labels_checked": 6,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "sensitivity",
+   "labels_checked": 6,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "confusion_zero_shot",
+   "labels_checked": 16,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "confusion_few_shot",
+   "labels_checked": 16,
+   "missing": [],
+   "match": true
+  },
+  {
+   "chart": "confusion_cot",
+   "labels_checked": 16,
+   "missing": [],
+   "match": true
+  }
+ ]
+}

@@ -11,15 +11,29 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import time
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
 
 from config import Settings
-from llm.base import LLMClient
+from llm.base import LLMClient, LLMError
 from pipeline.repair import StructuredResult, generate_structured
+from pipeline.validation import normalize_judge_v2
 from prompts.common import render
-from prompts.judge import JUDGE_PROMPT_VERSION, TEMPLATE, judge_format_instructions
+from prompts.judge import (
+    CURRENT_JUDGE_VERSION,
+    JUDGE_PROMPT_VERSION,
+    JUDGE_PROMPT_VERSION_V2,
+    TEMPLATE,
+    TEMPLATE_V2,
+    V2_FORMAT_INSTRUCTIONS,
+    judge_format_instructions,
+    judge_v2_json_schema,
+)
 from prompts.summarization import statistics_block
-from schemas.evaluation_schema import JudgeVerdict, ProductSummary, SummaryJudgement, SummaryPoint
+from schemas.evaluation_schema import JudgeOutputV2, JudgeVerdict, ProductSummary, SummaryJudgement, SummaryPoint
 from schemas.review_schema import ReviewRecord
 from utils.storage import append_jsonl, log_activity, read_jsonl
 
@@ -71,7 +85,7 @@ def deterministic_checks(summary: ProductSummary) -> dict:
     }
 
 
-def judge_summary(client: LLMClient, summary: ProductSummary, records: list[ReviewRecord], settings: Settings) -> tuple[SummaryJudgement | None, StructuredResult]:
+def _judge_sources(summary: ProductSummary, records: list[ReviewRecord]) -> dict[str, str]:
     records = [r for r in records if r.product_id == summary.product_id]
     reviews = "\n".join(f"[{r.review_id}] {_truncate(r.review_text)}" for r in records)
     extractions = "\n".join(
@@ -80,37 +94,197 @@ def judge_summary(client: LLMClient, summary: ProductSummary, records: list[Revi
         + " | " + (", ".join(c.value for c in r.complaint_categories) or "-")
         for r in records
     )
-    stats = statistics_block(summary.aggregate)
-    summ = summary_for_judge(summary)
-    messages = render(TEMPLATE, format_instructions=judge_format_instructions(), reviews=reviews, extractions=extractions, statistics=stats, summary=summ)
-    result = generate_structured(
-        client,
-        messages,
-        JudgeVerdict,
-        task="judge",
-        task_description=JUDGE_TASK_DESCRIPTION,
-        format_instructions=judge_format_instructions(),
-        payload={"summary": summary.content.model_dump(mode="json"), "allowed_review_ids": sorted(summary.aggregate.review_ids)},
-        max_repairs=settings.max_repair_attempts,
-    )
-    if not result.success:
+    return {"reviews": reviews, "extractions": extractions, "statistics": statistics_block(summary.aggregate), "summary": summary_for_judge(summary)}
+
+
+def judge_summary(
+    client: LLMClient,
+    summary: ProductSummary,
+    records: list[ReviewRecord],
+    settings: Settings,
+    *,
+    version: str = JUDGE_PROMPT_VERSION,
+    raise_provider_errors: bool = False,
+) -> tuple[SummaryJudgement | None, StructuredResult]:
+    """Judge one summary.
+
+    ``version``: "v1" (original nested schema, kept so stored results stay reproducible) or "v2" (flat schema,
+    structural normaliser, rubric-consistency rule; create the client with ``get_judge_client(..., version="v2")``).
+    Output that is still invalid after the bounded repairs is returned as a failure (``None``); no score is invented.
+    """
+    src = _judge_sources(summary, records)
+    payload = {"summary": summary.content.model_dump(mode="json"), "allowed_review_ids": sorted(summary.aggregate.review_ids)}
+    if version == JUDGE_PROMPT_VERSION_V2:
+        messages = render(TEMPLATE_V2, **src)
+        result = generate_structured(
+            client, messages, JudgeOutputV2, task="judge_v2", task_description=JUDGE_TASK_DESCRIPTION,
+            format_instructions=V2_FORMAT_INSTRUCTIONS, payload=payload, max_repairs=settings.max_repair_attempts,
+            normalizer=normalize_judge_v2, raise_provider_errors=raise_provider_errors,
+        )
+        verdict = JudgeVerdict.from_v2(result.value) if result.success else None  # type: ignore[arg-type]
+    elif version == JUDGE_PROMPT_VERSION:
+        messages = render(TEMPLATE, format_instructions=judge_format_instructions(), **src)
+        result = generate_structured(
+            client, messages, JudgeVerdict, task="judge", task_description=JUDGE_TASK_DESCRIPTION,
+            format_instructions=judge_format_instructions(), payload=payload, max_repairs=settings.max_repair_attempts,
+            raise_provider_errors=raise_provider_errors,
+        )
+        verdict = result.value
+    else:
+        raise ValueError(f"unknown judge version {version!r}")
+    if verdict is None:
         return None, result
-    jid = hashlib.sha1(f"{summary.summary_id}|{client.model_name}|{result.attempts[-1].raw_output}".encode()).hexdigest()[:12]
+    jid = hashlib.sha1(f"{summary.summary_id}|{client.model_name}|{version}|{result.attempts[-1].raw_output}".encode()).hexdigest()[:12]
+    checks = deterministic_checks(summary)
+    checks.update(claim_traceability(summary, verdict))
     judgement = SummaryJudgement(
         judgement_id=jid,
         summary_id=summary.summary_id,
         product_id=summary.product_id,
-        verdict=result.value,  # type: ignore[arg-type]
-        deterministic_checks=deterministic_checks(summary),
+        verdict=verdict,  # type: ignore[arg-type]
+        deterministic_checks=checks,
         judge_provider=client.provider,
         judge_model=client.model_name,
         is_mock=client.is_mock,
-        prompt_version=JUDGE_PROMPT_VERSION,
+        prompt_version=version,
         repair_attempts=result.repair_attempts,
         latency_s=result.total_latency_s,
     )
-    log_activity(settings.paths.activity_log, "judge_summary", client.is_mock, product_id=summary.product_id, summary_id=summary.summary_id)
+    log_activity(settings.paths.activity_log, "judge_summary", client.is_mock, product_id=summary.product_id, summary_id=summary.summary_id, judge_version=version)
     return judgement, result
+
+
+def get_judge_client(settings: Settings, *, use_mock: bool, version: str = CURRENT_JUDGE_VERSION) -> LLMClient:
+    """Judge client. For v2 on Ollama it uses constrained decoding with the v2 JSON schema (shape only; still validated)."""
+    from llm.factory import get_llm_client
+
+    schema = judge_v2_json_schema() if version == JUDGE_PROMPT_VERSION_V2 else None
+    return get_llm_client(settings, use_mock=use_mock, role="judge", response_schema=schema)
+
+
+# --------------------------------------------------------------------------- claim traceability (deterministic)
+_WORD_RE = re.compile(r"[a-z0-9%]+")
+_STOP = {"the", "a", "an", "and", "or", "of", "to", "is", "are", "it", "in", "on", "for", "with", "that", "this", "as", "be", "by", "at", "its", "their"}
+
+
+def _tokens(text: str) -> set[str]:
+    return {w for w in _WORD_RE.findall(text.lower()) if w not in _STOP}
+
+
+def claim_in_text(claim: str, text: str, threshold: float = 0.6) -> bool:
+    """True if most content words of ``claim`` occur in ``text`` (does a flagged claim really come from the summary?)."""
+    toks = _tokens(claim)
+    return bool(toks) and len(toks & _tokens(text)) / len(toks) >= threshold
+
+
+def claim_traceability(summary: ProductSummary, verdict: JudgeVerdict) -> dict:
+    """How many of the judge's 'unsupported claims' can be traced back to the summary text (no LLM)."""
+    text = summary_text(summary)
+    claims = verdict.unsupported_claims
+    allowed = set(summary.aggregate.review_ids)
+    cited_by_judge = {rid for d in verdict.unsupported_claim_details for rid in d.evidence_review_ids}
+    return {
+        "unsupported_claims_flagged": len(claims),
+        "unsupported_claims_traceable_to_summary": sum(claim_in_text(c, text) for c in claims),
+        "judge_evidence_ids_valid": sorted(cited_by_judge & allowed),
+        "judge_evidence_ids_unknown": sorted(cited_by_judge - allowed),
+    }
+
+
+# --------------------------------------------------------------------------- resumable batch judging
+@dataclass
+class JudgeBatchResult:
+    judged: list[SummaryJudgement] = field(default_factory=list)
+    reused: list[str] = field(default_factory=list)
+    failed: list[str] = field(default_factory=list)
+    skipped_stored_failure: list[str] = field(default_factory=list)
+    new_calls: int = 0
+
+
+class JudgeProviderStopped(RuntimeError):
+    """The judge provider failed repeatedly (outage/timeout). Nothing was recorded for that summary; re-run to resume."""
+
+
+def failure_record(summary: ProductSummary, client: LLMClient, version: str, result: StructuredResult, source: str) -> dict:
+    """A stored judge failure WITH the raw output and validation errors of every attempt (v1 failures lacked them)."""
+    return {
+        "summary_id": summary.summary_id,
+        "product_id": summary.product_id,
+        "judge_provider": client.provider,
+        "judge_model": client.model_name,
+        "is_mock": client.is_mock,
+        "prompt_version": version,
+        "error": result.error,
+        "attempts": [a.model_dump(mode="json") for a in result.attempts],
+        "latency_s": result.total_latency_s,
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "source": source,
+    }
+
+
+def judge_summaries(
+    client: LLMClient,
+    summaries: list[ProductSummary],
+    records: list[ReviewRecord],
+    settings: Settings,
+    store: "JudgementStore",
+    *,
+    version: str = CURRENT_JUDGE_VERSION,
+    retry_failed: bool = False,
+    provider_retries: int = 2,
+    retry_wait_s: float = 15.0,
+    before_call: Callable[[ProductSummary], None] | None = None,
+    progress: Callable[[str, ProductSummary, SummaryJudgement | None, str], None] | None = None,
+    source: str = "batch",
+) -> JudgeBatchResult:
+    """Judge many summaries, resumably.
+
+    * A stored judgement from the same judge model and version is reused, never repeated.
+    * A stored invalid-output failure for the same model/version is final (temperature 0 would reproduce it) unless
+      ``retry_failed`` is set explicitly.
+    * Provider errors (timeouts, server down) are retried at most ``provider_retries`` times; if they persist the batch
+      stops with ``JudgeProviderStopped`` WITHOUT recording a failure, so re-running resumes at that summary.
+    * Each summary gets at most 1 + ``settings.max_repair_attempts`` judge calls for invalid output.
+    """
+    out = JudgeBatchResult()
+    key = (client.model_name, version, client.is_mock)
+    stored = {sid: j for sid, j in store.latest_by_summary().items() if (j.judge_model, j.prompt_version, j.is_mock) == key}
+    stored_fail = {r["summary_id"] for r in store.failures() if (r.get("judge_model"), r.get("prompt_version"), r.get("is_mock")) == key}
+    for summ in summaries:
+        if summ.summary_id in stored:
+            out.reused.append(summ.summary_id)
+            out.judged.append(stored[summ.summary_id])
+            if progress:
+                progress("reused", summ, stored[summ.summary_id], "")
+            continue
+        if summ.summary_id in stored_fail and not retry_failed:
+            out.skipped_stored_failure.append(summ.summary_id)
+            if progress:
+                progress("stored_failure", summ, None, "")
+            continue
+        j, res = None, None
+        for attempt in range(provider_retries + 1):
+            if before_call:
+                before_call(summ)
+            try:
+                j, res = judge_summary(client, summ, records, settings, version=version, raise_provider_errors=True)
+                out.new_calls += 1
+                break
+            except LLMError as exc:
+                if attempt == provider_retries:
+                    raise JudgeProviderStopped(f"judge provider failed {provider_retries + 1}x for {summ.product_id}: {exc}") from exc
+                time.sleep(retry_wait_s * (attempt + 1))
+        if j:
+            store.add(j)
+            out.judged.append(j)
+            if progress:
+                progress("judged", summ, j, "")
+        else:
+            store.add_failure(failure_record(summ, client, version, res, source))
+            out.failed.append(summ.summary_id)
+            if progress:
+                progress("failed", summ, None, res.error or "")
+    return out
 
 
 CORRUPTION_FABRICATED_FEATURE = "Reviewers praise the built-in Wi-Fi app control and voice-assistant support."
@@ -144,21 +318,53 @@ def corrupt_summary(summary: ProductSummary) -> ProductSummary:
 
 
 class JudgementStore:
+    """Append-only JSONL of judgements, with ``judge_failures.jsonl`` beside it.
+
+    v1 (the original run) lives in ``judgements/``. Every later judge version gets its own sub-folder
+    (``judgements/v2/``), so the original results are never mixed with or overwritten by a new judge run.
+    """
+
     def __init__(self, path: Path):
         self.path = path
 
     @classmethod
-    def for_mode(cls, settings: Settings, is_mock: bool) -> "JudgementStore":
-        return cls(settings.paths.mode_dir(is_mock) / "judgements" / "judgements.jsonl")
+    def for_mode(cls, settings: Settings, is_mock: bool, version: str = JUDGE_PROMPT_VERSION) -> "JudgementStore":
+        base = settings.paths.mode_dir(is_mock) / "judgements"
+        return cls((base if version == JUDGE_PROMPT_VERSION else base / version) / "judgements.jsonl")
+
+    @property
+    def failures_path(self) -> Path:
+        return self.path.parent / "judge_failures.jsonl"
 
     def add(self, j: SummaryJudgement) -> None:
         append_jsonl(self.path, [j.model_dump(mode="json")])
+
+    def add_failure(self, record: dict) -> None:
+        append_jsonl(self.failures_path, [record])
 
     def all(self) -> list[SummaryJudgement]:
         return [SummaryJudgement.model_validate(r) for r in read_jsonl(self.path)]
 
     def latest_by_summary(self) -> dict[str, SummaryJudgement]:
         return {j.summary_id: j for j in self.all()}
+
+    def failures(self) -> list[dict]:
+        return read_jsonl(self.failures_path) if self.failures_path.exists() else []
+
+    def open_failures(self) -> dict[str, dict]:
+        """Latest failure per summary that has no successful judgement in this store."""
+        judged = self.latest_by_summary()
+        return {r["summary_id"]: r for r in self.failures() if r["summary_id"] not in judged}
+
+
+def available_judge_versions(settings: Settings, is_mock: bool) -> list[str]:
+    """Judge versions with stored results, newest first (e.g. ["v2", "v1"])."""
+    found = []
+    for v in (JUDGE_PROMPT_VERSION_V2, JUDGE_PROMPT_VERSION):
+        st = JudgementStore.for_mode(settings, is_mock, v)
+        if st.path.exists() or st.failures_path.exists():
+            found.append(v)
+    return found
 
 
 def judgements_table(judgements: list[SummaryJudgement], summaries: dict[str, ProductSummary]) -> list[dict]:

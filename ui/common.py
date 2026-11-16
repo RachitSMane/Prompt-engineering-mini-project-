@@ -13,6 +13,7 @@ from llm.factory import get_llm_client
 from pipeline.extraction import ExtractionStore
 from ui.components import callout, esc, kv_html, md
 from utils.data_loader import load_reviews
+from utils.readonly import DEMO_BANNER, DISABLED_REASON, is_readonly
 from utils.storage import read_json, read_jsonl
 
 MOCK_BANNER = (
@@ -73,13 +74,17 @@ def render_sidebar() -> None:
     s = get_settings()
     live, label, _ = live_status(s)
     if "use_mock" not in st.session_state:
-        st.session_state["use_mock"] = s.is_mock or not live
+        # Read-only demo mode only displays saved results, so it starts on the live (real) outputs even when
+        # Ollama is not running; normal mode keeps the original behaviour (mock when no live LLM is available).
+        st.session_state["use_mock"] = s.is_mock if is_readonly() else (s.is_mock or not live)
     with st.sidebar:
         llm_row = (
             f'<div class="riq-side-row"><span class="riq-dot on"></span>{esc(label)}<span class="riq-side-sub">{esc(s.llm_provider)} · {esc(s.llm_model)}</span></div>'
             if live
             else f'<div class="riq-side-row"><span class="riq-dot off"></span>{esc(label)}<span class="riq-side-sub">{esc(s.llm_provider)}</span></div>'
         )
+        if is_readonly():
+            llm_row += '<div class="riq-side-row"><span class="riq-dot off"></span>Read-only demo<span class="riq-side-sub">no LLM calls · no writes</span></div>'
         md(f'<div class="riq-side-status"><div class="riq-side-label">Workspace</div>{llm_row}</div>')
         st.toggle(
             "Offline mock mode",
@@ -97,6 +102,23 @@ def render_sidebar() -> None:
             )
             if not live:
                 st.caption(live_status(s)[2])
+
+
+def demo_banner() -> None:
+    """Shown at the top of every page when REVIEWIQ_DEMO_READONLY=true."""
+    if is_readonly():
+        callout(
+            f"<b>{esc(DEMO_BANNER)}</b> Results are loaded from saved files; model calls and every action that would "
+            "change stored results, summaries, judgements or annotations are disabled.",
+            "warning",
+            tag="Demo",
+        )
+
+
+def readonly_note(what: str = "This action") -> None:
+    """Explain why a disabled operation cannot be performed in demo mode."""
+    if is_readonly():
+        md(f'<div class="riq-panel-caption"><b>{esc(what)} is disabled.</b> {esc(DISABLED_REASON)}</div>')
 
 
 def mock_banner() -> None:
@@ -121,6 +143,9 @@ def setup_message(s: Settings) -> tuple[str, str]:
 def get_client(role: str = "extraction") -> LLMClient | None:
     """Return the client for the current mode, or None after showing a clear message."""
     s = get_settings()
+    if is_readonly():  # the factory refuses too; this just shows the clearer message
+        callout(f"<b>Read-only demo mode.</b> {esc(DISABLED_REASON)}", "warning", tag="Demo")
+        return None
     try:
         return get_llm_client(s, use_mock=use_mock(), role=role)
     except LLMUnavailableError as exc:
@@ -130,11 +155,16 @@ def get_client(role: str = "extraction") -> LLMClient | None:
 
 
 def llm_ready() -> bool:
+    if is_readonly():
+        return False
     s = get_settings()
     return use_mock() or live_status(s)[0]
 
 
 def require_llm_note() -> None:
+    if is_readonly():
+        callout(f"<b>Model calls are disabled.</b> {esc(DISABLED_REASON)}", "warning", tag="Demo")
+        return
     if not llm_ready():
         s = get_settings()
         msg, tag = setup_message(s)

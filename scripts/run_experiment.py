@@ -33,6 +33,9 @@ def main() -> None:
     p.add_argument("--strategies", nargs="+", default=list(STRATEGIES), choices=list(STRATEGIES))
     p.add_argument("--limit", type=int, default=None, help="only the first N sample reviews")
     p.add_argument("--only-annotated", action="store_true", help="only reviews with a complete reference label (flagged reviews excluded)")
+    p.add_argument("--human-labelled", action="store_true",
+                   help="only reviews with a completed/verified HUMAN label (data/annotations/human_annotations.json), including reserve reviews; "
+                        "use with --resume to add predictions for newly human-labelled reviews")
     p.add_argument("--resume", default=None, help="run_id to resume")
     p.add_argument("--reevaluate", default=None, help="run_id to re-evaluate without LLM calls")
     p.add_argument("--mock", action="store_true", help="use the OFFLINE mock client (development only)")
@@ -60,6 +63,14 @@ def main() -> None:
 
     if args.only_annotated:
         sample = sample[sample["review_id"].isin({g.review_id for g in gold})]
+    if args.human_labelled:
+        from annotation.human_annotation import HumanAnnotationStore
+        from utils.data_loader import load_reviews
+
+        hstore = HumanAnnotationStore.default(s)
+        wanted = {lab.review_id for lab in hstore.all() if lab.status in ("completed", "verified")}
+        full = load_reviews(s.paths.reviews_csv)
+        sample = full[full["review_id"].isin(wanted)].sort_values("review_id")
     if args.limit:
         sample = sample.head(args.limit)
     reviews = dataframe_to_inputs(sample)
@@ -72,7 +83,7 @@ def main() -> None:
             print(f"  {strategy}: {i}/{n}", flush=True)
 
     run_id = args.resume or new_run_id(client.model_name, client.is_mock)
-    resume_cmd = f"python scripts/run_experiment.py --resume {run_id}" + (" --only-annotated" if args.only_annotated else "") + (f" --limit {args.limit}" if args.limit else "")
+    resume_cmd = f"python scripts/run_experiment.py --resume {run_id}" + (" --only-annotated" if args.only_annotated else "") + (" --human-labelled" if args.human_labelled else "") + (f" --limit {args.limit}" if args.limit else "")
     print(f"Run id: {run_id}  (resume with: {resume_cmd})", flush=True)
     try:
         run_dir = run_experiment(s, client, args.strategies, reviews, gold, run_id=run_id, progress=progress, required_gold=required)

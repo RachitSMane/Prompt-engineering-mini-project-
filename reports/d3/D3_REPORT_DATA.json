@@ -1,0 +1,2299 @@
+{
+ "generated_at": "2026-11-15T11:28:51+00:00",
+ "source": "dataset__few_shot__qwen2.5-3b__v1",
+ "report_json": "outputs/live/d3/judge_v4/dataset__few_shot__qwen2.5-3b__v1/report.json",
+ "known_errors": [
+  {
+   "product_id": "B0BTY63SFY",
+   "claim_id": "a61df84f4901:overall_opinion:1",
+   "error": "'80% of the reviews' positive (actual 86.7%; 80% = performance share)",
+   "status": "CONTRADICTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B0BTY63SFY",
+   "claim_id": "a61df84f4901:overall_opinion:3",
+   "error": "'67% of negative reviews' (no such statistic)",
+   "status": "CONTRADICTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B0BTY63SFY",
+   "claim_id": "a61df84f4901:appreciated:2",
+   "error": "'suitable for larger eggs' cites a review saying larger eggs do not fit",
+   "status": "CONTRADICTED",
+   "method": "llm",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B0BTY63SFY",
+   "claim_id": "a61df84f4901:complaints:2",
+   "error": "'small legs' misreads a typo ('Only small legs fit' = eggs)",
+   "status": "PARTIALLY_SUPPORTED",
+   "method": "llm",
+   "flagged": false,
+   "not_supported": true
+  },
+  {
+   "product_id": "B0BTY63SFY",
+   "claim_id": "a61df84f4901:improvement_areas:3",
+   "error": "durability improvement with 3 positive / 0 negative durability mentions",
+   "status": "UNSUPPORTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B0BTY63SFY",
+   "claim_id": "a61df84f4901:recommendations:3",
+   "error": "durability recommendation without negative evidence",
+   "status": "UNSUPPORTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B001DHKBXU",
+   "claim_id": "2f2f868f0ec7:overall_opinion:2",
+   "error": "complaint counts given 'out of 15' (15 = reviews with complaints; 19 reviews)",
+   "status": "PARTIALLY_SUPPORTED",
+   "method": "deterministic",
+   "flagged": false,
+   "not_supported": true
+  },
+  {
+   "product_id": "B001DHKBXU",
+   "claim_id": "2f2f868f0ec7:complaints:1",
+   "error": "'installation was difficult' cites a review saying 'easy to install'",
+   "status": "UNSUPPORTED",
+   "method": "llm",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B001DHKBXU",
+   "claim_id": "2f2f868f0ec7:complaints:2",
+   "error": "'poor value' unsupported by its citation",
+   "status": "UNSUPPORTED",
+   "method": "llm",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B001DHKBXU",
+   "claim_id": "2f2f868f0ec7:complaints:4",
+   "error": "'compatibility issues' not in either cited review",
+   "status": "UNSUPPORTED",
+   "method": "llm",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B00DM8K1NS",
+   "claim_id": "2fb2110754ba:overall_opinion:0",
+   "error": "'3 positive reviews out of 13' (actual 5) and 'slightly positive' (negative > positive)",
+   "status": "CONTRADICTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B00LHRAGHW",
+   "claim_id": "329800146f6c:overall_opinion:0",
+   "error": "'slight majority of positive' (40% positive vs 50% negative)",
+   "status": "CONTRADICTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B01FZJXITU",
+   "claim_id": "f336d1f67313:overall_opinion:0",
+   "error": "'(7 out of 9) praising performance and price value' (4 and 2)",
+   "status": "CONTRADICTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B07XG8QQL5",
+   "claim_id": "b575f6ccde9d:overall_opinion:0",
+   "error": "'majority of users' with performance/durability issues (31.6% each)",
+   "status": "CONTRADICTED",
+   "method": "deterministic",
+   "flagged": true,
+   "not_supported": true
+  },
+  {
+   "product_id": "B07XG8QQL5",
+   "claim_id": "b575f6ccde9d:complaints:0",
+   "error": "performance complaint cites two 5-star positive reviews",
+   "status": "PARTIALLY_SUPPORTED",
+   "method": "llm",
+   "flagged": false,
+   "not_supported": true
+  },
+  {
+   "product_id": "B0C5G1WGBN",
+   "claim_id": "95d7c1c7e9d5:appreciated:1",
+   "error": "'good value' cites a 1-star complaint that does not mention value",
+   "status": "UNSUPPORTED",
+   "method": "llm",
+   "flagged": true,
+   "not_supported": true
+  }
+ ],
+ "known_errors_flagged": 13,
+ "weights": {
+  "SUPPORTED": 1.0,
+  "PARTIALLY_SUPPORTED": 0.5,
+  "UNSUPPORTED": 0.0,
+  "CONTRADICTED": -1.0
+ },
+ "scoring_formula": "faithfulness = 100 * max(0, (S + 0.5*P + 0*U - 1*C) / (S + P + U + C)); UNVERIFIABLE claims are excluded from the denominator and reported as (1 - evidence_coverage). Caps: any CONTRADICTED claim -> score <= 60; any UNSUPPORTED claim -> score <= 80; 'perfect' (100) only if every verifiable claim is SUPPORTED.",
+ "charts": {
+  "scores": {
+   "path": "reports/final/figures/d3_scores.svg"
+  },
+  "nc": {
+   "path": "reports/final/figures/d3_nc.svg"
+  }
+ },
+ "outputs": {
+  "markdown": "reports/final/D3_Final_Report.md",
+  "html": "reports/final/D3_Final_Report.html",
+  "pdf": "reports/final/D3_Final_Report.pdf"
+ },
+ "judge_version": "v4",
+ "config": {
+  "judge_version": "v4",
+  "judge_provider": "ollama",
+  "judge_model": "llama3.2",
+  "is_mock": false,
+  "constrained_decoding": true,
+  "temperature": 0.0,
+  "num_ctx": 4096,
+  "num_predict": 384,
+  "timeout_s": 300,
+  "calls_per_claim": 1,
+  "repair_attempts": 0,
+  "prompt_sha256": "988ef24e271e7983fe402b4e878de35f035b3d4f46470db5490fb760fafe7471",
+  "review_word_limit": 350
+ },
+ "prompt_sha256": "988ef24e271e7983fe402b4e878de35f035b3d4f46470db5490fb760fafe7471",
+ "llm_calls": {
+  "valid": 258,
+  "validation_failures": 0,
+  "kinds": {
+   "corrected": 48,
+   "nc_clean": 63,
+   "nc_corrupted": 63,
+   "original": 84
+  },
+  "quote_verified_rate": 0.895,
+  "mean_latency_s": 17.9,
+  "sessions": [
+   {
+    "run_id": "v4-20261115T095104Z",
+    "started_at": "2026-11-15T09:51:04+00:00",
+    "objects": [
+     "nc_clean",
+     "nc_corrupted",
+     "original"
+    ],
+    "finished_at": "2026-11-15T10:58:34+00:00",
+    "called": 210,
+    "valid": 210,
+    "failed": 0,
+    "skipped_stored": 0,
+    "deterministic_only": 275,
+    "max_gpu_temp_c": 88
+   },
+   {
+    "run_id": "v4-20261115T105853Z",
+    "started_at": "2026-11-15T10:58:53+00:00",
+    "objects": [
+     "corrected",
+     "nc_clean",
+     "nc_corrupted",
+     "original"
+    ],
+    "finished_at": "2026-11-15T11:13:41+00:00",
+    "called": 48,
+    "valid": 48,
+    "failed": 0,
+    "skipped_stored": 210,
+    "deterministic_only": 380,
+    "max_gpu_temp_c": 79
+   }
+  ]
+ },
+ "originals": {
+  "summaries": 15,
+  "claims": 239,
+  "status_counts": {
+   "SUPPORTED": 142,
+   "PARTIALLY_SUPPORTED": 29,
+   "UNSUPPORTED": 44,
+   "CONTRADICTED": 9,
+   "UNVERIFIABLE": 15
+  },
+  "by_method": {
+   "deterministic": 155,
+   "llm": 84,
+   "deterministic+llm": 0,
+   "none": 0
+  },
+  "numeric_claims": 18,
+  "numeric_failed": 5,
+  "validity": {
+   "CONTRADICTED_CLAIMS": 5,
+   "UNSUPPORTED_CLAIMS": 10
+  },
+  "mean_faithfulness": 64.1,
+  "per_product": [
+   {
+    "evaluated_object": "original",
+    "summary_id": "2f2f868f0ec7",
+    "product_id": "B001DHKBXU",
+    "original_summary_id": "",
+    "total_claims": 22,
+    "SUPPORTED": 15,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 4,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 21,
+    "evidence_coverage": 0.9545,
+    "numeric_claims": 3,
+    "numeric_passed": 2,
+    "numeric_failed": 1,
+    "faithfulness_score": 76.2,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "2f2f868f0ec7:complaints:1 2f2f868f0ec7:complaints:2 2f2f868f0ec7:complaints:3 2f2f868f0ec7:complaints:4",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "5526b78f5543",
+    "product_id": "B001ONHE8S",
+    "original_summary_id": "",
+    "total_claims": 14,
+    "SUPPORTED": 10,
+    "PARTIALLY_SUPPORTED": 1,
+    "UNSUPPORTED": 3,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 0,
+    "verifiable_claims": 14,
+    "evidence_coverage": 1.0,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 75.0,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "5526b78f5543:appreciated:1 5526b78f5543:appreciated:2 5526b78f5543:complaints:0",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "00423f485daa",
+    "product_id": "B001TH7GZU",
+    "original_summary_id": "",
+    "total_claims": 13,
+    "SUPPORTED": 8,
+    "PARTIALLY_SUPPORTED": 3,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 0,
+    "verifiable_claims": 13,
+    "evidence_coverage": 1.0,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 73.1,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "00423f485daa:complaints:0 00423f485daa:complaints:2",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "c56321fb1ed2",
+    "product_id": "B0081N3YW4",
+    "original_summary_id": "",
+    "total_claims": 12,
+    "SUPPORTED": 7,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 11,
+    "evidence_coverage": 0.9167,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 72.7,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "c56321fb1ed2:appreciated:0 c56321fb1ed2:complaints:2",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "87499b2eecb4",
+    "product_id": "B008YDTFYW",
+    "original_summary_id": "",
+    "total_claims": 24,
+    "SUPPORTED": 11,
+    "PARTIALLY_SUPPORTED": 4,
+    "UNSUPPORTED": 8,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 23,
+    "evidence_coverage": 0.9583,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 56.5,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "87499b2eecb4:complaints:0 87499b2eecb4:complaints:1 87499b2eecb4:complaints:3 87499b2eecb4:complaints:4 87499b2eecb4:improvement_areas:0 87499b2eecb4:improvement_areas:5 87499b2eecb4:recommendations:0 87499b2eecb4:recommendations:5",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "7e9abf406a54",
+    "product_id": "B00B0ZMNOU",
+    "original_summary_id": "",
+    "total_claims": 18,
+    "SUPPORTED": 13,
+    "PARTIALLY_SUPPORTED": 0,
+    "UNSUPPORTED": 4,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 17,
+    "evidence_coverage": 0.9444,
+    "numeric_claims": 2,
+    "numeric_passed": 2,
+    "numeric_failed": 0,
+    "faithfulness_score": 76.5,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "7e9abf406a54:complaints:0 7e9abf406a54:complaints:3 7e9abf406a54:complaints:4 7e9abf406a54:complaints:5",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "2fb2110754ba",
+    "product_id": "B00DM8K1NS",
+    "original_summary_id": "",
+    "total_claims": 14,
+    "SUPPORTED": 6,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 2,
+    "UNVERIFIABLE": 2,
+    "verifiable_claims": 12,
+    "evidence_coverage": 0.8571,
+    "numeric_claims": 2,
+    "numeric_passed": 1,
+    "numeric_failed": 1,
+    "faithfulness_score": 41.7,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "2fb2110754ba:complaints:0 2fb2110754ba:complaints:2",
+    "contradicted_claims": "2fb2110754ba:overall_opinion:0 2fb2110754ba:complaints:1"
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "329800146f6c",
+    "product_id": "B00LHRAGHW",
+    "original_summary_id": "",
+    "total_claims": 14,
+    "SUPPORTED": 7,
+    "PARTIALLY_SUPPORTED": 0,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 2,
+    "UNVERIFIABLE": 3,
+    "verifiable_claims": 11,
+    "evidence_coverage": 0.7857,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 45.5,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "329800146f6c:complaints:1 329800146f6c:complaints:2",
+    "contradicted_claims": "329800146f6c:overall_opinion:0 329800146f6c:complaints:0"
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "f336d1f67313",
+    "product_id": "B01FZJXITU",
+    "original_summary_id": "",
+    "total_claims": 13,
+    "SUPPORTED": 5,
+    "PARTIALLY_SUPPORTED": 1,
+    "UNSUPPORTED": 6,
+    "CONTRADICTED": 1,
+    "UNVERIFIABLE": 0,
+    "verifiable_claims": 13,
+    "evidence_coverage": 1.0,
+    "numeric_claims": 2,
+    "numeric_passed": 1,
+    "numeric_failed": 1,
+    "faithfulness_score": 34.6,
+    "faithfulness_band_1_5": 1,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "f336d1f67313:overall_opinion:1 f336d1f67313:complaints:0 f336d1f67313:complaints:1 f336d1f67313:improvement_areas:1 f336d1f67313:recommendations:0 f336d1f67313:recommendations:2",
+    "contradicted_claims": "f336d1f67313:overall_opinion:0"
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "bab8e82fb693",
+    "product_id": "B01LZHJF55",
+    "original_summary_id": "",
+    "total_claims": 18,
+    "SUPPORTED": 14,
+    "PARTIALLY_SUPPORTED": 1,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 17,
+    "evidence_coverage": 0.9444,
+    "numeric_claims": 1,
+    "numeric_passed": 1,
+    "numeric_failed": 0,
+    "faithfulness_score": 80.0,
+    "faithfulness_band_1_5": 4,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "bab8e82fb693:appreciated:0 bab8e82fb693:complaints:2",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "babb2ba2d15e",
+    "product_id": "B0759KR8JX",
+    "original_summary_id": "",
+    "total_claims": 15,
+    "SUPPORTED": 10,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 14,
+    "evidence_coverage": 0.9333,
+    "numeric_claims": 3,
+    "numeric_passed": 3,
+    "numeric_failed": 0,
+    "faithfulness_score": 78.6,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "babb2ba2d15e:complaints:2 babb2ba2d15e:improvement_areas:2",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "b575f6ccde9d",
+    "product_id": "B07XG8QQL5",
+    "original_summary_id": "",
+    "total_claims": 11,
+    "SUPPORTED": 7,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 10,
+    "evidence_coverage": 0.9091,
+    "numeric_claims": 1,
+    "numeric_passed": 1,
+    "numeric_failed": 0,
+    "faithfulness_score": 60.0,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "",
+    "contradicted_claims": "b575f6ccde9d:overall_opinion:0"
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "0d9eb10c50a7",
+    "product_id": "B09WWM1WLS",
+    "original_summary_id": "",
+    "total_claims": 14,
+    "SUPPORTED": 11,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 1,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 0,
+    "verifiable_claims": 14,
+    "evidence_coverage": 1.0,
+    "numeric_claims": 1,
+    "numeric_passed": 1,
+    "numeric_failed": 0,
+    "faithfulness_score": 80.0,
+    "faithfulness_band_1_5": 4,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "0d9eb10c50a7:appreciated:1",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "a61df84f4901",
+    "product_id": "B0BTY63SFY",
+    "original_summary_id": "",
+    "total_claims": 24,
+    "SUPPORTED": 12,
+    "PARTIALLY_SUPPORTED": 5,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 3,
+    "UNVERIFIABLE": 2,
+    "verifiable_claims": 22,
+    "evidence_coverage": 0.9167,
+    "numeric_claims": 3,
+    "numeric_passed": 1,
+    "numeric_failed": 2,
+    "faithfulness_score": 52.3,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "a61df84f4901:improvement_areas:3 a61df84f4901:recommendations:3",
+    "contradicted_claims": "a61df84f4901:overall_opinion:1 a61df84f4901:overall_opinion:3 a61df84f4901:appreciated:2"
+   },
+   {
+    "evaluated_object": "original",
+    "summary_id": "95d7c1c7e9d5",
+    "product_id": "B0C5G1WGBN",
+    "original_summary_id": "",
+    "total_claims": 13,
+    "SUPPORTED": 6,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 4,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 12,
+    "evidence_coverage": 0.9231,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 58.3,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "95d7c1c7e9d5:appreciated:0 95d7c1c7e9d5:appreciated:1 95d7c1c7e9d5:complaints:0 95d7c1c7e9d5:complaints:2",
+    "contradicted_claims": ""
+   }
+  ]
+ },
+ "corrected": {
+  "per_summary": [
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "2f2f868f0ec7-corr1",
+    "product_id": "B001DHKBXU",
+    "original_summary_id": "2f2f868f0ec7",
+    "total_claims": 22,
+    "SUPPORTED": 16,
+    "PARTIALLY_SUPPORTED": 1,
+    "UNSUPPORTED": 4,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 21,
+    "evidence_coverage": 0.9545,
+    "numeric_claims": 3,
+    "numeric_passed": 3,
+    "numeric_failed": 0,
+    "faithfulness_score": 78.6,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "2f2f868f0ec7-corr1:complaints:1 2f2f868f0ec7-corr1:complaints:2 2f2f868f0ec7-corr1:complaints:3 2f2f868f0ec7-corr1:complaints:4",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "a61df84f4901-corr1",
+    "product_id": "B0BTY63SFY",
+    "original_summary_id": "a61df84f4901",
+    "total_claims": 24,
+    "SUPPORTED": 14,
+    "PARTIALLY_SUPPORTED": 5,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 1,
+    "UNVERIFIABLE": 2,
+    "verifiable_claims": 22,
+    "evidence_coverage": 0.9167,
+    "numeric_claims": 3,
+    "numeric_passed": 3,
+    "numeric_failed": 0,
+    "faithfulness_score": 60.0,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "a61df84f4901-corr1:improvement_areas:3 a61df84f4901-corr1:recommendations:3",
+    "contradicted_claims": "a61df84f4901-corr1:appreciated:2"
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "a61df84f4901-corr2",
+    "product_id": "B0BTY63SFY",
+    "original_summary_id": "a61df84f4901",
+    "total_claims": 20,
+    "SUPPORTED": 11,
+    "PARTIALLY_SUPPORTED": 4,
+    "UNSUPPORTED": 0,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 5,
+    "verifiable_claims": 15,
+    "evidence_coverage": 0.75,
+    "numeric_claims": 3,
+    "numeric_passed": 3,
+    "numeric_failed": 0,
+    "faithfulness_score": 86.7,
+    "faithfulness_band_1_5": 4,
+    "validity_status": "MINOR_ISSUES",
+    "unsupported_claims": "",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "2f2f868f0ec7-corr2",
+    "product_id": "B001DHKBXU",
+    "original_summary_id": "2f2f868f0ec7",
+    "total_claims": 22,
+    "SUPPORTED": 17,
+    "PARTIALLY_SUPPORTED": 4,
+    "UNSUPPORTED": 0,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 21,
+    "evidence_coverage": 0.9545,
+    "numeric_claims": 7,
+    "numeric_passed": 6,
+    "numeric_failed": 1,
+    "faithfulness_score": 90.5,
+    "faithfulness_band_1_5": 4,
+    "validity_status": "MINOR_ISSUES",
+    "unsupported_claims": "",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "2fb2110754ba-corr2",
+    "product_id": "B00DM8K1NS",
+    "original_summary_id": "2fb2110754ba",
+    "total_claims": 14,
+    "SUPPORTED": 7,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 1,
+    "UNVERIFIABLE": 2,
+    "verifiable_claims": 12,
+    "evidence_coverage": 0.8571,
+    "numeric_claims": 2,
+    "numeric_passed": 2,
+    "numeric_failed": 0,
+    "faithfulness_score": 58.3,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "2fb2110754ba-corr2:complaints:0 2fb2110754ba-corr2:complaints:2",
+    "contradicted_claims": "2fb2110754ba-corr2:complaints:1"
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "329800146f6c-corr2",
+    "product_id": "B00LHRAGHW",
+    "original_summary_id": "329800146f6c",
+    "total_claims": 14,
+    "SUPPORTED": 8,
+    "PARTIALLY_SUPPORTED": 0,
+    "UNSUPPORTED": 2,
+    "CONTRADICTED": 1,
+    "UNVERIFIABLE": 3,
+    "verifiable_claims": 11,
+    "evidence_coverage": 0.7857,
+    "numeric_claims": 1,
+    "numeric_passed": 1,
+    "numeric_failed": 0,
+    "faithfulness_score": 60.0,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "CONTRADICTED_CLAIMS",
+    "unsupported_claims": "329800146f6c-corr2:complaints:1 329800146f6c-corr2:complaints:2",
+    "contradicted_claims": "329800146f6c-corr2:complaints:0"
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "f336d1f67313-corr2",
+    "product_id": "B01FZJXITU",
+    "original_summary_id": "f336d1f67313",
+    "total_claims": 13,
+    "SUPPORTED": 6,
+    "PARTIALLY_SUPPORTED": 1,
+    "UNSUPPORTED": 6,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 0,
+    "verifiable_claims": 13,
+    "evidence_coverage": 1.0,
+    "numeric_claims": 2,
+    "numeric_passed": 2,
+    "numeric_failed": 0,
+    "faithfulness_score": 50.0,
+    "faithfulness_band_1_5": 2,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "f336d1f67313-corr2:overall_opinion:1 f336d1f67313-corr2:complaints:0 f336d1f67313-corr2:complaints:1 f336d1f67313-corr2:improvement_areas:1 f336d1f67313-corr2:recommendations:0 f336d1f67313-corr2:recommendations:2",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "b575f6ccde9d-corr2",
+    "product_id": "B07XG8QQL5",
+    "original_summary_id": "b575f6ccde9d",
+    "total_claims": 11,
+    "SUPPORTED": 8,
+    "PARTIALLY_SUPPORTED": 2,
+    "UNSUPPORTED": 0,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 10,
+    "evidence_coverage": 0.9091,
+    "numeric_claims": 3,
+    "numeric_passed": 3,
+    "numeric_failed": 0,
+    "faithfulness_score": 90.0,
+    "faithfulness_band_1_5": 4,
+    "validity_status": "MINOR_ISSUES",
+    "unsupported_claims": "",
+    "contradicted_claims": ""
+   },
+   {
+    "evaluated_object": "corrected",
+    "summary_id": "95d7c1c7e9d5-corr2",
+    "product_id": "B0C5G1WGBN",
+    "original_summary_id": "95d7c1c7e9d5",
+    "total_claims": 13,
+    "SUPPORTED": 6,
+    "PARTIALLY_SUPPORTED": 3,
+    "UNSUPPORTED": 3,
+    "CONTRADICTED": 0,
+    "UNVERIFIABLE": 1,
+    "verifiable_claims": 12,
+    "evidence_coverage": 0.9231,
+    "numeric_claims": 0,
+    "numeric_passed": 0,
+    "numeric_failed": 0,
+    "faithfulness_score": 62.5,
+    "faithfulness_band_1_5": 3,
+    "validity_status": "UNSUPPORTED_CLAIMS",
+    "unsupported_claims": "95d7c1c7e9d5-corr2:appreciated:0 95d7c1c7e9d5-corr2:complaints:0 95d7c1c7e9d5-corr2:complaints:2",
+    "contradicted_claims": ""
+   }
+  ],
+  "comparison": [
+   {
+    "product_id": "B001DHKBXU",
+    "corrected_summary_id": "2f2f868f0ec7-corr1",
+    "correction_set": "corr1",
+    "original_score": 76.2,
+    "corrected_score": 78.6,
+    "original_validity": "UNSUPPORTED_CLAIMS",
+    "corrected_validity": "UNSUPPORTED_CLAIMS",
+    "original_counts": {
+     "SUPPORTED": 15,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 4,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    },
+    "corrected_counts": {
+     "SUPPORTED": 16,
+     "PARTIALLY_SUPPORTED": 1,
+     "UNSUPPORTED": 4,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    }
+   },
+   {
+    "product_id": "B0BTY63SFY",
+    "corrected_summary_id": "a61df84f4901-corr1",
+    "correction_set": "corr1",
+    "original_score": 52.3,
+    "corrected_score": 60.0,
+    "original_validity": "CONTRADICTED_CLAIMS",
+    "corrected_validity": "CONTRADICTED_CLAIMS",
+    "original_counts": {
+     "SUPPORTED": 12,
+     "PARTIALLY_SUPPORTED": 5,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 3,
+     "UNVERIFIABLE": 2
+    },
+    "corrected_counts": {
+     "SUPPORTED": 14,
+     "PARTIALLY_SUPPORTED": 5,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 2
+    }
+   },
+   {
+    "product_id": "B0BTY63SFY",
+    "corrected_summary_id": "a61df84f4901-corr2",
+    "correction_set": "corr2",
+    "original_score": 52.3,
+    "corrected_score": 86.7,
+    "original_validity": "CONTRADICTED_CLAIMS",
+    "corrected_validity": "MINOR_ISSUES",
+    "original_counts": {
+     "SUPPORTED": 12,
+     "PARTIALLY_SUPPORTED": 5,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 3,
+     "UNVERIFIABLE": 2
+    },
+    "corrected_counts": {
+     "SUPPORTED": 11,
+     "PARTIALLY_SUPPORTED": 4,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 5
+    }
+   },
+   {
+    "product_id": "B001DHKBXU",
+    "corrected_summary_id": "2f2f868f0ec7-corr2",
+    "correction_set": "corr2",
+    "original_score": 76.2,
+    "corrected_score": 90.5,
+    "original_validity": "UNSUPPORTED_CLAIMS",
+    "corrected_validity": "MINOR_ISSUES",
+    "original_counts": {
+     "SUPPORTED": 15,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 4,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    },
+    "corrected_counts": {
+     "SUPPORTED": 17,
+     "PARTIALLY_SUPPORTED": 4,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    }
+   },
+   {
+    "product_id": "B00DM8K1NS",
+    "corrected_summary_id": "2fb2110754ba-corr2",
+    "correction_set": "corr2",
+    "original_score": 41.7,
+    "corrected_score": 58.3,
+    "original_validity": "CONTRADICTED_CLAIMS",
+    "corrected_validity": "CONTRADICTED_CLAIMS",
+    "original_counts": {
+     "SUPPORTED": 6,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 2,
+     "UNVERIFIABLE": 2
+    },
+    "corrected_counts": {
+     "SUPPORTED": 7,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 2
+    }
+   },
+   {
+    "product_id": "B00LHRAGHW",
+    "corrected_summary_id": "329800146f6c-corr2",
+    "correction_set": "corr2",
+    "original_score": 45.5,
+    "corrected_score": 60.0,
+    "original_validity": "CONTRADICTED_CLAIMS",
+    "corrected_validity": "CONTRADICTED_CLAIMS",
+    "original_counts": {
+     "SUPPORTED": 7,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 2,
+     "UNVERIFIABLE": 3
+    },
+    "corrected_counts": {
+     "SUPPORTED": 8,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 3
+    }
+   },
+   {
+    "product_id": "B01FZJXITU",
+    "corrected_summary_id": "f336d1f67313-corr2",
+    "correction_set": "corr2",
+    "original_score": 34.6,
+    "corrected_score": 50.0,
+    "original_validity": "CONTRADICTED_CLAIMS",
+    "corrected_validity": "UNSUPPORTED_CLAIMS",
+    "original_counts": {
+     "SUPPORTED": 5,
+     "PARTIALLY_SUPPORTED": 1,
+     "UNSUPPORTED": 6,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 0
+    },
+    "corrected_counts": {
+     "SUPPORTED": 6,
+     "PARTIALLY_SUPPORTED": 1,
+     "UNSUPPORTED": 6,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    }
+   },
+   {
+    "product_id": "B07XG8QQL5",
+    "corrected_summary_id": "b575f6ccde9d-corr2",
+    "correction_set": "corr2",
+    "original_score": 60.0,
+    "corrected_score": 90.0,
+    "original_validity": "CONTRADICTED_CLAIMS",
+    "corrected_validity": "MINOR_ISSUES",
+    "original_counts": {
+     "SUPPORTED": 7,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 1
+    },
+    "corrected_counts": {
+     "SUPPORTED": 8,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    }
+   },
+   {
+    "product_id": "B0C5G1WGBN",
+    "corrected_summary_id": "95d7c1c7e9d5-corr2",
+    "correction_set": "corr2",
+    "original_score": 58.3,
+    "corrected_score": 62.5,
+    "original_validity": "UNSUPPORTED_CLAIMS",
+    "corrected_validity": "UNSUPPORTED_CLAIMS",
+    "original_counts": {
+     "SUPPORTED": 6,
+     "PARTIALLY_SUPPORTED": 2,
+     "UNSUPPORTED": 4,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    },
+    "corrected_counts": {
+     "SUPPORTED": 6,
+     "PARTIALLY_SUPPORTED": 3,
+     "UNSUPPORTED": 3,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    }
+   }
+  ]
+ },
+ "negative_control_v3": {
+  "metrics": {
+   "primary": {
+    "combined": {
+     "tp": 119,
+     "fp": 12,
+     "tn": 111,
+     "fn": 4,
+     "n_corrupted": 123,
+     "n_clean": 123,
+     "precision": 0.908,
+     "precision_wilson95": [
+      0.847,
+      0.947
+     ],
+     "recall": 0.967,
+     "recall_wilson95": [
+      0.919,
+      0.987
+     ],
+     "f1": 0.937,
+     "specificity": 0.902,
+     "specificity_wilson95": [
+      0.837,
+      0.943
+     ],
+     "false_positive_rate": 0.098
+    },
+    "deterministic": {
+     "tp": 63,
+     "fp": 0,
+     "tn": 123,
+     "fn": 60,
+     "n_corrupted": 123,
+     "n_clean": 123,
+     "precision": 1.0,
+     "precision_wilson95": [
+      0.943,
+      1.0
+     ],
+     "recall": 0.512,
+     "recall_wilson95": [
+      0.425,
+      0.599
+     ],
+     "f1": 0.677,
+     "specificity": 1.0,
+     "specificity_wilson95": [
+      0.97,
+      1.0
+     ],
+     "false_positive_rate": 0.0
+    },
+    "llm": {
+     "tp": 59,
+     "fp": 12,
+     "tn": 51,
+     "fn": 4,
+     "n_corrupted": 63,
+     "n_clean": 63,
+     "precision": 0.831,
+     "precision_wilson95": [
+      0.727,
+      0.901
+     ],
+     "recall": 0.937,
+     "recall_wilson95": [
+      0.848,
+      0.975
+     ],
+     "f1": 0.881,
+     "specificity": 0.81,
+     "specificity_wilson95": [
+      0.696,
+      0.888
+     ],
+     "false_positive_rate": 0.19
+    }
+   },
+   "strict": {
+    "combined": {
+     "tp": 119,
+     "fp": 12,
+     "tn": 111,
+     "fn": 4,
+     "n_corrupted": 123,
+     "n_clean": 123,
+     "precision": 0.908,
+     "precision_wilson95": [
+      0.847,
+      0.947
+     ],
+     "recall": 0.967,
+     "recall_wilson95": [
+      0.919,
+      0.987
+     ],
+     "f1": 0.937,
+     "specificity": 0.902,
+     "specificity_wilson95": [
+      0.837,
+      0.943
+     ],
+     "false_positive_rate": 0.098
+    },
+    "deterministic": {
+     "tp": 63,
+     "fp": 0,
+     "tn": 123,
+     "fn": 60,
+     "n_corrupted": 123,
+     "n_clean": 123,
+     "precision": 1.0,
+     "precision_wilson95": [
+      0.943,
+      1.0
+     ],
+     "recall": 0.512,
+     "recall_wilson95": [
+      0.425,
+      0.599
+     ],
+     "f1": 0.677,
+     "specificity": 1.0,
+     "specificity_wilson95": [
+      0.97,
+      1.0
+     ],
+     "false_positive_rate": 0.0
+    },
+    "llm": {
+     "tp": 59,
+     "fp": 12,
+     "tn": 51,
+     "fn": 4,
+     "n_corrupted": 63,
+     "n_clean": 63,
+     "precision": 0.831,
+     "precision_wilson95": [
+      0.727,
+      0.901
+     ],
+     "recall": 0.937,
+     "recall_wilson95": [
+      0.848,
+      0.975
+     ],
+     "f1": 0.881,
+     "specificity": 0.81,
+     "specificity_wilson95": [
+      0.696,
+      0.888
+     ],
+     "false_positive_rate": 0.19
+    }
+   },
+   "lenient": {
+    "combined": {
+     "tp": 119,
+     "fp": 17,
+     "tn": 106,
+     "fn": 4,
+     "n_corrupted": 123,
+     "n_clean": 123,
+     "precision": 0.875,
+     "precision_wilson95": [
+      0.809,
+      0.92
+     ],
+     "recall": 0.967,
+     "recall_wilson95": [
+      0.919,
+      0.987
+     ],
+     "f1": 0.919,
+     "specificity": 0.862,
+     "specificity_wilson95": [
+      0.79,
+      0.912
+     ],
+     "false_positive_rate": 0.138
+    },
+    "deterministic": {
+     "tp": 78,
+     "fp": 0,
+     "tn": 123,
+     "fn": 45,
+     "n_corrupted": 123,
+     "n_clean": 123,
+     "precision": 1.0,
+     "precision_wilson95": [
+      0.953,
+      1.0
+     ],
+     "recall": 0.634,
+     "recall_wilson95": [
+      0.546,
+      0.714
+     ],
+     "f1": 0.776,
+     "specificity": 1.0,
+     "specificity_wilson95": [
+      0.97,
+      1.0
+     ],
+     "false_positive_rate": 0.0
+    },
+    "llm": {
+     "tp": 59,
+     "fp": 17,
+     "tn": 46,
+     "fn": 4,
+     "n_corrupted": 63,
+     "n_clean": 63,
+     "precision": 0.776,
+     "precision_wilson95": [
+      0.671,
+      0.855
+     ],
+     "recall": 0.937,
+     "recall_wilson95": [
+      0.848,
+      0.975
+     ],
+     "f1": 0.849,
+     "specificity": 0.73,
+     "specificity_wilson95": [
+      0.61,
+      0.824
+     ],
+     "false_positive_rate": 0.27
+    }
+   }
+  },
+  "by_type": {
+   "incorrect_review_count": {
+    "cases": 15,
+    "detected": 15,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.796,
+     1.0
+    ],
+    "clean_flagged": 0,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.796,
+     1.0
+    ],
+    "expected_status": "CONTRADICTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 15,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 15,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 0,
+    "llm_only_detected": 0,
+    "deterministic_only_detected": 15
+   },
+   "incorrect_percentage": {
+    "cases": 15,
+    "detected": 15,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.796,
+     1.0
+    ],
+    "clean_flagged": 0,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.796,
+     1.0
+    ],
+    "expected_status": "CONTRADICTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 15,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 15,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 0,
+    "llm_only_detected": 0,
+    "deterministic_only_detected": 15
+   },
+   "incorrect_majority": {
+    "cases": 15,
+    "detected": 15,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.796,
+     1.0
+    ],
+    "clean_flagged": 0,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.796,
+     1.0
+    ],
+    "expected_status": "CONTRADICTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 15,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 15,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 0,
+    "llm_only_detected": 0,
+    "deterministic_only_detected": 15
+   },
+   "incorrect_complaint_statistic": {
+    "cases": 15,
+    "detected": 15,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.796,
+     1.0
+    ],
+    "clean_flagged": 0,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.796,
+     1.0
+    ],
+    "expected_status": "CONTRADICTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 15,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 15,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 0,
+    "llm_only_detected": 0,
+    "deterministic_only_detected": 15
+   },
+   "flipped_sentiment": {
+    "cases": 10,
+    "detected": 9,
+    "detection_rate": 0.9,
+    "detection_wilson95": [
+     0.596,
+     0.982
+    ],
+    "clean_flagged": 3,
+    "specificity": 0.7,
+    "specificity_wilson95": [
+     0.397,
+     0.892
+    ],
+    "expected_status": "CONTRADICTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 1,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 8,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 7,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 3,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 10,
+    "llm_only_detected": 9,
+    "deterministic_only_detected": 0
+   },
+   "unsupported_performance": {
+    "cases": 9,
+    "detected": 9,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.701,
+     1.0
+    ],
+    "clean_flagged": 0,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.701,
+     1.0
+    ],
+    "expected_status": "UNSUPPORTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 9,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 8,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    },
+    "llm_judged": 9,
+    "llm_only_detected": 9,
+    "deterministic_only_detected": 0
+   },
+   "unsupported_durability": {
+    "cases": 5,
+    "detected": 5,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.566,
+     1.0
+    ],
+    "clean_flagged": 2,
+    "specificity": 0.6,
+    "specificity_wilson95": [
+     0.231,
+     0.882
+    ],
+    "expected_status": "UNSUPPORTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 5,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 3,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 5,
+    "llm_only_detected": 5,
+    "deterministic_only_detected": 0
+   },
+   "fabricated_compatibility": {
+    "cases": 7,
+    "detected": 7,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.646,
+     1.0
+    ],
+    "clean_flagged": 0,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.646,
+     1.0
+    ],
+    "expected_status": "UNSUPPORTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 7,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 4,
+     "PARTIALLY_SUPPORTED": 1,
+     "UNSUPPORTED": 0,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 2
+    },
+    "llm_judged": 7,
+    "llm_only_detected": 7,
+    "deterministic_only_detected": 0
+   },
+   "fabricated_warranty": {
+    "cases": 10,
+    "detected": 10,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.722,
+     1.0
+    ],
+    "clean_flagged": 2,
+    "specificity": 0.8,
+    "specificity_wilson95": [
+     0.49,
+     0.943
+    ],
+    "expected_status": "UNSUPPORTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 9,
+     "CONTRADICTED": 1,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 7,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 1
+    },
+    "llm_judged": 10,
+    "llm_only_detected": 10,
+    "deterministic_only_detected": 0
+   },
+   "incorrect_aspect_attribution": {
+    "cases": 9,
+    "detected": 9,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.701,
+     1.0
+    ],
+    "clean_flagged": 1,
+    "specificity": 0.889,
+    "specificity_wilson95": [
+     0.565,
+     0.98
+    ],
+    "expected_status": "UNSUPPORTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 9,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 8,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 1,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 9,
+    "llm_only_detected": 9,
+    "deterministic_only_detected": 0
+   },
+   "contradictory_citation": {
+    "cases": 5,
+    "detected": 5,
+    "detection_rate": 1.0,
+    "detection_wilson95": [
+     0.566,
+     1.0
+    ],
+    "clean_flagged": 1,
+    "specificity": 0.8,
+    "specificity_wilson95": [
+     0.376,
+     0.964
+    ],
+    "expected_status": "CONTRADICTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 0,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 5,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 4,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 1,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 5,
+    "llm_only_detected": 5,
+    "deterministic_only_detected": 0
+   },
+   "misleading_paraphrase": {
+    "cases": 8,
+    "detected": 5,
+    "detection_rate": 0.625,
+    "detection_wilson95": [
+     0.306,
+     0.863
+    ],
+    "clean_flagged": 3,
+    "specificity": 0.625,
+    "specificity_wilson95": [
+     0.306,
+     0.863
+    ],
+    "expected_status": "PARTIALLY_SUPPORTED",
+    "status_distribution_corrupted": {
+     "SUPPORTED": 3,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 2,
+     "CONTRADICTED": 3,
+     "UNVERIFIABLE": 0
+    },
+    "status_distribution_clean": {
+     "SUPPORTED": 5,
+     "PARTIALLY_SUPPORTED": 0,
+     "UNSUPPORTED": 3,
+     "CONTRADICTED": 0,
+     "UNVERIFIABLE": 0
+    },
+    "llm_judged": 8,
+    "llm_only_detected": 5,
+    "deterministic_only_detected": 3
+   }
+  },
+  "copy_level_scores": {
+   "pairs": 123,
+   "corrupted_copy_lower": 97,
+   "equal": 26,
+   "corrupted_copy_higher": 0,
+   "note": "copy-level scores are recomputed from the original summary's claim verdicts plus the planted claim's verdict"
+  },
+  "review_based_types_primary": {
+   "combined": {
+    "tp": 59,
+    "fp": 12,
+    "tn": 51,
+    "fn": 4,
+    "n_corrupted": 63,
+    "n_clean": 63,
+    "precision": 0.831,
+    "precision_wilson95": [
+     0.727,
+     0.901
+    ],
+    "recall": 0.937,
+    "recall_wilson95": [
+     0.848,
+     0.975
+    ],
+    "f1": 0.881,
+    "specificity": 0.81,
+    "specificity_wilson95": [
+     0.696,
+     0.888
+    ],
+    "false_positive_rate": 0.19
+   },
+   "deterministic": {
+    "tp": 3,
+    "fp": 0,
+    "tn": 63,
+    "fn": 60,
+    "n_corrupted": 63,
+    "n_clean": 63,
+    "precision": 1.0,
+    "precision_wilson95": [
+     0.438,
+     1.0
+    ],
+    "recall": 0.048,
+    "recall_wilson95": [
+     0.016,
+     0.131
+    ],
+    "f1": 0.091,
+    "specificity": 1.0,
+    "specificity_wilson95": [
+     0.943,
+     1.0
+    ],
+    "false_positive_rate": 0.0
+   },
+   "llm": {
+    "tp": 59,
+    "fp": 12,
+    "tn": 51,
+    "fn": 4,
+    "n_corrupted": 63,
+    "n_clean": 63,
+    "precision": 0.831,
+    "precision_wilson95": [
+     0.727,
+     0.901
+    ],
+    "recall": 0.937,
+    "recall_wilson95": [
+     0.848,
+     0.975
+    ],
+    "f1": 0.881,
+    "specificity": 0.81,
+    "specificity_wilson95": [
+     0.696,
+     0.888
+    ],
+    "false_positive_rate": 0.19
+   }
+  },
+  "statistic_types": [
+   "incorrect_review_count",
+   "incorrect_percentage",
+   "incorrect_majority",
+   "incorrect_complaint_statistic"
+  ],
+  "detection_rule": {
+   "primary": "flagged = final status in {UNSUPPORTED, CONTRADICTED}; for misleading_paraphrase (expected PARTIALLY_SUPPORTED) flagged = final status != SUPPORTED. The same per-type rule is applied to the matched clean claims.",
+   "strict": "flagged = final status in {UNSUPPORTED, CONTRADICTED} for every type",
+   "lenient": "flagged = final status != SUPPORTED for every type (PARTIALLY_SUPPORTED and UNVERIFIABLE count as flagged)"
+  },
+  "cases": 123,
+  "manifest": {
+   "nc_version": "nc-v3",
+   "frozen_at": "2026-11-15T09:50:46+00:00",
+   "seed": 20261115,
+   "source": "dataset__few_shot__qwen2.5-3b__v1",
+   "dataset_sha256": "d1b5684475e4c49089a0d1e14a6b286faa2d21e5f83523648d3685b690ff60d7",
+   "cases": 123,
+   "claims_to_judge": 246,
+   "cases_by_type": {
+    "incorrect_review_count": 15,
+    "incorrect_percentage": 15,
+    "incorrect_majority": 15,
+    "incorrect_complaint_statistic": 15,
+    "flipped_sentiment": 10,
+    "unsupported_performance": 9,
+    "unsupported_durability": 5,
+    "fabricated_compatibility": 7,
+    "fabricated_warranty": 10,
+    "incorrect_aspect_attribution": 9,
+    "contradictory_citation": 5,
+    "misleading_paraphrase": 8
+   },
+   "detection_rule": {
+    "primary": "flagged = final status in {UNSUPPORTED, CONTRADICTED}; for misleading_paraphrase (expected PARTIALLY_SUPPORTED) flagged = final status != SUPPORTED. The same per-type rule is applied to the matched clean claims.",
+    "strict": "flagged = final status in {UNSUPPORTED, CONTRADICTED} for every type",
+    "lenient": "flagged = final status != SUPPORTED for every type (PARTIALLY_SUPPORTED and UNVERIFIABLE count as flagged)"
+   },
+   "positive_class": "corrupted claim; each case also has a matched clean claim of the same form (negative class)",
+   "frozen_before_judging": true,
+   "judge_v4_prompt_sha256_at_freeze": "988ef24e271e7983fe402b4e878de35f035b3d4f46470db5490fb760fafe7471",
+   "construction": "evaluation/negative_control_v3.py (seeded, no LLM). Review-based cases were read against their review texts by the AI coding assistant before freezing; that QA is not a human verification.",
+   "previous_control": "nc-v2 (30 copies, outputs/<mode>/d3/judge_negative_control_v2) is unchanged and reported separately"
+  }
+ },
+ "sensitivity": {
+  "primary (S1, P0.5, U0, C-1, caps)": {
+   "scores": {
+    "B001DHKBXU": 76.2,
+    "B001ONHE8S": 75.0,
+    "B001TH7GZU": 73.1,
+    "B0081N3YW4": 72.7,
+    "B008YDTFYW": 56.5,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 41.7,
+    "B00LHRAGHW": 45.5,
+    "B01FZJXITU": 34.6,
+    "B01LZHJF55": 80.0,
+    "B0759KR8JX": 78.6,
+    "B07XG8QQL5": 60.0,
+    "B09WWM1WLS": 80.0,
+    "B0BTY63SFY": 52.3,
+    "B0C5G1WGBN": 58.3
+   },
+   "kendall_tau_vs_primary": 1.0,
+   "mean": 64.1
+  },
+  "P=0.25": {
+   "scores": {
+    "B001DHKBXU": 73.8,
+    "B001ONHE8S": 73.2,
+    "B001TH7GZU": 67.3,
+    "B0081N3YW4": 68.2,
+    "B008YDTFYW": 52.2,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 37.5,
+    "B00LHRAGHW": 45.5,
+    "B01FZJXITU": 32.7,
+    "B01LZHJF55": 80.0,
+    "B0759KR8JX": 75.0,
+    "B07XG8QQL5": 60.0,
+    "B09WWM1WLS": 80.0,
+    "B0BTY63SFY": 46.6,
+    "B0C5G1WGBN": 54.2
+   },
+   "kendall_tau_vs_primary": 0.962,
+   "mean": 61.5
+  },
+  "P=0.75": {
+   "scores": {
+    "B001DHKBXU": 78.6,
+    "B001ONHE8S": 76.8,
+    "B001TH7GZU": 78.8,
+    "B0081N3YW4": 77.3,
+    "B008YDTFYW": 60.9,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 45.8,
+    "B00LHRAGHW": 45.5,
+    "B01FZJXITU": 36.5,
+    "B01LZHJF55": 80.0,
+    "B0759KR8JX": 80.0,
+    "B07XG8QQL5": 60.0,
+    "B09WWM1WLS": 80.0,
+    "B0BTY63SFY": 58.0,
+    "B0C5G1WGBN": 62.5
+   },
+   "kendall_tau_vs_primary": 0.804,
+   "mean": 66.5
+  },
+  "C=0 (contradicted = unsupported)": {
+   "scores": {
+    "B001DHKBXU": 76.2,
+    "B001ONHE8S": 75.0,
+    "B001TH7GZU": 73.1,
+    "B0081N3YW4": 72.7,
+    "B008YDTFYW": 56.5,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 58.3,
+    "B00LHRAGHW": 60.0,
+    "B01FZJXITU": 42.3,
+    "B01LZHJF55": 80.0,
+    "B0759KR8JX": 78.6,
+    "B07XG8QQL5": 60.0,
+    "B09WWM1WLS": 80.0,
+    "B0BTY63SFY": 60.0,
+    "B0C5G1WGBN": 58.3
+   },
+   "kendall_tau_vs_primary": 0.9,
+   "mean": 67.2
+  },
+  "C=-2": {
+   "scores": {
+    "B001DHKBXU": 76.2,
+    "B001ONHE8S": 75.0,
+    "B001TH7GZU": 73.1,
+    "B0081N3YW4": 72.7,
+    "B008YDTFYW": 56.5,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 25.0,
+    "B00LHRAGHW": 27.3,
+    "B01FZJXITU": 26.9,
+    "B01LZHJF55": 80.0,
+    "B0759KR8JX": 78.6,
+    "B07XG8QQL5": 60.0,
+    "B09WWM1WLS": 80.0,
+    "B0BTY63SFY": 38.6,
+    "B0C5G1WGBN": 58.3
+   },
+   "kendall_tau_vs_primary": 0.981,
+   "mean": 60.3
+  },
+  "strict (only SUPPORTED counts)": {
+   "scores": {
+    "B001DHKBXU": 71.4,
+    "B001ONHE8S": 71.4,
+    "B001TH7GZU": 61.5,
+    "B0081N3YW4": 63.6,
+    "B008YDTFYW": 47.8,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 50.0,
+    "B00LHRAGHW": 60.0,
+    "B01FZJXITU": 38.5,
+    "B01LZHJF55": 80.0,
+    "B0759KR8JX": 71.4,
+    "B07XG8QQL5": 60.0,
+    "B09WWM1WLS": 78.6,
+    "B0BTY63SFY": 54.5,
+    "B0C5G1WGBN": 50.0
+   },
+   "kendall_tau_vs_primary": 0.838,
+   "mean": 62.3
+  },
+  "primary weights, no caps": {
+   "scores": {
+    "B001DHKBXU": 76.2,
+    "B001ONHE8S": 75.0,
+    "B001TH7GZU": 73.1,
+    "B0081N3YW4": 72.7,
+    "B008YDTFYW": 56.5,
+    "B00B0ZMNOU": 76.5,
+    "B00DM8K1NS": 41.7,
+    "B00LHRAGHW": 45.5,
+    "B01FZJXITU": 34.6,
+    "B01LZHJF55": 85.3,
+    "B0759KR8JX": 78.6,
+    "B07XG8QQL5": 70.0,
+    "B09WWM1WLS": 85.7,
+    "B0BTY63SFY": 52.3,
+    "B0C5G1WGBN": 58.3
+   },
+   "kendall_tau_vs_primary": 1.0,
+   "mean": 65.5
+  }
+ },
+ "reproducibility": {
+  "pairs": 42,
+  "same_status": 42,
+  "status_agreement": 1.0,
+  "status_agreement_wilson95": [
+   0.916,
+   1.0
+  ],
+  "raw_identical": 42,
+  "same_input_prompt": 42,
+  "disagreements": []
+ },
+ "human_sentiment_check": {
+  "note": "Human labels are independent, human-created and NOT second-person verified; they cover overall sentiment. Only 8 of 300 carry aspect labels and 2 carry complaint labels, so aspect/complaint statistics cannot be checked against them. This is a separate analysis, not claim-level ground truth.",
+  "rows": [
+   {
+    "product_id": "B001DHKBXU",
+    "reviews_in_aggregate": 19,
+    "human_labelled": 19,
+    "extraction_pct": {
+     "positive": 21.1,
+     "negative": 78.9,
+     "neutral": 0.0,
+     "mixed": 0.0
+    },
+    "human_pct": {
+     "positive": 42.1,
+     "negative": 31.6,
+     "neutral": 10.5,
+     "mixed": 15.8
+    },
+    "abs_diff_positive_pts": 21.0,
+    "abs_diff_negative_pts": 47.3,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B001ONHE8S",
+    "reviews_in_aggregate": 16,
+    "human_labelled": 16,
+    "extraction_pct": {
+     "positive": 62.5,
+     "negative": 31.2,
+     "neutral": 0.0,
+     "mixed": 6.2
+    },
+    "human_pct": {
+     "positive": 75.0,
+     "negative": 6.2,
+     "neutral": 6.2,
+     "mixed": 12.5
+    },
+    "abs_diff_positive_pts": 12.5,
+    "abs_diff_negative_pts": 25.0,
+    "same_majority_direction": true
+   },
+   {
+    "product_id": "B001TH7GZU",
+    "reviews_in_aggregate": 28,
+    "human_labelled": 28,
+    "extraction_pct": {
+     "positive": 32.1,
+     "negative": 64.3,
+     "neutral": 0.0,
+     "mixed": 3.6
+    },
+    "human_pct": {
+     "positive": 53.6,
+     "negative": 21.4,
+     "neutral": 14.3,
+     "mixed": 10.7
+    },
+    "abs_diff_positive_pts": 21.5,
+    "abs_diff_negative_pts": 42.9,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B0081N3YW4",
+    "reviews_in_aggregate": 42,
+    "human_labelled": 42,
+    "extraction_pct": {
+     "positive": 21.4,
+     "negative": 64.3,
+     "neutral": 2.4,
+     "mixed": 11.9
+    },
+    "human_pct": {
+     "positive": 61.9,
+     "negative": 9.5,
+     "neutral": 16.7,
+     "mixed": 11.9
+    },
+    "abs_diff_positive_pts": 40.5,
+    "abs_diff_negative_pts": 54.8,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B008YDTFYW",
+    "reviews_in_aggregate": 11,
+    "human_labelled": 11,
+    "extraction_pct": {
+     "positive": 54.5,
+     "negative": 36.4,
+     "neutral": 0.0,
+     "mixed": 9.1
+    },
+    "human_pct": {
+     "positive": 63.6,
+     "negative": 9.1,
+     "neutral": 27.3,
+     "mixed": 0.0
+    },
+    "abs_diff_positive_pts": 9.1,
+    "abs_diff_negative_pts": 27.3,
+    "same_majority_direction": true
+   },
+   {
+    "product_id": "B00B0ZMNOU",
+    "reviews_in_aggregate": 24,
+    "human_labelled": 24,
+    "extraction_pct": {
+     "positive": 25.0,
+     "negative": 66.7,
+     "neutral": 0.0,
+     "mixed": 8.3
+    },
+    "human_pct": {
+     "positive": 54.2,
+     "negative": 16.7,
+     "neutral": 20.8,
+     "mixed": 8.3
+    },
+    "abs_diff_positive_pts": 29.2,
+    "abs_diff_negative_pts": 50.0,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B00DM8K1NS",
+    "reviews_in_aggregate": 13,
+    "human_labelled": 13,
+    "extraction_pct": {
+     "positive": 38.5,
+     "negative": 46.2,
+     "neutral": 7.7,
+     "mixed": 7.7
+    },
+    "human_pct": {
+     "positive": 53.8,
+     "negative": 15.4,
+     "neutral": 15.4,
+     "mixed": 15.4
+    },
+    "abs_diff_positive_pts": 15.3,
+    "abs_diff_negative_pts": 30.8,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B00LHRAGHW",
+    "reviews_in_aggregate": 10,
+    "human_labelled": 10,
+    "extraction_pct": {
+     "positive": 40.0,
+     "negative": 50.0,
+     "neutral": 10.0,
+     "mixed": 0.0
+    },
+    "human_pct": {
+     "positive": 40.0,
+     "negative": 20.0,
+     "neutral": 30.0,
+     "mixed": 10.0
+    },
+    "abs_diff_positive_pts": 0.0,
+    "abs_diff_negative_pts": 30.0,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B01FZJXITU",
+    "reviews_in_aggregate": 9,
+    "human_labelled": 9,
+    "extraction_pct": {
+     "positive": 77.8,
+     "negative": 22.2,
+     "neutral": 0.0,
+     "mixed": 0.0
+    },
+    "human_pct": {
+     "positive": 66.7,
+     "negative": 0.0,
+     "neutral": 22.2,
+     "mixed": 11.1
+    },
+    "abs_diff_positive_pts": 11.1,
+    "abs_diff_negative_pts": 22.2,
+    "same_majority_direction": true
+   },
+   {
+    "product_id": "B01LZHJF55",
+    "reviews_in_aggregate": 24,
+    "human_labelled": 24,
+    "extraction_pct": {
+     "positive": 33.3,
+     "negative": 58.3,
+     "neutral": 4.2,
+     "mixed": 4.2
+    },
+    "human_pct": {
+     "positive": 50.0,
+     "negative": 16.7,
+     "neutral": 16.7,
+     "mixed": 16.7
+    },
+    "abs_diff_positive_pts": 16.7,
+    "abs_diff_negative_pts": 41.6,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B0759KR8JX",
+    "reviews_in_aggregate": 14,
+    "human_labelled": 14,
+    "extraction_pct": {
+     "positive": 71.4,
+     "negative": 28.6,
+     "neutral": 0.0,
+     "mixed": 0.0
+    },
+    "human_pct": {
+     "positive": 92.9,
+     "negative": 0.0,
+     "neutral": 7.1,
+     "mixed": 0.0
+    },
+    "abs_diff_positive_pts": 21.5,
+    "abs_diff_negative_pts": 28.6,
+    "same_majority_direction": true
+   },
+   {
+    "product_id": "B07XG8QQL5",
+    "reviews_in_aggregate": 19,
+    "human_labelled": 19,
+    "extraction_pct": {
+     "positive": 21.1,
+     "negative": 68.4,
+     "neutral": 5.3,
+     "mixed": 5.3
+    },
+    "human_pct": {
+     "positive": 36.8,
+     "negative": 26.3,
+     "neutral": 10.5,
+     "mixed": 26.3
+    },
+    "abs_diff_positive_pts": 15.7,
+    "abs_diff_negative_pts": 42.1,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B09WWM1WLS",
+    "reviews_in_aggregate": 19,
+    "human_labelled": 19,
+    "extraction_pct": {
+     "positive": 36.8,
+     "negative": 47.4,
+     "neutral": 10.5,
+     "mixed": 5.3
+    },
+    "human_pct": {
+     "positive": 42.1,
+     "negative": 15.8,
+     "neutral": 31.6,
+     "mixed": 10.5
+    },
+    "abs_diff_positive_pts": 5.3,
+    "abs_diff_negative_pts": 31.6,
+    "same_majority_direction": false
+   },
+   {
+    "product_id": "B0BTY63SFY",
+    "reviews_in_aggregate": 15,
+    "human_labelled": 15,
+    "extraction_pct": {
+     "positive": 86.7,
+     "negative": 13.3,
+     "neutral": 0.0,
+     "mixed": 0.0
+    },
+    "human_pct": {
+     "positive": 93.3,
+     "negative": 6.7,
+     "neutral": 0.0,
+     "mixed": 0.0
+    },
+    "abs_diff_positive_pts": 6.6,
+    "abs_diff_negative_pts": 6.6,
+    "same_majority_direction": true
+   },
+   {
+    "product_id": "B0C5G1WGBN",
+    "reviews_in_aggregate": 22,
+    "human_labelled": 22,
+    "extraction_pct": {
+     "positive": 36.4,
+     "negative": 59.1,
+     "neutral": 0.0,
+     "mixed": 4.5
+    },
+    "human_pct": {
+     "positive": 31.8,
+     "negative": 13.6,
+     "neutral": 36.4,
+     "mixed": 18.2
+    },
+    "abs_diff_positive_pts": 4.6,
+    "abs_diff_negative_pts": 45.5,
+    "same_majority_direction": false
+   }
+  ],
+  "rating_by_human_label": {
+   "1 star": {
+    "neutral": 12,
+    "negative": 22,
+    "mixed": 8,
+    "positive": 20
+   },
+   "2 star": {
+    "positive": 17,
+    "negative": 11,
+    "neutral": 18,
+    "mixed": 9
+   },
+   "3 star": {
+    "positive": 29,
+    "mixed": 10,
+    "negative": 7,
+    "neutral": 14
+   },
+   "4 star": {
+    "positive": 47,
+    "neutral": 6,
+    "mixed": 5,
+    "negative": 2
+   },
+   "5 star": {
+    "positive": 53,
+    "neutral": 5,
+    "mixed": 4,
+    "negative": 1
+   }
+  },
+  "low_star_labelled_positive": 37,
+  "low_star_reviews": 117,
+  "interpretation": "37 of 117 one- and two-star reviews carry the human label 'positive', so the human labels disagree with the star ratings far more than the extraction does; this check is therefore inconclusive about extraction quality and the human labels themselves need review.",
+  "mean_abs_diff_positive_pts": 15.4,
+  "mean_abs_diff_negative_pts": 35.1,
+  "products_same_majority_direction": 5,
+  "products": 15
+ },
+ "prior_judges": {
+  "v1": {
+   "valid": 5,
+   "failures": 10,
+   "note": "nested schema; 4 of 5 valid verdicts score hallucination 1-2 with zero claims"
+  },
+  "v2": {
+   "valid": 15,
+   "hallucination_scores": [
+    4
+   ],
+   "nc_v2_detected": 18,
+   "note": "validator forced H<5 <=> claims; H = 4 for every summary"
+  },
+  "v3": {
+   "valid_total": 47,
+   "inconsistent_score_claim_verdicts": 37,
+   "originals_valid": 15,
+   "nc_v2_set_detected": 5,
+   "nc_v2_set_judged": 30,
+   "nc_v2_faithfulness_lower": 3,
+   "nc_v2_pairs": 30,
+   "note": "scores generated independently of the claim list"
+  }
+ },
+ "consistency_check": {
+  "evaluations_validated": 270,
+  "rule": "every SummaryEvaluationV4 re-derives counts, lists and score from its claims on validation"
+ }
+}

@@ -4,16 +4,20 @@ from __future__ import annotations
 
 from config import Settings
 from llm.base import LLMClient, LLMUnavailableError
+from utils.readonly import DISABLED_REASON, is_readonly
 
 
-def get_llm_client(settings: Settings, *, use_mock: bool | None = None, role: str = "extraction") -> LLMClient:
+def get_llm_client(settings: Settings, *, use_mock: bool | None = None, role: str = "extraction", response_schema: dict | None = None) -> LLMClient:
     """Return a live client, or the mock client when explicitly requested.
 
     Live use never silently falls back to mock: if no API key is configured an
     ``LLMUnavailableError`` is raised with a helpful message.
 
     role: "extraction" (also used for summaries) or "judge".
+    response_schema: optional JSON schema for constrained decoding (Ollama only; ignored by other providers and the mock).
     """
+    if is_readonly():  # demo mode: no client at all (live or mock), so no model can be loaded or called
+        raise LLMUnavailableError(DISABLED_REASON)
     use_mock = settings.is_mock if use_mock is None else use_mock
     if use_mock:
         from llm.mock import MockLLMClient
@@ -27,4 +31,4 @@ def get_llm_client(settings: Settings, *, use_mock: bool | None = None, role: st
 
     from llm.langchain_client import LangChainLLMClient
 
-    return LangChainLLMClient(provider, model, settings)
+    return LangChainLLMClient(provider, model, settings, response_schema=response_schema)

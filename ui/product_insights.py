@@ -11,7 +11,7 @@ from pipeline.extraction import ExtractionStore, ReviewExtractor
 from pipeline.summarization import SummaryStore, summarize_product
 from prompts.strategies import STRATEGIES, get_strategy
 from schemas.evaluation_schema import ProductAggregate, ProductSummary
-from ui.common import dataset, extraction_files, get_client, get_settings, llm_ready, load_store, mock_banner, pretty, require_llm_note, use_mock
+from ui.common import dataset, extraction_files, get_client, get_settings, llm_ready, load_store, mock_banner, pretty, readonly_note, require_llm_note, use_mock
 from ui.components import badge, callout, chart, empty_state, esc, kpi, kpi_row, md, page_header, panel, section
 from utils.data_loader import dataframe_to_inputs
 from utils.storage import log_activity
@@ -161,9 +161,17 @@ def render_summary(summary: ProductSummary) -> None:
 
 if existing:
     render_summary(existing)
+    from ui.d3_v4_section import summary_status as _v4_status  # final D3 evaluation of this exact summary id (read-only)
+
+    _v4 = _v4_status(s.paths.mode_dir(use_mock()), existing.summary_id)
+    if _v4:
+        st.caption(f"Judge v4 claim-level evaluation of this summary: faithfulness {_v4['faithfulness_score']} / 100 · "
+                   f"{_v4['validity_status']} · {_v4['counts']['CONTRADICTED']} contradicted, {_v4['counts']['UNSUPPORTED']} unsupported of "
+                   f"{_v4['total_claims']} claims. Details on the Summary Evaluation page.")
 else:
     empty_state("No summary for this product yet", "Generate one below. It is grounded in the statistics and the cited reviews above.", "summarize")
 
+readonly_note("Generating summaries")
 c1, c2, _ = st.columns([2, 2, 3])
 if c1.button("Generate summary for this product", type="primary", icon=":material/auto_awesome:", disabled=not llm_ready(), width="stretch"):
     client = get_client()

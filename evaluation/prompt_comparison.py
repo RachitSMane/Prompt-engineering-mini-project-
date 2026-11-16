@@ -31,6 +31,7 @@ from prompts.common import PROMPT_VERSION
 from prompts.strategies import STRATEGIES, get_strategy
 from schemas.evaluation_schema import Annotation
 from schemas.review_schema import ExtractionFailure, ReviewInput, ReviewRecord
+from utils.readonly import ensure_writable
 from utils.storage import log_activity, read_json, slug, write_json_atomic
 
 logger = logging.getLogger(__name__)
@@ -125,6 +126,7 @@ def run_experiment(
     ``required_gold``: labels needed for a "complete" evaluation, normally the number of
     evaluable (non-flagged) sample reviews; defaults to the configured sample size.
     """
+    ensure_writable("experiment run")  # read-only demo mode: refuse before creating any run folder
     for s in strategies:
         get_strategy(s)
     run_id = run_id or new_run_id(client.model_name, client.is_mock)
@@ -182,6 +184,7 @@ def load_run_predictions(run_dir: Path, strategy: str) -> tuple[list[ReviewRecor
 
 def evaluate_run(run_dir: Path, gold: list[Annotation], required: int) -> dict:
     """(Re-)compute metrics for a run from saved predictions and current annotations."""
+    ensure_writable(run_dir / "metrics.json")  # it always rewrites metrics.json and report.md
     config = read_json(run_dir / "config.json")
     run_ids = set(config["review_ids"])
     gold_in_run = [g for g in gold if g.review_id in run_ids]

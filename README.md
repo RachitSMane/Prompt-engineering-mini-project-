@@ -140,7 +140,7 @@ sentiment, and complaint categories, labelled from the review text without the s
 The split is recorded in `meta.annotation_method` and in each AI-assisted record's `notes` (prefix `AI-assisted label`).
 The dashboard and every report show it next to the metrics. Because most labels are AI-assisted, **D2 scores measure agreement
 with these reference labels, not with independent manual annotation.** No output of the evaluated models is ever written into the
-label file. Re-labelling a review on the *Human Annotation* page replaces it with a human label.
+label file. `annotations.json` is now read-only. Genuine blind human labels go to a separate store (`data/annotations/human_annotations.json`, see `reports/HUMAN_ANNOTATION_GUIDE.md`): **all 300 independent human annotations are complete** (300 human-created blind labels, 0 pending, 0 flagged). Second-person verification is not part of this project's required workflow, so these labels have **not** been independently verified by a second annotator. They are kept separate from the AI-assisted reference annotations and do not change the reported D2 results.
 
 ## 9. Structured extraction pipeline
 `ReviewExtractor` (`pipeline/extraction.py`) builds the strategy's messages, calls `generate_structured(...)` and returns a
@@ -233,6 +233,24 @@ reviews cited for a praised point should contain a positive aspect, reviews cite
 > Judge scores are an automated model assessment, **not objective truth**. A 3B judge can be lenient, miss unsupported claims and
 > misread statistics; its scores are reported next to the deterministic checks so they can be audited.
 
+**Final D3 evaluation: claim-level judge v4 (2026-11-15).** The holistic judges v1–v3 above are kept unchanged as history; v3 verdicts
+contradicted their own claim lists in 37 of 47 cases. Judge v4 (`evaluation/claims.py`, `evaluation/claim_checks.py`,
+`evaluation/judge_v4.py`, schema `schemas/claim_schema.py`) splits each summary into claims. It checks numbers, counts, percentages,
+majorities, aspect statements and citations deterministically, and asks `llama3.2` to verify one cited point at a time against only the
+full text of its cited reviews. The model must quote the evidence verbatim, and the quote is checked. Every score is derived from the
+claim statuses (`SUPPORTED / PARTIALLY_SUPPORTED / UNSUPPORTED / CONTRADICTED / UNVERIFIABLE`) by a fixed formula, so a score cannot
+contradict its claims. Reliability is measured on a new pre-registered negative control (`evaluation/negative_control_v3.py`, 12 error
+types, each planted error paired with a correct claim). Corrected copies (`-corr1`, `-corr2`) are separate, labelled artefacts.
+
+```bash
+python scripts/judge_v4.py run    --source dataset__few_shot__qwen2.5-3b__v1 --objects original nc corrected   # local, sequential, resumable
+python scripts/judge_v4.py report --source dataset__few_shot__qwen2.5-3b__v1                                   # no LLM
+python scripts/build_d3_final_report.py --source dataset__few_shot__qwen2.5-3b__v1 && python scripts/verify_d3_final.py --source dataset__few_shot__qwen2.5-3b__v1
+```
+
+Results: [`reports/final/D3_Final_Report.md`](reports/final/D3_Final_Report.md) (also `.html`, `.pdf`). The Summary Evaluation page
+has a read-only judge v4 section with claims, evidence, numeric checks and the negative control.
+
 ## 17. Installation
 ```bash
 git clone https://github.com/RachitSMane/Prompt-engineering-mini-project-.git
@@ -282,7 +300,7 @@ streamlit run app.py          # http://localhost:8501
 | **Prompt Experiments** | run/resume experiments; macro-F1 and all metrics, confusion matrices, per-class scores, latency, tokens; label provenance |
 | **Product Intelligence** | per-product statistics, aspects, complaints, trends, evidence and generated summaries |
 | **Summary Evaluation** | judge scores per dimension and per product, justifications, deterministic checks, inspection export |
-| **Human Annotation** | browse/edit the 300 reference labels with provenance badges; import/export CSV and JSON |
+| **Human Annotation** | D2 reference dataset: validation, bulk approval and individual decisions on the 300 existing reference annotations (provenance unchanged); independent blind human labelling (completion = no pending review; no second-person verification step); export |
 
 ## 20. Running experiments
 ```bash
@@ -316,8 +334,10 @@ python -m pytest -q          # offline test suite (no network, no LLM)
   go through the repair loop; some still fail validation and are counted as failures.
 * Aspect matching is at category level; the rating-stratified sample does not reflect the natural (72% 5★) distribution, so accuracy describes the balanced set and macro-F1 is the headline metric.
 * Evidence grounding uses fuzzy string matching; paraphrased evidence is rejected.
-* LLM-as-a-Judge scores are model opinions from a 3B judge, not calibrated against human ratings.
-* Product summaries use 20 reviews per product (runtime budget on local hardware), not all 100.
+* LLM-as-a-Judge scores are model opinions from a 3B judge, not calibrated against human ratings. The claim-level judge v4 has a
+  measured false-positive rate and recall on a constructed negative control, but no human claim-level gold set exists, so agreement with
+  people is unknown (see `reports/final/D3_Final_Report.md` §18).
+* Product summaries use the 299-review evaluation sample (9–42 reviews per product), not all 100 per product.
 
 ## 23. Future improvements
 Human re-annotation of the reference labels (at least a double-annotated subset with Cohen's kappa); constrained JSON decoding

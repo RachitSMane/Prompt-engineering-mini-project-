@@ -84,3 +84,57 @@ All times are local (IST, UTC+05:30). All LLM inference ran on the local Ollama 
 | Layout | screenshots capped at 228 mm in print so each stays on one page with its caption (report 21 → 15 pages) |
 | Annotation `annotator` field | `Akash` on all 300 records; the guide defines it as the labeller's name; meta + notes establish 1 human (R3314d62a5df6) / 299 Claude-generated labels; Akash's role for the 299 is not documented anywhere → field left unchanged, question raised with the team |
 | Verification | D1/D2/D3 and negative-control figures in both PDFs match the original outputs; 6 embedded screenshots byte-identical to `reports/screenshots/`; 129 passed / 1 skipped; zero-shot `c3ad1430…` and annotations `c8781acc…` unchanged |
+
+## Session 5 (2026-11-14, from 08:59 IST): final verification and completion
+
+| Time | Step | Result |
+|---|---|---|
+| 09:05 | State check | v1 5 ok / 10 failed; v2 15 ok / 0 failed; negative control 14/30 pairs (stopped 2026-11-13 19:44 by watchdog fail-safe); no inference running; GPU 47 C; 14 GB RAM free |
+| 09:10 | Backup `Downloads\ReviewIQ-pre-final-backup-20261114` | 391 files, SHA-256 manifest; earlier backups untouched |
+| 09:12 | GPU watchdog started (unchanged thresholds); negative control resumed as a detached process | resumed at 14 stored pairs |
+| 09:15-09:45 | Independent audit of the D3 stores (scratch script, no project metric code) | all records schema-valid, genuine Ollama outputs. New: 7 misleading "out of 15" counts in B001DHKBXU; 7/15 v2 claim lists produced after validator rejections; 9/15 verdicts violate the H=4 rubric |
+| 10:28 | Negative control finished | 30/30 pairs, 0 judge failures; peak GPU 91 C; watchdog exited itself 10:37 (idle) |
+| ~10:40 | Independent re-computation from `pairs.jsonl` | all invariants hold. **Defect:** the detection rule also matched reasons; B0081N3YW4 counted as detected although the judge used the fabricated 91 % as fact. Fixed (claims only), recomputed without re-run: 18/30 (was 19/30); previous summary preserved |
+| ~10:50 | Evidence audit: count-statement check added; `audit_d3.py` re-run (previous outputs kept with date suffix) | 13/15 summaries fully verified (was 14/15) |
+| ~11:00 | D2 human store: conflict protection (owner-only changes, protected verified labels, locked re-reading transactions, import never overwrites) | 6 new tests; real store still 0/300 verified, 1 completed |
+| 11:00 | D1 export verifier (scratch output) and D2 independent metrics | 27/27 PASS, identical to stored report; all metrics match |
+| 11:02 | All six pages, real data, read-only | 0 exceptions, 0 generation calls (1 `GET /api/tags`), write buttons disabled, 0 files changed |
+| 11:05 | Full test suite | 235 passed, 1 skipped (optional `langchain_groq`), 0 failed |
+| — | Protected files | zero-shot `c3ad1430…`, annotations `c8781acc…`, judgements, summaries, metrics unchanged; nothing committed or pushed |
+
+## Session 6 (2026-11-14, afternoon): reconciliation, no inference
+
+| Step | Result |
+|---|---|
+| Semantic review of the 30 negative-control judgements (`scripts/nc_semantic_review.py`, model-assisted, labelled not-human) | 18 keyword / 1 paraphrase / 2 justification-only (self-contradictory) / 1 accepted as fact / 8 not mentioned; kept separate from the keyword rate 18/30; `pairs.jsonl` and previous-rule summary unchanged |
+| B0BTY63SFY 80 % / 67 % re-traced at record level | misattributed real ratios (80 % = performance positive share 8/10; 67 % = 2 of 3 complaining reviews; actual: 86.7 % positive reviews, 2 of 2 negative reviews), not invented; wording corrected in all reports |
+| Corrected copies (`scripts/build_corrected_summaries.py`) | B001DHKBXU (7 denominators) and B0BTY63SFY (2 sentences); replay-verified; pass the audit; stored separately; originals byte-identical; not judged |
+| Human store hardening | writes outside a locked transaction refused; import never relabels; migration history under lock; +4 tests |
+| Verification | 241 passed / 1 skipped; D1 27/27 PASS; D2 metrics all match; 6 pages read-only: 0 exceptions, 0 generation calls, 0 files changed; backup manifest OK; protected files identical to backup; `pairs.jsonl` append-only |
+
+## Session 7 (2026-11-14, evening): judge v3, D2 reference approval workflow, final verification
+
+| Time (local) | Step | Result |
+|---|---|---|
+| 19:42 | GPU watchdog started (thresholds unchanged); judge v3 pilot (1 call) | pilot showed the first reconciliation rule raised a contradictory score to 5; rule replaced; pilot kept in `judgements/v3_pilot_superseded_reconciliation/` |
+| 19:45–21:46 | Judge v3 full run, detached (`run_judge.py --version v3`) | 47/47 valid, 0 failures; peak GPU 87 °C; no thermal stop |
+| during the run | D2: `verify_d2_records.py` (11/11 PASS), `human_annotation.py finalise` / `progress-report`, Overview indicators fixed, D1/D2 reports, viva and demo guides | – |
+| during the run | User request: bulk approval of the existing reference annotations | `annotation/reference_adjudication.py`, UI button, evaluation into `approved_reference/`; **no approval recorded by the assistant** (it needs the reviewer's name); dry run on a temporary copy reproduces `metrics.json` |
+| 21:50 | `predict-missing` for R5cfb12ef75b4 (3 × `qwen2.5:3b`) | 3/3 ok → `supplementary/`; original prediction files byte-identical; Ollama swapped out `llama3.2`; all models unloaded afterwards |
+| 21:55 | Full test suite | **269 passed, 1 skipped**, 0 failed |
+| 22:00 | Verifiers | D1 27/27; D2 records 11/11; D2 metrics match; NC claim-only 18/30; evidence audit 13/15 originals, 2/2 corrected; v3 report |
+| 22:05 | Six pages read-only on real data | 0 exceptions, 1 `GET /api/tags`, 0 generation calls, 0 files changed |
+| 22:10 | Screenshots | 6/6 → `reports/screenshots/final_2026-11-14/`; Streamlit stopped |
+| end | Protected files and backups | see `DELIVERABLE_COMPLETION_REPORT.md`; nothing committed or pushed |
+
+## Session 8 (2026-11-14, late evening): D2 final report — primary 299 + sensitivity 300, no inference
+
+| Step | Result |
+|---|---|
+| Reviewer actions found (not made by the assistant) | `reference_adjudication.json`: 299 bulk + `R5cfb12ef75b4` individually approved by Rachit, 16:48–16:53 UTC; `approved_reference/metrics.json` evaluated 16:55 UTC (300 reviews) |
+| Read-only consistency audit | source of the 0.4435 / 0.6322 / 0.4276 figures traced to the 300-review approved-reference evaluation; `reports/proposed_revisions_2026-11-14/` |
+| Decision (user) | primary = original 299-review run; 300-review evaluation = sensitivity analysis |
+| Backup before changes | `Downloads\ReviewIQ-d2-final-revision-backup-20261114` (26 files, SHA-256 manifest) |
+| D2 report rebuilt (`scripts/build_d2_report.py`) | 17 sections incl. §14 sensitivity; primary 96/96 and sensitivity 72/72 values recomputed identically; 8/8 charts label-checked |
+| Dashboard | Prompt Experiments: primary-evaluation label; sensitivity panel relabelled with denominator, added review and macro-F1 difference; Overview badge reworded |
+| Documentation | stale "0/300 approved" statements corrected; 7 control characters (from earlier escape slips) fixed |

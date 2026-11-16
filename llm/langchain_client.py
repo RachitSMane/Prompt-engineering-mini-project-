@@ -10,16 +10,17 @@ from langchain_core.rate_limiters import InMemoryRateLimiter
 
 from config import Settings
 from llm.base import ChatMessage, LLMError, LLMResponse, LLMUnavailableError
+from utils.readonly import ensure_inference_allowed
 
 
-def build_chat_model(provider: str, model: str, settings: Settings):
+def build_chat_model(provider: str, model: str, settings: Settings, response_schema: dict | None = None):
     """Instantiate the LangChain chat model for ``provider``.
 
     Provider packages are imported lazily so only the one you use must be installed.
     The requests-per-minute limiter protects cloud quotas; local Ollama calls bypass it.
     """
     if provider == "ollama":
-        return _build_ollama(model, settings)
+        return _build_ollama(model, settings, response_schema)
     rate_limiter = None
     if settings.llm_requests_per_minute > 0:
         rate_limiter = InMemoryRateLimiter(
@@ -57,8 +58,11 @@ def build_chat_model(provider: str, model: str, settings: Settings):
     raise LLMUnavailableError(f"Unsupported provider '{provider}'")
 
 
-def _build_ollama(model: str, settings: Settings):
-    """Local Ollama chat model: no rate limiter, explicit context window and HTTP timeout."""
+def _build_ollama(model: str, settings: Settings, response_schema: dict | None = None):
+    """Local Ollama chat model: no rate limiter, explicit context window and HTTP timeout.
+
+    ``response_schema``: optional JSON schema for Ollama's constrained decoding (structured outputs). It only constrains
+    the *shape* of the output; the result is still parsed and validated with Pydantic like any other response."""
     if not settings.ollama_endpoint_allowed:
         raise LLMUnavailableError(settings.live_unavailable_reason("ollama"))
     try:
@@ -72,6 +76,7 @@ def _build_ollama(model: str, settings: Settings):
         num_ctx=settings.ollama_num_ctx,  # Ollama's default window can be smaller than few-shot prompt + output
         num_predict=settings.llm_max_output_tokens,
         client_kwargs={"timeout": settings.llm_timeout_seconds},
+        **({"format": response_schema} if response_schema else {}),
     )
 
 
@@ -114,12 +119,14 @@ def _content_to_text(content: Any) -> str:
 class LangChainLLMClient:
     is_mock = False
 
-    def __init__(self, provider: str, model_name: str, settings: Settings):
+    def __init__(self, provider: str, model_name: str, settings: Settings, response_schema: dict | None = None):
         self.provider = provider
         self.model_name = model_name
-        self._model = build_chat_model(provider, model_name, settings)
+        self.constrained_decoding = bool(response_schema) and provider == "ollama"
+        self._model = build_chat_model(provider, model_name, settings, response_schema)
 
     def invoke(self, messages: list[ChatMessage], *, task: str, payload: dict[str, Any] | None = None) -> LLMResponse:
+        ensure_inference_allowed(f"{self.provider}/{self.model_name} call")  # also blocks clients built outside the factory
         start = time.perf_counter()
         try:
             result = self._model.invoke(_to_lc(messages))

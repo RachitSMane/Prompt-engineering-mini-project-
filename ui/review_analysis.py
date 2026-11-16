@@ -12,13 +12,15 @@ from pipeline.aggregation import overview_stats
 from pipeline.extraction import ExtractionStore, ReviewExtractor
 from prompts.strategies import STRATEGIES, get_strategy
 from schemas.review_schema import ReviewRecord
-from ui.common import dataset, get_client, get_settings, llm_ready, mock_banner, require_llm_note, use_mock
-from ui.components import badge, chart, chips, empty_state, esc, kpi, kpi_row, md, page_header, panel, section, sentiment_badge
+from ui.common import dataset, extraction_files, get_client, get_settings, llm_ready, load_store, mock_banner, require_llm_note, use_mock
+from ui.components import badge, callout, chart, chips, empty_state, esc, kpi, kpi_row, md, page_header, panel, section, sentiment_badge
 from utils.data_loader import dataframe_to_inputs, normalize_uploaded_reviews
 from utils.export import aspects_to_dataframe, dataframe_to_csv_bytes, failures_to_dataframe, records_to_dataframe, records_to_json
+from utils.readonly import is_readonly
 from utils.storage import log_activity, slug
 
 UI_MAX_REVIEWS = 200
+SAVED_SOURCE = "Saved results (no LLM calls)"
 s = get_settings()
 
 page_header("Review Analysis", "Inspect customer feedback and extract structured product intelligence.", is_mock=use_mock())
@@ -27,11 +29,43 @@ require_llm_note()
 
 # ---------------------------------------------------------------- input
 section("1 · Source", "Use the prepared Amazon Appliances dataset or upload your own CSV")
-source_kind = st.radio("Review source", ["Prepared dataset (Amazon Appliances)", "Upload CSV"], horizontal=True, label_visibility="collapsed")
+source_kind = st.radio(
+    "Review source",
+    ["Prepared dataset (Amazon Appliances)", "Upload CSV", SAVED_SOURCE],
+    index=2 if is_readonly() else 0,
+    horizontal=True,
+    label_visibility="collapsed",
+)
 reviews_df: pd.DataFrame | None = None
 source_name = "dataset"
+saved: dict | None = None  # set when results are loaded from a stored extraction file instead of being extracted
 
-if source_kind.startswith("Upload"):
+if source_kind == SAVED_SOURCE:
+    files = extraction_files()
+    if not files:
+        empty_state(f"No saved extraction results in {'mock' if use_mock() else 'live'} mode", "Saved result sets appear here after an extraction run.", "inventory_2")
+        st.stop()
+    src = st.selectbox("Saved extraction result set", files, format_func=lambda p: p.stem)
+    saved_store = load_store(src)  # ExtractionStore only reads the file when constructed; nothing is appended here
+    meta = [r.extraction_metadata for r in saved_store.records]
+    models = sorted({f"{m.provider}/{m.model_name}" for m in meta}) or ["—"]
+    strategies = sorted({m.strategy for m in meta})
+    dates = sorted(m.extracted_at[:10] for m in meta)
+    origin = "MOCK fixture outputs (not LLM results)" if any(m.is_mock for m in meta) else "real local-LLM inference"
+    callout(
+        f"<b>Saved results · cached, not newly generated.</b> {len(saved_store.records)} valid records and {len(saved_store.failures)} controlled failures "
+        f"loaded from <code>{esc(src.parent.parent.name)}/extractions/{esc(src.name)}</code> · {esc(origin)} by {esc(', '.join(models))} "
+        f"({esc(', '.join(strategies))}, extracted {esc(dates[0] if dates else '—')}{' to ' + esc(dates[-1]) if dates and dates[-1] != dates[0] else ''}). "
+        "<b>0 LLM calls</b> are made on this view and the file is not modified.",
+        "warning" if origin.startswith("MOCK") else "positive",
+        tag="Saved",
+    )
+    strategy_name = strategies[0] if len(strategies) == 1 and strategies[0] in STRATEGIES else ""
+    source_name = f"saved-{src.stem}"
+    n_saved = len(saved_store.records) + len(saved_store.failures)
+    saved = {"records": saved_store.records, "failures": saved_store.failures, "cached": n_saved, "new": 0}
+
+elif source_kind.startswith("Upload"):
     up = st.file_uploader(
         "Upload reviews CSV",
         type=["csv"],
@@ -88,51 +122,58 @@ else:
         chosen = st.multiselect("Filter products (optional)", list(titles), format_func=lambda p: f"{titles[p][:60]} ({p})", placeholder="All 15 products" if len(titles) == 15 else "All products")
         reviews_df = df[df["product_id"].isin(chosen)] if chosen else df
 
-if reviews_df is None or reviews_df.empty:
-    st.stop()
+if saved is None:  # dataset / upload: extraction on demand (may call the LLM; cached reviews are re-used)
+    if reviews_df is None or reviews_df.empty:
+        st.stop()
 
-with st.expander(f"Preview raw reviews ({len(reviews_df):,})", icon=":material/table_view:"):
-    st.dataframe(reviews_df[[c for c in ["review_id", "product_id", "product_title", "rating", "review_text"] if c in reviews_df.columns]], width="stretch", hide_index=True)
+    with st.expander(f"Preview raw reviews ({len(reviews_df):,})", icon=":material/table_view:"):
+        st.dataframe(reviews_df[[c for c in ["review_id", "product_id", "product_title", "rating", "review_text"] if c in reviews_df.columns]], width="stretch", hide_index=True)
 
-# ---------------------------------------------------------------- run
-section("2 · Extract", "Convert reviews into validated structured records (cached, with automatic repair)")
-with panel():
-    c1, c2, c3 = st.columns([2, 2, 1], vertical_alignment="bottom")
-    strategy_name = c1.selectbox("Prompting strategy", list(STRATEGIES), format_func=lambda k: STRATEGIES[k].label, index=1)
-    n = c2.number_input("Number of reviews to analyse", 1, min(UI_MAX_REVIEWS, len(reviews_df)), min(10, len(reviews_df)),
-                        help=f"Capped at {UI_MAX_REVIEWS} in the UI; use scripts/run_chain.py for larger batches. Results are cached, so re-running is free.")
-    run = c3.button("Run extraction", type="primary", icon=":material/play_arrow:", disabled=not llm_ready(), width="stretch")
-    md(f'<div class="riq-panel-caption">{esc(STRATEGIES[strategy_name].description)}</div>')
+    # ---------------------------------------------------------------- run
+    section("2 · Extract", "Convert reviews into validated structured records (cached, with automatic repair)")
+    with panel():
+        c1, c2, c3 = st.columns([2, 2, 1], vertical_alignment="bottom")
+        strategy_name = c1.selectbox("Prompting strategy", list(STRATEGIES), format_func=lambda k: STRATEGIES[k].label, index=1)
+        n = c2.number_input("Number of reviews to analyse", 1, min(UI_MAX_REVIEWS, len(reviews_df)), min(10, len(reviews_df)),
+                            help=f"Capped at {UI_MAX_REVIEWS} in the UI; use scripts/run_chain.py for larger batches. Results are cached, so re-running is free.")
+        run = c3.button("Run extraction", type="primary", icon=":material/play_arrow:", disabled=not llm_ready(), width="stretch")
+        md(f'<div class="riq-panel-caption">{esc(STRATEGIES[strategy_name].description)}</div>')
 
-subset = reviews_df.head(int(n))
-inputs = dataframe_to_inputs(subset)
-state_key = f"extraction::{source_name}::{strategy_name}::{use_mock()}"
+    subset = reviews_df.head(int(n))
+    inputs = dataframe_to_inputs(subset)
+    state_key = f"extraction::{source_name}::{strategy_name}::{use_mock()}"
 
-if run:
-    client = get_client()
-    if client:
-        store = ExtractionStore.for_run(s, client.is_mock, source_name, strategy_name, client.model_name)
-        extractor = ReviewExtractor(client, get_strategy(strategy_name), s)
-        bar = st.progress(0.0, text="Starting…")
-        try:
-            result = extractor.extract_many(inputs, store=store, progress=lambda i, total, _o: bar.progress(i / total, text=f"Extracted {i}/{total}"))
-        except Exception as exc:  # unexpected errors are shown, never swallowed
-            st.error(f"Extraction stopped: {exc}")
-            st.stop()
-        bar.empty()
-        st.session_state[state_key] = {"records": result.records, "failures": result.failures, "cached": result.from_cache, "new": result.new_calls}
-        log_activity(s.paths.activity_log, "review_extraction", client.is_mock, source=source_name, strategy=strategy_name, reviews=len(inputs), ok=len(result.records), failed=len(result.failures))
+    if run:
+        client = get_client()
+        if client:
+            store = ExtractionStore.for_run(s, client.is_mock, source_name, strategy_name, client.model_name)
+            extractor = ReviewExtractor(client, get_strategy(strategy_name), s)
+            bar = st.progress(0.0, text="Starting…")
+            try:
+                result = extractor.extract_many(inputs, store=store, progress=lambda i, total, _o: bar.progress(i / total, text=f"Extracted {i}/{total}"))
+            except Exception as exc:  # unexpected errors are shown, never swallowed
+                st.error(f"Extraction stopped: {exc}")
+                st.stop()
+            bar.empty()
+            st.session_state[state_key] = {"records": result.records, "failures": result.failures, "cached": result.from_cache, "new": result.new_calls}
+            log_activity(s.paths.activity_log, "review_extraction", client.is_mock, source=source_name, strategy=strategy_name, reviews=len(inputs), ok=len(result.records), failed=len(result.failures))
 
-res = st.session_state.get(state_key)
-if not res:
-    empty_state("No results yet", "Choose a prompting strategy and click <b>Run extraction</b>. Structured records, filters and exports appear here.", "manage_search")
-    st.stop()
+    res = st.session_state.get(state_key)
+    if not res:
+        empty_state("No results yet", "Choose a prompting strategy and click <b>Run extraction</b>. Structured records, filters and exports appear here.", "manage_search")
+        st.stop()
+else:  # saved results: read from the stored extraction file only, zero LLM calls, nothing is written
+    res = saved
+    state_key = f"saved::{source_name}::{use_mock()}"  # only keys the results table widget
 
 records: list[ReviewRecord] = res["records"]
 failures = res["failures"]
 
 # ---------------------------------------------------------------- results
-section("3 · Results", f"{STRATEGIES[strategy_name].label} · {len(inputs)} reviews requested")
+if saved is None:
+    section("3 · Results", f"{STRATEGIES[strategy_name].label} · {len(inputs)} reviews requested")
+else:
+    section("2 · Saved results", f"{STRATEGIES[strategy_name].label if strategy_name else 'mixed strategies'} · {res['cached']} stored outcomes · 0 new LLM calls")
 kpi_row([
     kpi("Valid records", len(records), "passed schema validation", tone="positive"),
     kpi("Controlled failures", len(failures), "no valid output after repair", tone="negative" if failures else None),
@@ -253,11 +294,13 @@ if records:
 
 if failures:
     section("Controlled failures", "No valid output after all repair attempts. These are reported, never silently accepted.")
-    st.dataframe(failures_to_dataframe(failures), width="stretch", hide_index=True)
+    _fail_cols = ["review_id", "product_id", "failure_type", "attempts", "last_attempt_errors", "error", "review_text"]
+    st.dataframe(failures_to_dataframe(failures)[_fail_cols], width="stretch", hide_index=True)
 
 section("Export", "Download validated records and failures")
 d = st.columns(4)
-stem = f"{source_name}_{strategy_name}{'_MOCK' if use_mock() else ''}"
+stem = source_name if saved is not None else f"{source_name}_{strategy_name}"
+stem += "_MOCK" if use_mock() else ""
 d[0].download_button("JSON (records)", records_to_json(records), f"{stem}.json", "application/json", icon=":material/data_object:", width="stretch")
 d[1].download_button("CSV (records)", dataframe_to_csv_bytes(records_to_dataframe(records)), f"{stem}.csv", "text/csv", icon=":material/download:", width="stretch")
 d[2].download_button("CSV (aspects)", dataframe_to_csv_bytes(aspects_to_dataframe(records)), f"{stem}_aspects.csv", "text/csv", icon=":material/download:", width="stretch")

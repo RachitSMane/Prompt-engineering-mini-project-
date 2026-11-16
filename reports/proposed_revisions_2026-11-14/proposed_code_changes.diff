@@ -1,0 +1,27 @@
+# PROPOSED changes (not applied). Review, then apply manually or ask for them to be applied.
+
+--- a/ui/prompt_comparison.py
++++ b/ui/prompt_comparison.py
+@@ status callout of the original run (around line 152)
+ callout(
+-    f"<b>Status:</b> {esc(STATUS_TEXT[status])} · {metrics['n_gold_available']} labelled reviews in this run · evaluated {esc(metrics['evaluated_at'])}",
++    f"<b>Original run evaluation</b> ({metrics['n_gold_available']} reviews; the flagged, unreadable review was excluded before the run). "
++    f"<b>Status:</b> {esc(STATUS_TEXT[status])} · evaluated {esc(metrics['evaluated_at'])}. "
++    "The strategy cards and the tabs below show this evaluation; the D2 reference evaluation panel shows the approved 300-review reference set.",
+     "positive" if status == "complete" else "warning",
+@@ inside the "D2 reference evaluation" panel, after the callout (around line 190)
++            if _refm["n_evaluated_common"] != metrics["n_gold_available"]:
++                _extra = sorted(set(_refm["evaluated_review_ids"]) - set(config["review_ids"]))
++                _d = {n: _refm["strategies"][n]["classification"]["overall_sentiment"]["macro_f1"]
++                      - metrics["strategies"][n]["classification"]["overall_sentiment"]["macro_f1"] for n in _refm["strategies"]}
++                md(f'<div class="riq-panel-caption">This evaluation has {_refm["n_evaluated_common"]} reviews, the original run '
++                   f'{metrics["n_gold_available"]}: extra review(s) {esc(", ".join(_extra))}. Macro-F1 difference: '
++                   + esc(", ".join(f"{STRATEGIES[n].label} {v:+.4f}" for n, v in _d.items())) + '.</div>')
+
+--- a/scripts/build_d2_report.py
++++ b/scripts/build_d2_report.py
+-PROVIDER_ERROR_PREFIX = "Provider error"
++PROVIDER_ERROR_PREFIX = "LLM provider error"   # same prefix as pipeline/extraction.py (no stored row is affected today)
+
+# Optional: give build_d2_report.py a --reference approved option that renders the 300-review evaluation (from
+# approved_reference/metrics.json, recomputed independently) as §9b, instead of the hand-written addendum.

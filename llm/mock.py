@@ -23,6 +23,7 @@ from typing import Any
 
 from config import MOCK_MODEL_NAME
 from llm.base import ChatMessage, LLMResponse
+from utils.readonly import ensure_inference_allowed
 
 MOCK_NOTICE = "MOCK OUTPUT (offline deterministic fixture, not an LLM result)"
 
@@ -186,6 +187,7 @@ class MockLLMClient:
         self.calls: list[dict[str, Any]] = []
 
     def invoke(self, messages: list[ChatMessage], *, task: str, payload: dict[str, Any] | None = None) -> LLMResponse:
+        ensure_inference_allowed("mock client call")
         payload = payload or {}
         self.calls.append({"task": task, "payload_keys": sorted(payload)})
         if task == "extraction":
@@ -196,6 +198,8 @@ class MockLLMClient:
             text = json.dumps(mock_summary(payload["aggregate"]))
         elif task == "judge":
             text = json.dumps(mock_judge(payload))
+        elif task == "judge_v2":
+            text = json.dumps(mock_judge_v2(payload))
         else:
             text = json.dumps({"error": f"mock has no fixture for task '{task}'"})
         prompt_chars = sum(len(m.content) for m in messages)
@@ -226,6 +230,8 @@ class MockLLMClient:
             return json.dumps(mock_summary(original["aggregate"]))
         if target == "judge":
             return json.dumps(mock_judge(original))
+        if target == "judge_v2":
+            return json.dumps(mock_judge_v2(original))
         return "{}"
 
 
@@ -274,5 +280,27 @@ def mock_judge(payload: dict[str, Any]) -> dict[str, Any]:
         "consistency": {"score": 3, "justification": f"{MOCK_NOTICE}: fixed placeholder value."},
         "hallucination": dim,
         "unsupported_claims": [],
+        "overall_comment": note,
+    }
+
+
+def mock_judge_v2(payload: dict[str, Any]) -> dict[str, Any]:
+    """Flat v2 verdict. Placeholder values; the only 'signal' is whether cited review ids exist."""
+    summary = payload.get("summary", {})
+    allowed = set(payload.get("allowed_review_ids", []))
+    cited = [rid for key in ("appreciated", "complaints") for p in summary.get(key, []) for rid in p.get("supporting_review_ids", [])]
+    unknown = sorted({rid for rid in cited if rid not in allowed})
+    valid_ratio = (sum(rid in allowed for rid in cited) / len(cited)) if cited else 0.0
+    note = f"{MOCK_NOTICE}: score derived only from the share of cited review IDs that exist ({valid_ratio:.0%})."
+    return {
+        "faithfulness_score": 1 + round(4 * valid_ratio),
+        "faithfulness_justification": note,
+        "coverage_score": 3,
+        "coverage_justification": f"{MOCK_NOTICE}: fixed placeholder value.",
+        "consistency_score": 3,
+        "consistency_justification": f"{MOCK_NOTICE}: fixed placeholder value.",
+        "hallucination_score": 3 if unknown else 5,
+        "hallucination_justification": note,
+        "unsupported_claims": [{"claim": f"[MOCK] cites unknown review id {rid}", "reason": "id not in this product's reviews", "evidence_review_ids": []} for rid in unknown],
         "overall_comment": note,
     }

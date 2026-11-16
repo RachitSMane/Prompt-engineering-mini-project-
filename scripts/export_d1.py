@@ -5,7 +5,8 @@ For each strategy of a saved run this writes, under ``outputs/<mode>/d1/<run_id>
   records.json            valid structured records (re-validated after reload, evidence re-grounded)
   records.csv             one row per review (fixed columns)
   records_aspects.csv     one row per extracted aspect (with its evidence quote)
-  failures.csv            reviews with no valid output after repair (never silently dropped)
+  failures.csv            reviews with no valid output after repair (never silently dropped), with diagnostics
+  failures.json           the same failures with every attempt's raw output, errors and local fixes
   validation_report.json  validity, repair and failure statistics, runtime and token totals
 
 plus ``summary.md`` (execution summary for all strategies). No LLM calls are made; everything is
@@ -29,7 +30,7 @@ from config import load_settings  # noqa: E402
 from evaluation.prompt_comparison import experiments_dir  # noqa: E402
 from pipeline.extraction import ExtractionStore, is_provider_failure  # noqa: E402
 from schemas.review_schema import ReviewRecord  # noqa: E402
-from utils.export import export_records, failures_to_dataframe  # noqa: E402
+from utils.export import export_records, failures_to_dataframe, failures_to_json  # noqa: E402
 from utils.storage import read_json, write_json_atomic  # noqa: E402
 
 
@@ -60,6 +61,7 @@ def export_strategy(run_dir: Path, strategy: str, review_ids: list[str], out_roo
     out = out_root / strategy
     paths = export_records(records, out, "records")
     failures_to_dataframe(failures).to_csv(out / "failures.csv", index=False, encoding="utf-8")
+    (out / "failures.json").write_text(failures_to_json(failures), encoding="utf-8")  # full attempt logs (raw outputs + errors)
     metas = [r.extraction_metadata for r in records] + [f.extraction_metadata for f in failures]
     lat = [m.total_latency_s for m in metas]
     attempt_errors = Counter(e.split(":")[0][:80] for m in metas for a in m.attempts for e in a.errors)
@@ -92,7 +94,7 @@ def export_strategy(run_dir: Path, strategy: str, review_ids: list[str], out_roo
             "max": round(max(lat), 2) if lat else None,
         },
         "tokens": {"input_total": sum(m.input_tokens or 0 for m in metas), "output_total": sum(m.output_tokens or 0 for m in metas)},
-        "files": {k: str(v) for k, v in paths.items()} | {"failures_csv": str(out / "failures.csv")},
+        "files": {k: str(v) for k, v in paths.items()} | {"failures_csv": str(out / "failures.csv"), "failures_json": str(out / "failures.json")},
     }
     report["revalidation"] = revalidate(paths["json"])
     write_json_atomic(out / "validation_report.json", report)

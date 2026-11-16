@@ -178,3 +178,64 @@ Normalizer = Callable[[Any], tuple[Any, list[str]]]
 
 VALID_ASPECT_CATEGORIES = {c.value for c in AspectCategory}
 VALID_COMPLAINTS = {c.value for c in ComplaintCategory}
+
+
+# --------------------------------------------------------------------------- judge (v2) normaliser
+JUDGE_DIMENSIONS = ("faithfulness", "coverage", "consistency", "hallucination")
+_V2_KEYS = {f"{d}_{k}" for d in JUDGE_DIMENSIONS for k in ("score", "justification")} | {"unsupported_claims", "overall_comment"}
+
+
+def normalize_judge_v2(obj: Any) -> tuple[Any, list[str]]:
+    """Purely structural, logged clean-up of judge output toward the flat ``JudgeOutputV2`` shape.
+
+    It only MOVES or RENAMES values the judge itself produced; it never creates a score, a justification or a claim:
+      * unwraps ``[{...}]`` / ``{"evaluation": {...}}`` wrappers;
+      * flattens the v1 nested shape ``{"faithfulness": {"score": 4, "justification": "..."}}`` to
+        ``faithfulness_score`` / ``faithfulness_justification``;
+      * moves ``unsupported_claims`` lists that were put inside a dimension object to the single top-level list
+        (de-duplicated) — the dominant v1 failure;
+      * turns plain-string claims into ``{"claim": "..."}`` objects and ``null`` claim lists into ``[]``.
+    Missing or invalid values (e.g. a missing justification, score 7, score "4/5") are left for validation to reject.
+    """
+    obj, notes = unwrap_object(obj, _V2_KEYS | set(JUDGE_DIMENSIONS))
+    if not isinstance(obj, dict):
+        return obj, notes
+    obj = dict(obj)
+    moved_claims: list[Any] = []
+    for dim in JUDGE_DIMENSIONS:
+        inner = obj.get(dim)
+        if isinstance(inner, dict):
+            inner = dict(inner)
+            nested = inner.pop("unsupported_claims", None)
+            if isinstance(nested, list):
+                moved_claims += nested
+                notes.append("moved nested unsupported_claims to the top level")
+            for key in ("score", "justification"):
+                if key in inner and f"{dim}_{key}" not in obj:
+                    obj[f"{dim}_{key}"] = inner.pop(key)
+            if not inner:
+                del obj[dim]
+                notes.append("flattened nested dimension objects")
+            else:
+                obj[dim] = inner  # leftover unknown keys: keep them so validation reports them
+    if "unsupported_claims" in obj and obj["unsupported_claims"] is None:
+        obj["unsupported_claims"] = []
+        notes.append("replaced null unsupported_claims with []")
+    if moved_claims:
+        top = obj.get("unsupported_claims") if isinstance(obj.get("unsupported_claims"), list) else []
+        obj["unsupported_claims"] = top + moved_claims
+    claims = obj.get("unsupported_claims")
+    if isinstance(claims, list):
+        out, seen = [], set()
+        for c in claims:
+            if isinstance(c, str):
+                c = {"claim": c}
+                notes.append("converted plain-string claims to claim objects")
+            key = json.dumps(c, sort_keys=True) if isinstance(c, dict) else repr(c)
+            if key in seen:
+                notes.append("removed duplicate unsupported claims")
+                continue
+            seen.add(key)
+            out.append(c)
+        obj["unsupported_claims"] = out
+    return obj, list(dict.fromkeys(notes))

@@ -56,6 +56,13 @@ def valid_extraction(**overrides) -> dict:
     return data
 
 
+@pytest.fixture(autouse=True)
+def _normal_mode_by_default(monkeypatch):
+    """Tests run in normal (writable) mode even if the shell or .env sets REVIEWIQ_DEMO_READONLY.
+    Demo-mode tests opt in with monkeypatch.setenv."""
+    monkeypatch.delenv("REVIEWIQ_DEMO_READONLY", raising=False)
+
+
 @pytest.fixture
 def review() -> ReviewInput:
     return ReviewInput(review_id="T1", product_id="P1", review_text=REVIEW_TEXT)
